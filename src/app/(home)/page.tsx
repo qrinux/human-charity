@@ -1,4 +1,5 @@
 import { About } from '@/components/PageComponents/HomePage/About'
+import { Advisor } from '@/components/PageComponents/HomePage/Advisor'
 import { Contact } from '@/components/PageComponents/HomePage/Contact'
 import { Focus } from '@/components/PageComponents/HomePage/Focus'
 import { Hero } from '@/components/PageComponents/HomePage/Hero'
@@ -15,6 +16,7 @@ const page = async() => {
       <Focus></Focus>
       <Projects></Projects>
       <Notices></Notices>
+      <Advisor></Advisor>
       <Team></Team>
       <About></About>
       <Contact></Contact>

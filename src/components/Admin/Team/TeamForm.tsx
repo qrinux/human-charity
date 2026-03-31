@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Loader2, Plus, Trash2, Upload, Users, Link as LinkIcon } from "lucide-react";
+import { X, Loader2, Plus, Trash2, Upload, Users, Link as LinkIcon, ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
 
 interface TeamFormData {
   name: string;
   role: string;
+  memberType: string;
   bio: string;
   expertise: string;
   email: string;
@@ -31,6 +32,7 @@ export const TeamForm = ({ initialData, onSubmit, onClose, isSubmitting }: TeamF
   const [formData, setFormData] = useState<TeamFormData>({
     name: initialData?.name || "",
     role: initialData?.role || "",
+    memberType: initialData?.memberType || "member",
     bio: initialData?.bio || "",
     expertise: initialData?.expertise || "",
     email: initialData?.email || "",
@@ -85,6 +87,7 @@ export const TeamForm = ({ initialData, onSubmit, onClose, isSubmitting }: TeamF
     const data = new FormData();
     data.append("name", formData.name);
     data.append("role", formData.role);
+    data.append("memberType", formData.memberType);
     data.append("bio", formData.bio);
     data.append("expertise", formData.expertise);
     data.append("email", formData.email);
@@ -132,10 +135,32 @@ export const TeamForm = ({ initialData, onSubmit, onClose, isSubmitting }: TeamF
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-bold uppercase text-slate-500">Role / Designation</label>
+          <label className="text-xs font-bold uppercase text-slate-500"> Designation</label>
           <input required value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})} className="w-full bg-[#0f172a] border border-slate-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all" />
         </div>
+        <div className="space-y-2">
+  <label className="text-xs font-bold uppercase text-slate-500">
+    Member Type
+  </label>
 
+  <div className="relative">
+    <select
+      value={formData.memberType}
+      onChange={(e) =>
+        setFormData({ ...formData, memberType: e.target.value })
+      }
+      className="w-full appearance-none bg-[#0f172a] border border-slate-700 rounded-lg p-3 pr-10 text-white outline-none focus:ring-2 focus:ring-emerald-500/50 cursor-pointer"
+    >
+      <option value="member">Member</option>
+      <option value="advisor">Advisor</option>
+    </select>
+
+    {/* dropdown icon */}
+    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+      <ChevronDown></ChevronDown>
+    </div>
+  </div>
+</div>
         {/* Profile Image */}
         <div className="md:col-span-2 space-y-2">
           <label className="text-xs font-bold uppercase text-slate-500">Profile Photo</label>

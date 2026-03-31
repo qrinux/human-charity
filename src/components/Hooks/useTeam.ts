@@ -13,10 +13,14 @@ export function useTeam(slug?: string, trashed: boolean = false) {
     try {
       if (slug) {
         const res = await getTeamMemberBySlug(slug);
-        if (res.success) setMember(res.data ?? null);
+        if (res.success) {
+          setMember(res.data ?? null);
+        }
       } else {
-        const res = await getTeamMembers(trashed); // pass trashed flag
-        if (res.success) setTeam(res.data ?? []);
+        const res = await getTeamMembers(trashed);
+        if (res.success) {
+          setTeam(res.data ?? []);
+        }
       }
     } catch (error) {
       console.error("Hook Fetch Error:", error);
@@ -29,5 +33,11 @@ export function useTeam(slug?: string, trashed: boolean = false) {
     fetchData();
   }, [fetchData]);
 
-  return { team, member, loading, refresh: fetchData };
+  return { 
+    team, 
+    setTeam, 
+    member, 
+    loading, 
+    refresh: fetchData 
+  };
 }

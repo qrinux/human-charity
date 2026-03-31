@@ -10,6 +10,7 @@ export const upsertTeam = async (formData: FormData) => {
     const id = (formData.get("id") as string) || "";
     const name = (formData.get("name") as string) || "";
     const role = (formData.get("role") as string) || "";
+    const memberType = (formData.get("memberType") as string) || "member";
     const bio = (formData.get("bio") as string) || "";
     const expertise = (formData.get("expertise") as string) || "";
     const email = (formData.get("email") as string) || "";
@@ -53,10 +54,11 @@ export const upsertTeam = async (formData: FormData) => {
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
 
-    const teamData = { 
+    const teamData: any = { 
       name, 
       slug, 
       role, 
+      memberType,
       bio, 
       expertise, 
       email, 
@@ -72,13 +74,26 @@ export const upsertTeam = async (formData: FormData) => {
 
     let member;
     if (id && id.trim() !== "" && id !== "undefined") {
+      // UPDATE EXISTING
       member = await db.team.update({
         where: { id },
         data: teamData,
       });
     } else {
+      // CREATE NEW: Find highest current order to place at the end
+      const lastMember = await db.team.findFirst({
+        where: { isDeleted: false },
+        orderBy: { order: "desc" },
+        select: { order: true },
+      });
+
+      const nextOrder = lastMember ? lastMember.order + 1 : 0;
+
       member = await db.team.create({
-        data: teamData,
+        data: { 
+          ...teamData, 
+          order: nextOrder 
+        },
       });
     }
 
@@ -93,12 +108,36 @@ export const upsertTeam = async (formData: FormData) => {
   }
 };
 
+/* ---------------- REORDER TEAM MEMBERS ---------------- */
+/**
+ * Updates multiple members' positions in a single database transaction.
+ */
+export const reorderTeam = async (items: { id: string; order: number }[]) => {
+  try {
+    await db.$transaction(
+      items.map((item) =>
+        db.team.update({
+          where: { id: item.id },
+          data: { order: item.order },
+        })
+      )
+    );
+
+    revalidatePath("/admin/team");
+    revalidatePath("/team");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Reorder Error:", error);
+    return { success: false, error: "Failed to save new order" };
+  }
+};
+
 /* ---------------- GET TEAM MEMBERS ---------------- */
 export const getTeamMembers = async (trashed: boolean = false) => {
   try {
     const members = await db.team.findMany({
       where: trashed ? { isDeleted: true } : { isDeleted: false },
-      orderBy: { createdAt: "asc" },
+      orderBy: { order: "asc" }, // Crucial: Sort by order, not createdAt
     });
     return { success: true, data: members };
   } catch (error: any) {

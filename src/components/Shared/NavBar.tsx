@@ -40,7 +40,7 @@ export function NavBar() {
     { label: "Home", href: "hero" },
     { label: "Projects", href: "projects" },
     { label: "Updates", href: "updates" },
-    { label: "Team", href: "advisor" },
+    { label: "Advisor", href: "advisor" },
     { label: "Team", href: "team" },
     { label: "Gallery", href: "/gallery", isRoute: true },
     { label: "About Us", href: "about" },
@@ -60,7 +60,7 @@ export function NavBar() {
             <div className="flex items-center gap-3">
               <Image src={'/logo.jpeg'} alt='logo' width={50} height={40} className='rounded-sm' />
               <div>
-                <h1 className="text-white text-xl font-bold leading-tight">Human Care Global</h1>
+                <h1 className="text-white text-xl font-bold leading-tight">Human Care</h1>
                 <p className="text-[#10B981] text-xs font-medium">Building Better Tomorrow</p>
               </div>
             </div>

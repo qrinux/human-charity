@@ -15,7 +15,7 @@ export function Notices() {
   }
 
   return (
-    <section id="updates" className="py-24 bg-white relative overflow-hidden">
+    <section id="updates" className="pb-24 pt-12 bg-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute inset-0" style={{

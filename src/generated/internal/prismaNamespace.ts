@@ -950,9 +950,11 @@ export type NoticeScalarFieldEnum = (typeof NoticeScalarFieldEnum)[keyof typeof 
 
 export const TeamScalarFieldEnum = {
   id: 'id',
+  order: 'order',
   slug: 'slug',
   name: 'name',
   role: 'role',
+  memberType: 'memberType',
   bio: 'bio',
   expertise: 'expertise',
   image: 'image',

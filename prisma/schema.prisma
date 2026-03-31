@@ -57,11 +57,13 @@ model Notice {
   updatedAt   DateTime @updatedAt
 }
 model Team {
-  id           String   @id @default(uuid())
-  slug         String   @unique
+  id           String     @id @default(uuid())
+  order        Int        @default(0)
+  slug         String     @unique
   name         String
   role         String
-  bio          String   @db.Text
+  memberType   String   @default("member")
+  bio          String    @db.Text
   expertise    String
   image        String
   email        String?

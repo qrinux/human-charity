@@ -106,7 +106,7 @@ const metrics = [
 
 export function About() {
   return (
-    <section id="about" className="py-24 bg-white relative overflow-hidden">
+    <section id="about" className="bg-white relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-5">
         <div className="absolute top-20 left-20 w-64 h-64 border-2 border-[#10B981] rounded-full"></div>
@@ -158,13 +158,13 @@ export function About() {
               </h3>
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
-                  Human Care Global was founded in 2010 by a group of Bangladeshi healthcare professionals who witnessed the devastating impact of poverty and lack of access to basic services in rural communities. What started as weekend medical camps has grown into a comprehensive development organization.
+                  Human Care exists to ignite potential. We motivate young people to realise their worth, equip them with skills and knowledge, and create the conditions for them to lead with confidence and compassion.
                 </p>
                 <p>
-                  We believe that sustainable change comes from understanding local context, respecting cultural values, and empowering communities to take ownership of their development. Our programs are designed with input from the people we serve, ensuring they address real needs with practical solutions.
+                  Our mission is to build a Bangladesh where no person is held back by poverty, gender, geography, or lack of opportunity — where every individual can contribute meaningfully to their family, their community, and their nation.
                 </p>
                 <p>
-                  Today, we operate across 12 districts in Bangladesh, running integrated programs in health, education, emergency relief, and economic empowerment. Our work is guided by principles of transparency, accountability, and measurable impact.
+                 We see a Sylhet — and a Bangladesh — where women stand equal, children learn freely, communities govern themselves with transparency, and the environment is protected for generations to come.Human Care's vision is simple: people who are cared for, care for others. That cycle of compassion is how we change the world.
                 </p>
               </div>
             </div>
@@ -174,11 +174,12 @@ export function About() {
               <h4 className="text-2xl mb-6">Our Values</h4>
               <div className="space-y-4">
                 {[
-                  'Compassion over bureaucracy',
-                  'Transparency in all operations',
-                  'Community-led development',
-                  'Sustainable, long-term impact',
-                  'Dignity and respect for all',
+                  'Youth Empowerment',
+                  'Gender Equity',
+                  'Education',
+                  'Community Health',
+                  'Climate Action',
+                  'Civic Engagement',
                 ].map((value, idx) => (
                   <motion.div
                     key={value}
@@ -196,7 +197,7 @@ export function About() {
             </div>
 
             {/* Journey Timeline */}
-            <div>
+            {/* <div>
               <h3 className="text-3xl text-[#0F172A] mb-8">Our Journey</h3>
               <div className="space-y-6">
                 {timeline.map((item, index) => (
@@ -220,7 +221,7 @@ export function About() {
                   </motion.div>
                 ))}
               </div>
-            </div>
+            </div> */}
           </motion.div>
 
           {/* Right: Metrics (40%) */}
@@ -283,7 +284,7 @@ export function About() {
               </div>
 
               {/* Annual Report Download */}
-              <motion.div
+              {/* <motion.div
                 className="mt-6 bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-2xl p-6 text-white text-center"
                 whileHover={{ scale: 1.02 }}
               >
@@ -298,7 +299,7 @@ export function About() {
                 >
                   Download PDF
                 </motion.button>
-              </motion.div>
+              </motion.div> */}
             </div>
           </motion.div>
         </div>

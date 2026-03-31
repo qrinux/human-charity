@@ -4,7 +4,7 @@ import { ArrowLeft, Mail, Linkedin, Users as UsersIcon, Loader2 } from 'lucide-r
 import Link from 'next/link';
 import { ImagePosition } from '@/components/Hooks/ImagePosition';
 import { useTeam } from '@/components/Hooks/useTeam';
-export function AllTeam() {
+export function AllAdvisor() {
   const {team,loading}=useTeam()
   if (loading) {
     return (
@@ -37,17 +37,17 @@ export function AllTeam() {
               animate={{ opacity: 1, scale: 1 }}
             >
               <UsersIcon className="w-4 h-4" />
-              Our Team
+              Our Advisor
             </motion.div>
             <h1 className="text-5xl text-[#0F172A] mb-4">
-              Meet Our Team
+              Meet with all our advisor
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Dedicated professionals working together to create lasting change across Bangladesh
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {team.filter((m) => m.memberType === "member").map((member, index) => (
+            {team.filter((m) => m.memberType === "advisor").map((member, index) => (
               <motion.div
                 key={member.slug}
                 className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-[#10B981]/10 hover:border-[#10B981]/30 h-full flex flex-col"
@@ -112,31 +112,6 @@ export function AllTeam() {
               </motion.div>
             ))}
           </div>
-
-          <motion.div
-            className="mt-16 text-center bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-2xl p-12 text-white max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <UsersIcon className="w-12 h-12 mx-auto mb-4 text-[#10B981]" />
-            <h3 className="text-3xl mb-4">Join Our Team</h3>
-            <p className="text-white/70 mb-8 max-w-xl mx-auto text-lg">
-              We're always looking for passionate individuals who want to make a difference. 
-              Explore career opportunities and volunteer positions with Human Care Global.
-            </p>
-            <div className="flex justify-center">
-              <Link href="/#contact">
-              <motion.button
-                className="bg-[#F59E0B] hover:bg-[#D97706] px-8 py-4 rounded-full font-semibold transition-colors duration-300 cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Become a Volunteer
-              </motion.button>
-              </Link>           
-            </div>
-          </motion.div>
         </div>
       </div>
     </div>

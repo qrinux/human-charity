@@ -20,15 +20,27 @@ export type TeamModel = runtime.Types.Result.DefaultSelection<Prisma.$TeamPayloa
 
 export type AggregateTeam = {
   _count: TeamCountAggregateOutputType | null
+  _avg: TeamAvgAggregateOutputType | null
+  _sum: TeamSumAggregateOutputType | null
   _min: TeamMinAggregateOutputType | null
   _max: TeamMaxAggregateOutputType | null
 }
 
+export type TeamAvgAggregateOutputType = {
+  order: number | null
+}
+
+export type TeamSumAggregateOutputType = {
+  order: number | null
+}
+
 export type TeamMinAggregateOutputType = {
   id: string | null
+  order: number | null
   slug: string | null
   name: string | null
   role: string | null
+  memberType: string | null
   bio: string | null
   expertise: string | null
   image: string | null
@@ -45,9 +57,11 @@ export type TeamMinAggregateOutputType = {
 
 export type TeamMaxAggregateOutputType = {
   id: string | null
+  order: number | null
   slug: string | null
   name: string | null
   role: string | null
+  memberType: string | null
   bio: string | null
   expertise: string | null
   image: string | null
@@ -64,9 +78,11 @@ export type TeamMaxAggregateOutputType = {
 
 export type TeamCountAggregateOutputType = {
   id: number
+  order: number
   slug: number
   name: number
   role: number
+  memberType: number
   bio: number
   expertise: number
   image: number
@@ -86,11 +102,21 @@ export type TeamCountAggregateOutputType = {
 }
 
 
+export type TeamAvgAggregateInputType = {
+  order?: true
+}
+
+export type TeamSumAggregateInputType = {
+  order?: true
+}
+
 export type TeamMinAggregateInputType = {
   id?: true
+  order?: true
   slug?: true
   name?: true
   role?: true
+  memberType?: true
   bio?: true
   expertise?: true
   image?: true
@@ -107,9 +133,11 @@ export type TeamMinAggregateInputType = {
 
 export type TeamMaxAggregateInputType = {
   id?: true
+  order?: true
   slug?: true
   name?: true
   role?: true
+  memberType?: true
   bio?: true
   expertise?: true
   image?: true
@@ -126,9 +154,11 @@ export type TeamMaxAggregateInputType = {
 
 export type TeamCountAggregateInputType = {
   id?: true
+  order?: true
   slug?: true
   name?: true
   role?: true
+  memberType?: true
   bio?: true
   expertise?: true
   image?: true
@@ -185,6 +215,18 @@ export type TeamAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: TeamAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: TeamSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: TeamMinAggregateInputType
@@ -215,15 +257,19 @@ export type TeamGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: TeamCountAggregateInputType | true
+  _avg?: TeamAvgAggregateInputType
+  _sum?: TeamSumAggregateInputType
   _min?: TeamMinAggregateInputType
   _max?: TeamMaxAggregateInputType
 }
 
 export type TeamGroupByOutputType = {
   id: string
+  order: number
   slug: string
   name: string
   role: string
+  memberType: string
   bio: string
   expertise: string
   image: string
@@ -240,6 +286,8 @@ export type TeamGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: TeamCountAggregateOutputType | null
+  _avg: TeamAvgAggregateOutputType | null
+  _sum: TeamSumAggregateOutputType | null
   _min: TeamMinAggregateOutputType | null
   _max: TeamMaxAggregateOutputType | null
 }
@@ -264,9 +312,11 @@ export type TeamWhereInput = {
   OR?: Prisma.TeamWhereInput[]
   NOT?: Prisma.TeamWhereInput | Prisma.TeamWhereInput[]
   id?: Prisma.StringFilter<"Team"> | string
+  order?: Prisma.IntFilter<"Team"> | number
   slug?: Prisma.StringFilter<"Team"> | string
   name?: Prisma.StringFilter<"Team"> | string
   role?: Prisma.StringFilter<"Team"> | string
+  memberType?: Prisma.StringFilter<"Team"> | string
   bio?: Prisma.StringFilter<"Team"> | string
   expertise?: Prisma.StringFilter<"Team"> | string
   image?: Prisma.StringFilter<"Team"> | string
@@ -286,9 +336,11 @@ export type TeamWhereInput = {
 
 export type TeamOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  memberType?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   expertise?: Prisma.SortOrder
   image?: Prisma.SortOrder
@@ -312,8 +364,10 @@ export type TeamWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.TeamWhereInput | Prisma.TeamWhereInput[]
   OR?: Prisma.TeamWhereInput[]
   NOT?: Prisma.TeamWhereInput | Prisma.TeamWhereInput[]
+  order?: Prisma.IntFilter<"Team"> | number
   name?: Prisma.StringFilter<"Team"> | string
   role?: Prisma.StringFilter<"Team"> | string
+  memberType?: Prisma.StringFilter<"Team"> | string
   bio?: Prisma.StringFilter<"Team"> | string
   expertise?: Prisma.StringFilter<"Team"> | string
   image?: Prisma.StringFilter<"Team"> | string
@@ -333,9 +387,11 @@ export type TeamWhereUniqueInput = Prisma.AtLeast<{
 
 export type TeamOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  memberType?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   expertise?: Prisma.SortOrder
   image?: Prisma.SortOrder
@@ -352,8 +408,10 @@ export type TeamOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TeamCountOrderByAggregateInput
+  _avg?: Prisma.TeamAvgOrderByAggregateInput
   _max?: Prisma.TeamMaxOrderByAggregateInput
   _min?: Prisma.TeamMinOrderByAggregateInput
+  _sum?: Prisma.TeamSumOrderByAggregateInput
 }
 
 export type TeamScalarWhereWithAggregatesInput = {
@@ -361,9 +419,11 @@ export type TeamScalarWhereWithAggregatesInput = {
   OR?: Prisma.TeamScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TeamScalarWhereWithAggregatesInput | Prisma.TeamScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Team"> | string
+  order?: Prisma.IntWithAggregatesFilter<"Team"> | number
   slug?: Prisma.StringWithAggregatesFilter<"Team"> | string
   name?: Prisma.StringWithAggregatesFilter<"Team"> | string
   role?: Prisma.StringWithAggregatesFilter<"Team"> | string
+  memberType?: Prisma.StringWithAggregatesFilter<"Team"> | string
   bio?: Prisma.StringWithAggregatesFilter<"Team"> | string
   expertise?: Prisma.StringWithAggregatesFilter<"Team"> | string
   image?: Prisma.StringWithAggregatesFilter<"Team"> | string
@@ -383,9 +443,11 @@ export type TeamScalarWhereWithAggregatesInput = {
 
 export type TeamCreateInput = {
   id?: string
+  order?: number
   slug: string
   name: string
   role: string
+  memberType?: string
   bio: string
   expertise: string
   image: string
@@ -405,9 +467,11 @@ export type TeamCreateInput = {
 
 export type TeamUncheckedCreateInput = {
   id?: string
+  order?: number
   slug: string
   name: string
   role: string
+  memberType?: string
   bio: string
   expertise: string
   image: string
@@ -427,9 +491,11 @@ export type TeamUncheckedCreateInput = {
 
 export type TeamUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
+  memberType?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.StringFieldUpdateOperationsInput | string
   expertise?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.StringFieldUpdateOperationsInput | string
@@ -449,9 +515,11 @@ export type TeamUpdateInput = {
 
 export type TeamUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
+  memberType?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.StringFieldUpdateOperationsInput | string
   expertise?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.StringFieldUpdateOperationsInput | string
@@ -471,9 +539,11 @@ export type TeamUncheckedUpdateInput = {
 
 export type TeamCreateManyInput = {
   id?: string
+  order?: number
   slug: string
   name: string
   role: string
+  memberType?: string
   bio: string
   expertise: string
   image: string
@@ -493,9 +563,11 @@ export type TeamCreateManyInput = {
 
 export type TeamUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
+  memberType?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.StringFieldUpdateOperationsInput | string
   expertise?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.StringFieldUpdateOperationsInput | string
@@ -515,9 +587,11 @@ export type TeamUpdateManyMutationInput = {
 
 export type TeamUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
+  memberType?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.StringFieldUpdateOperationsInput | string
   expertise?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.StringFieldUpdateOperationsInput | string
@@ -537,9 +611,11 @@ export type TeamUncheckedUpdateManyInput = {
 
 export type TeamCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  memberType?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   expertise?: Prisma.SortOrder
   image?: Prisma.SortOrder
@@ -557,11 +633,17 @@ export type TeamCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type TeamAvgOrderByAggregateInput = {
+  order?: Prisma.SortOrder
+}
+
 export type TeamMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  memberType?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   expertise?: Prisma.SortOrder
   image?: Prisma.SortOrder
@@ -578,9 +660,11 @@ export type TeamMaxOrderByAggregateInput = {
 
 export type TeamMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  order?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   name?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  memberType?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   expertise?: Prisma.SortOrder
   image?: Prisma.SortOrder
@@ -593,6 +677,10 @@ export type TeamMinOrderByAggregateInput = {
   deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type TeamSumOrderByAggregateInput = {
+  order?: Prisma.SortOrder
 }
 
 export type TeamCreateeducationInput = {
@@ -630,9 +718,11 @@ export type TeamUpdateexperienceInput = {
 
 export type TeamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  order?: boolean
   slug?: boolean
   name?: boolean
   role?: boolean
+  memberType?: boolean
   bio?: boolean
   expertise?: boolean
   image?: boolean
@@ -652,9 +742,11 @@ export type TeamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 
 export type TeamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  order?: boolean
   slug?: boolean
   name?: boolean
   role?: boolean
+  memberType?: boolean
   bio?: boolean
   expertise?: boolean
   image?: boolean
@@ -674,9 +766,11 @@ export type TeamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type TeamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  order?: boolean
   slug?: boolean
   name?: boolean
   role?: boolean
+  memberType?: boolean
   bio?: boolean
   expertise?: boolean
   image?: boolean
@@ -696,9 +790,11 @@ export type TeamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type TeamSelectScalar = {
   id?: boolean
+  order?: boolean
   slug?: boolean
   name?: boolean
   role?: boolean
+  memberType?: boolean
   bio?: boolean
   expertise?: boolean
   image?: boolean
@@ -716,16 +812,18 @@ export type TeamSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TeamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "name" | "role" | "bio" | "expertise" | "image" | "email" | "linkedin" | "facebook" | "twitter" | "instagram" | "education" | "achievements" | "experience" | "isDeleted" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["team"]>
+export type TeamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "order" | "slug" | "name" | "role" | "memberType" | "bio" | "expertise" | "image" | "email" | "linkedin" | "facebook" | "twitter" | "instagram" | "education" | "achievements" | "experience" | "isDeleted" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["team"]>
 
 export type $TeamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Team"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    order: number
     slug: string
     name: string
     role: string
+    memberType: string
     bio: string
     expertise: string
     image: string
@@ -1165,9 +1263,11 @@ export interface Prisma__TeamClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface TeamFieldRefs {
   readonly id: Prisma.FieldRef<"Team", 'String'>
+  readonly order: Prisma.FieldRef<"Team", 'Int'>
   readonly slug: Prisma.FieldRef<"Team", 'String'>
   readonly name: Prisma.FieldRef<"Team", 'String'>
   readonly role: Prisma.FieldRef<"Team", 'String'>
+  readonly memberType: Prisma.FieldRef<"Team", 'String'>
   readonly bio: Prisma.FieldRef<"Team", 'String'>
   readonly expertise: Prisma.FieldRef<"Team", 'String'>
   readonly image: Prisma.FieldRef<"Team", 'String'>

@@ -1,13 +1,15 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowRight, Heart, Loader2 } from "lucide-react";
+import { ArrowRight, Heart, Loader2, X } from "lucide-react";
 import { ImagePosition } from "@/components/Hooks/ImagePosition";
 import { useHero } from "@/components/Hooks/useHero";
 import Link from "next/link";
+import { useState } from "react";
 
 export function Hero() {
   const { hero, loading } = useHero();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -22,7 +24,16 @@ export function Hero() {
     );
   }
 
-  const { badgeText, headline, description, livesImpacted, projectsCount, yearsActive, images ,donateLink} = hero;
+  const {
+    badgeText,
+    headline,
+    description,
+    livesImpacted,
+    projectsCount,
+    yearsActive,
+    images,
+    donateLink,
+  } = hero;
 
   return (
     <section
@@ -52,7 +63,7 @@ export function Hero() {
 
             <div className="flex flex-wrap gap-4">
               <Link
-                 href={donateLink}
+                href={donateLink}
                 className="bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-4 rounded-full font-semibold flex items-center gap-2"
               >
                 Donate Now
@@ -61,7 +72,7 @@ export function Hero() {
 
               <button
                 onClick={() => scrollToSection("projects")}
-                className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-full font-semibold flex items-center gap-2"
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-full font-semibold flex items-center gap-2 cursor-pointer"
               >
                 Our Work
                 <ArrowRight className="w-5 h-5" />
@@ -93,25 +104,59 @@ export function Hero() {
             transition={{ duration: 0.8 }}
           >
             <div className="grid grid-cols-6 grid-rows-6 gap-3 h-[600px]">
-              <div className="col-span-4 row-span-4 rounded-2xl overflow-hidden">
-                <ImagePosition src={images[0]} alt="Hero Image 1" className="w-full h-full object-cover" />
-              </div>
-              <div className="col-span-2 row-span-3 rounded-2xl overflow-hidden">
-                <ImagePosition src={images[1]} alt="Hero Image 2" className="w-full h-full object-cover" />
-              </div>
-              <div className="col-span-2 row-span-3 rounded-2xl overflow-hidden">
-                <ImagePosition src={images[2]} alt="Hero Image 3" className="w-full h-full object-cover" />
-              </div>
-              <div className="col-span-2 row-span-2 rounded-2xl overflow-hidden">
-                <ImagePosition src={images[3]} alt="Hero Image 4" className="w-full h-full object-cover" />
-              </div>
-              <div className="col-span-2 row-span-2 rounded-2xl overflow-hidden">
-                <ImagePosition src={images[4]} alt="Hero Image 5" className="w-full h-full object-cover" />
-              </div>
+              {images.map((img: string, i: number) => (
+                <div
+                  key={i}
+                  onClick={() => setSelectedImage(img)}
+                  className={`rounded-2xl overflow-hidden cursor-pointer ${
+                    i === 0
+                      ? "col-span-4 row-span-4"
+                      : i === 1 || i === 2
+                      ? "col-span-2 row-span-3"
+                      : "col-span-2 row-span-2"
+                  }`}
+                >
+                  <ImagePosition
+                    src={img}
+                    alt={`Hero Image ${i + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
             </div>
           </motion.div>
         </div>
       </div>
+
+      {/* FULL IMAGE MODAL */}
+     {selectedImage && (
+  <div
+    className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50"
+    onClick={() => setSelectedImage(null)}
+  >
+    <motion.div
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="relative max-w-[90%] max-h-[90%]"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Close Button (INSIDE IMAGE TOP RIGHT) */}
+      <button
+        onClick={() => setSelectedImage(null)}
+        className="absolute top-3 right-3 z-10 bg-red-600 hover:bg-red-600/80 text-white p-2 rounded-full backdrop-blur-md transition cursor-pointer"
+      >
+        <X size={20} />
+      </button>
+
+      <img
+        src={selectedImage}
+        alt="Selected"
+        className="rounded-2xl shadow-2xl max-w-full max-h-[90vh] object-contain"
+      />
+    </motion.div>
+  </div>
+)}
     </section>
   );
 }

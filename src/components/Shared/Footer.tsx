@@ -114,15 +114,15 @@ export function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3 text-white/70 hover:text-white transition-colors duration-300">
                 <MapPin className="w-5 h-5 text-[#10B981] flex-shrink-0 mt-0.5" />
-                <span>House 45, Road 12, Sector 7<br />Uttara, Dhaka-1230</span>
+                <span>Block-B,49/A<br />Shahjalal Upashahar, Sylhet</span>
               </li>
               <li className="flex items-start gap-3 text-white/70 hover:text-white transition-colors duration-300">
                 <Phone className="w-5 h-5 text-[#10B981] flex-shrink-0 mt-0.5" />
-                <span>+880 1712-345678</span>
+                <span> +8801716691978</span>
               </li>
               <li className="flex items-start gap-3 text-white/70 hover:text-white transition-colors duration-300">
                 <Mail className="w-5 h-5 text-[#10B981] flex-shrink-0 mt-0.5" />
-                <span>info@humancareglobal.org</span>
+                <span>Info@humancareorg.com</span>
               </li>
             </ul>
 

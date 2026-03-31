@@ -19,7 +19,7 @@ export function Projects() {
   }
 
   return (
-    <section id="projects" className="py-24 bg-gray-50">
+    <section id="projects" className="pb-24 pt-12 bg-gray-50">
       <div className="container mx-auto px-6">
 
         {/* HEADER */}

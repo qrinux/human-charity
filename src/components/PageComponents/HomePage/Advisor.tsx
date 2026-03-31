@@ -5,7 +5,7 @@ import { ImagePosition } from '@/components/Hooks/ImagePosition';
 import Link from 'next/link';
 import { useTeam } from '@/components/Hooks/useTeam';
 
-export function Team() {
+export function Advisor() {
   const {team,loading}=useTeam()
   if (loading) {
     return (
@@ -15,7 +15,7 @@ export function Team() {
     );
   }
   return (
-    <section id="team" className="pt-12 pb-24 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <section id="advisor" className=" pt-12 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
       <div className="absolute top-20 left-10 w-72 h-72 bg-[#10B981]/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-20 right-10 w-72 h-72 bg-[#F59E0B]/10 rounded-full blur-3xl"></div>
 
@@ -33,10 +33,10 @@ export function Team() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            Our Team
+            Our Advisor
           </motion.div>
           <h2 className="text-4xl lg:text-5xl text-[#0F172A] mb-4">
-            Meet with our contruting member
+            Meet the People Behind Our Mission
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Dedicated professionals united by a common goal: creating positive change in Bangladesh
@@ -44,7 +44,7 @@ export function Team() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {team.filter((m) => m.memberType === "member").slice(0,4).map((member, index) => (
+          {team.filter((m) => m.memberType === "advisor").slice(0,4).map((member, index) => (
             <motion.div
               key={member.name}
               className="group relative h-full"
@@ -110,39 +110,15 @@ export function Team() {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          <Link href="/team">
+          <Link href="/advisor">
             <motion.button
               className="bg-[#0F172A] cursor-pointer hover:bg-[#1E293B] text-white px-8 py-4 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              View All Team Members
+              View All Our Advisor
             </motion.button>
           </Link>
-        </motion.div>
-    
-        <motion.div
-          className="text-center bg-gradient-to-r from-[#10B981] to-[#059669] rounded-2xl p-12 text-white"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-        >
-          <h3 className="text-3xl mb-4">Join Our Team</h3>
-          <p className="text-white/90 mb-6 max-w-2xl mx-auto text-lg">
-            We're always looking for passionate individuals who want to make a real difference. Explore career opportunities and become part of our mission.
-          </p>
-          <motion.button
-          onClick={() => {
-              const element = document.getElementById('contact');
-              if (element) element.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="bg-white text-[#10B981] hover:bg-gray-100 px-8 py-4 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Become a Member
-          </motion.button>
         </motion.div>
       </div>
     </section>

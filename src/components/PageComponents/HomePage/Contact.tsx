@@ -54,7 +54,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <section id="contact" className="pb-24 pt-12 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
           backgroundImage: 'radial-gradient(circle, #10B981 1px, transparent 1px)',
@@ -259,9 +259,9 @@ export function Contact() {
                   <div>
                     <h4 className="text-lg text-[#0F172A] mb-2">Our Office</h4>
                     <p className="text-gray-600">
-                      House 45, Road 12, Sector 7<br />
-                      Uttara, Dhaka-1230<br />
-                      Bangladesh 🇧🇩
+                      49/A, Main Road, Block-B<br />
+                     
+                      Shahjalal Uposhahar,Sylhet
                     </p>
                   </div>
                 </div>
@@ -278,8 +278,7 @@ export function Contact() {
                   <div>
                     <h4 className="text-lg text-[#0F172A] mb-2">Phone</h4>
                     <p className="text-gray-600">
-                      +880 1712-345678<br />
-                      +880 2-8956789<br />
+                       +8801716691978<br />
                       <span className="text-sm text-gray-500">Mon-Sat, 9AM-6PM</span>
                     </p>
                   </div>
@@ -297,8 +296,8 @@ export function Contact() {
                   <div>
                     <h4 className="text-lg text-[#0F172A] mb-2">Email</h4>
                     <p className="text-gray-600">
-                      info@humancareglobal.org<br />
-                      donate@humancareglobal.org
+                      Info@humancareorg.com<br />
+                      donate@humancareorg.com
                     </p>
                   </div>
                 </div>
@@ -316,45 +315,26 @@ export function Contact() {
       }}
     />
 
-    <div className="text-center z-10">
-      <MapPin className="w-16 h-16 text-[#10B981] mx-auto mb-3" />
-      <p className="text-[#0F172A]">Shahjalal Uposhar, Sylhet, Bangladesh</p>
+   <div className="text-center z-10">
+  <MapPin className="w-16 h-16 text-[#10B981] mx-auto mb-3" />
 
-      <a
-        href="https://www.google.com/maps/search/?api=1&query=Shahjalal+Uposhar+Sylhet+Bangladesh"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-3 inline-block text-[#10B981] hover:text-[#059669] text-sm underline"
-      >
-        Open in Google Maps
-      </a>
-    </div>
+  <p className="text-[#0F172A]">
+    Block-B,49/A,Shahjalal Upashahar, Sylhet
+  </p>
+
+  <a
+    href="https://www.google.com/maps/search/?api=1&query=Block-B+Boom+Box+Catering+49A+Main+Road+Shahjalal+Upashahar+Main+Rd+Sylhet+3100"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="mt-3 inline-block text-[#10B981] hover:text-[#059669] text-sm underline"
+  >
+    Open in Google Maps
+  </a>
+</div>
 
   </div>
 </div>
-            <div className="bg-gradient-to-r from-[#0F172A] to-[#1E293B] rounded-2xl p-8 text-white">
-              <h4 className="text-xl mb-4">Follow Our Journey</h4>
-              <p className="text-white/70 mb-6 text-sm">
-                Stay connected and see the daily impact of your support
-              </p>
-              <div className="flex gap-3">
-                {[
-                  { icon: Facebook, color: '#1877F2' },
-                  { icon: Twitter, color: '#1DA1F2' },
-                  { icon: Instagram, color: '#E4405F' },
-                  { icon: Linkedin, color: '#0A66C2' },
-                ].map((social, idx) => (
-                  <motion.button
-                    key={idx}
-                    className="w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center transition-colors duration-300"
-                    whileHover={{ scale: 1.1, y: -5 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <social.icon className="w-5 h-5 text-white" />
-                  </motion.button>
-                ))}
-              </div>
-            </div>
+           
           </motion.div>
         </div>
       </div>
