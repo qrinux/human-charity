@@ -10,7 +10,7 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log("🌱 Seeding Human Care Global Hero data...");
+  console.log("🌱 Seeding Human Care Hero data...");
 // --- Seed Hero Content ---
 await prisma.heroContent.upsert({
   where: { id: "singleton" }, // Change from "hero-main" to "singleton"
@@ -162,14 +162,14 @@ const teamMembers = [
       "Certificate in Humanitarian Leadership - Harvard University"
     ],
     achievements: [
-      "Founded Human Care Global in 2010",
+      "Founded Human Care in 2010",
       "National NGO Excellence Award 2023",
       "Expanded operations to 12 districts across Bangladesh",
       "Served over 50,000 beneficiaries",
       "Published 15+ research papers on community health"
     ],
     experience: [
-      "2010-Present: Founder & Executive Director, Human Care Global",
+      "2010-Present: Founder & Executive Director, Human Care",
       "2007-2010: Program Manager, BRAC Health Program",
       "2005-2007: Field Coordinator, Doctors Without Borders",
       "2003-2005: Medical Officer, Government of Bangladesh"
@@ -197,8 +197,8 @@ const teamMembers = [
       "Developed standardized operational protocols"
     ],
     experience: [
-      "2018-Present: Director of Operations, Human Care Global",
-      "2013-2018: Senior Project Manager, Human Care Global",
+      "2018-Present: Director of Operations, Human Care",
+      "2013-2018: Senior Project Manager, Human Care",
       "2011-2013: Infrastructure Coordinator, Care Bangladesh",
       "2009-2011: Civil Engineer, Private Sector"
     ]

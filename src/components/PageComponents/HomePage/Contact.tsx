@@ -94,149 +94,144 @@ export function Contact() {
           >
             <div className="bg-white rounded-2xl shadow-2xl p-8 border-2 border-[#10B981]/10">
               <h3 className="text-2xl text-[#0F172A] mb-6">Send us a Message</h3>
-              
+
               <form onSubmit={handleSubmit} className="space-y-6">
-  <div className="relative">
-    <input
-      type="text"
-      name="name"
-      value={formData.name}
-      onChange={handleChange}
-      onFocus={() => setFocusedField('name')}
-      onBlur={() => setFocusedField(null)}
-      className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 peer text-black"
-      placeholder=" "
-      required
-    />
-    <label
-      className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${
-        focusedField === 'name' || formData.name
-          ? '-top-2 text-xs text-[#10B981]'
-          : 'top-4 text-gray-500'
-      }`}
-    >
-      Full Name
-    </label>
-  </div>
-  <div className="relative">
-    <input
-      type="email"
-      name="email"
-      value={formData.email}
-      onChange={handleChange}
-      onFocus={() => setFocusedField('email')}
-      onBlur={() => setFocusedField(null)}
-      className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 peer text-black"
-      placeholder=" "
-      required
-    />
-    <label
-      className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${
-        focusedField === 'email' || formData.email
-          ? '-top-2 text-xs text-[#10B981]'
-          : 'top-4 text-gray-500'
-      }`}
-    >
-      Email Address
-    </label>
-  </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField('name')}
+                    onBlur={() => setFocusedField(null)}
+                    className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 peer text-black"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${focusedField === 'name' || formData.name
+                      ? '-top-2 text-xs text-[#10B981]'
+                      : 'top-4 text-gray-500'
+                      }`}
+                  >
+                    Full Name
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField('email')}
+                    onBlur={() => setFocusedField(null)}
+                    className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 peer text-black"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${focusedField === 'email' || formData.email
+                      ? '-top-2 text-xs text-[#10B981]'
+                      : 'top-4 text-gray-500'
+                      }`}
+                  >
+                    Email Address
+                  </label>
+                </div>
 
-  {/** Phone */}
-  <div className="relative">
-    <input
-      type="tel"
-      name="phone"
-      value={formData.phone}
-      onChange={handleChange}
-      onFocus={() => setFocusedField('phone')}
-      onBlur={() => setFocusedField(null)}
-      className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 peer"
-      placeholder=" "
-    />
-    <label
-      className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${
-        focusedField === 'phone' || formData.phone
-          ? '-top-2 text-xs text-[#10B981]'
-          : 'top-4 text-gray-500'
-      }`}
-    >
-      Phone Number (Optional)
-    </label>
-  </div>
-  <div className="relative">
-    <select
-      name="subject"
-      value={formData.subject}
-      onChange={handleChange}
-      onFocus={() => setFocusedField('subject')}
-      onBlur={() => setFocusedField(null)}
-      className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 appearance-none bg-white text-black"
-      required
-    >
-      <option value=""></option>
-      <option value="donation">Make a Donation</option>
-      <option value="volunteer">Volunteer with Us</option>
-      <option value="partnership">Partnership Opportunity</option>
-      <option value="general">General Inquiry</option>
-    </select>
-    <label
-      className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${
-        focusedField === 'subject' || formData.subject
-          ? '-top-2 text-xs text-[#10B981]'
-          : 'top-4 text-gray-500'
-      }`}
-    >
-      Subject
-    </label>
-  </div>
-  <div className="relative">
-    <textarea
-      name="message"
-      value={formData.message}
-      onChange={handleChange}
-      onFocus={() => setFocusedField('message')}
-      onBlur={() => setFocusedField(null)}
-      rows={5}
-      className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 resize-none text-black"
-      placeholder=" "
-      required
-    />
-    <label
-      className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${
-        focusedField === 'message' || formData.message
-          ? '-top-2 text-xs text-[#10B981]'
-          : 'top-4 text-gray-500'
-      }`}
-    >
-      Your Message
-    </label>
-  </div>
+                {/** Phone */}
+                <div className="relative">
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField('phone')}
+                    onBlur={() => setFocusedField(null)}
+                    className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 peer"
+                    placeholder=" "
+                  />
+                  <label
+                    className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${focusedField === 'phone' || formData.phone
+                      ? '-top-2 text-xs text-[#10B981]'
+                      : 'top-4 text-gray-500'
+                      }`}
+                  >
+                    Phone Number (Optional)
+                  </label>
+                </div>
+                <div className="relative">
+                  <select
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField('subject')}
+                    onBlur={() => setFocusedField(null)}
+                    className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 appearance-none bg-white text-black"
+                    required
+                  >
+                    <option value=""></option>
+                    <option value="donation">Make a Donation</option>
+                    <option value="volunteer">Volunteer with Us</option>
+                    <option value="partnership">Partnership Opportunity</option>
+                    <option value="general">General Inquiry</option>
+                  </select>
+                  <label
+                    className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${focusedField === 'subject' || formData.subject
+                      ? '-top-2 text-xs text-[#10B981]'
+                      : 'top-4 text-gray-500'
+                      }`}
+                  >
+                    Subject
+                  </label>
+                </div>
+                <div className="relative">
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField('message')}
+                    onBlur={() => setFocusedField(null)}
+                    rows={5}
+                    className="w-full px-4 py-3 pt-6 border-2 border-gray-200 rounded-xl focus:border-[#10B981] focus:ring-1 focus:ring-[#10B981] focus:outline-none shadow-sm hover:shadow-md transition-all duration-300 resize-none text-black"
+                    placeholder=" "
+                    required
+                  />
+                  <label
+                    className={`absolute left-4 px-1 bg-white transition-all duration-300 pointer-events-none ${focusedField === 'message' || formData.message
+                      ? '-top-2 text-xs text-[#10B981]'
+                      : 'top-4 text-gray-500'
+                      }`}
+                  >
+                    Your Message
+                  </label>
+                </div>
 
-  {/** Submit Button */}
- <motion.button
-  type="submit"
-  disabled={loading}
-  className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-2xl transition-all duration-300 disabled:opacity-80 cursor-pointer"
-  whileHover={!loading ? { scale: 1.03 } : {}}
-  whileTap={!loading ? { scale: 0.97 } : {}}
->
-  {loading ? (
-    <>
-      <motion.span
-        className="w-5 h-5 border-2 border-white border-t-transparent  rounded-full"
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
-      />
-      Sending Message...
-    </>
-  ) : (
-    <>
-      Send Message
-      <Send className="w-5 h-5" />
-    </>
-  )}
-</motion.button>
-</form>
+                {/** Submit Button */}
+                <motion.button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-2xl transition-all duration-300 disabled:opacity-80 cursor-pointer"
+                  whileHover={!loading ? { scale: 1.03 } : {}}
+                  whileTap={!loading ? { scale: 0.97 } : {}}
+                >
+                  {loading ? (
+                    <>
+                      <motion.span
+                        className="w-5 h-5 border-2 border-white border-t-transparent  rounded-full"
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                      />
+                      Sending Message...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="w-5 h-5" />
+                    </>
+                  )}
+                </motion.button>
+              </form>
             </div>
           </motion.div>
 
@@ -259,8 +254,8 @@ export function Contact() {
                   <div>
                     <h4 className="text-lg text-[#0F172A] mb-2">Our Office</h4>
                     <p className="text-gray-600">
-                      49/A, Main Road, Block-B<br />
-                     
+                      49/A, Block-B,  Main Road,<br />
+
                       Shahjalal Uposhahar,Sylhet
                     </p>
                   </div>
@@ -278,7 +273,7 @@ export function Contact() {
                   <div>
                     <h4 className="text-lg text-[#0F172A] mb-2">Phone</h4>
                     <p className="text-gray-600">
-                       +8801716691978<br />
+                      +8801716691978<br />
                       <span className="text-sm text-gray-500">Mon-Sat, 9AM-6PM</span>
                     </p>
                   </div>
@@ -296,45 +291,44 @@ export function Contact() {
                   <div>
                     <h4 className="text-lg text-[#0F172A] mb-2">Email</h4>
                     <p className="text-gray-600">
-                      Info@humancareorg.com<br />
-                      donate@humancareorg.com
+                      info@humancareorg.com
                     </p>
                   </div>
                 </div>
               </motion.div>
             </div>
-           <div className="bg-white rounded-2xl overflow-hidden shadow-xl">
-  <div className="h-64 bg-gradient-to-br from-[#10B981]/20 to-[#059669]/20 flex items-center justify-center relative overflow-hidden">
-    
-    <div
-      className="absolute inset-0"
-      style={{
-        backgroundImage: 'radial-gradient(circle, #10B981 1px, transparent 1px)',
-        backgroundSize: '20px 20px',
-        opacity: 0.3
-      }}
-    />
+            <div className="bg-white rounded-2xl overflow-hidden shadow-xl">
+              <div className="h-64 bg-gradient-to-br from-[#10B981]/20 to-[#059669]/20 flex items-center justify-center relative overflow-hidden">
 
-   <div className="text-center z-10">
-  <MapPin className="w-16 h-16 text-[#10B981] mx-auto mb-3" />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage: 'radial-gradient(circle, #10B981 1px, transparent 1px)',
+                    backgroundSize: '20px 20px',
+                    opacity: 0.3
+                  }}
+                />
 
-  <p className="text-[#0F172A]">
-    Block-B,49/A,Shahjalal Upashahar, Sylhet
-  </p>
+                <div className="text-center z-10">
+                  <MapPin className="w-16 h-16 text-[#10B981] mx-auto mb-3" />
 
-  <a
-    href="https://www.google.com/maps/search/?api=1&query=Block-B+Boom+Box+Catering+49A+Main+Road+Shahjalal+Upashahar+Main+Rd+Sylhet+3100"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="mt-3 inline-block text-[#10B981] hover:text-[#059669] text-sm underline"
-  >
-    Open in Google Maps
-  </a>
-</div>
+                  <p className="text-[#0F172A]">
+                    Block-B,49/A,Shahjalal Upashahar, Sylhet
+                  </p>
 
-  </div>
-</div>
-           
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Block-B+Boom+Box+Catering+49A+Main+Road+Shahjalal+Upashahar+Main+Rd+Sylhet+3100"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-block text-[#10B981] hover:text-[#059669] text-sm underline"
+                  >
+                    Open in Google Maps
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
           </motion.div>
         </div>
       </div>

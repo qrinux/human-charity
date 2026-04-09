@@ -29,12 +29,11 @@ export function Projects() {
           </div>
 
           <h2 className="text-4xl lg:text-5xl text-[#0F172A] mb-4">
-            Creating Real Impact
+            Impact In Action
           </h2>
 
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Our ongoing initiatives are transforming communities across Bangladesh
-          </p>
+            Our recent initiatives are transforming communities across Bangladesh.</p>
         </div>
 
         {/* GRID */}

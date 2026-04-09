@@ -11,7 +11,7 @@ export function Footer() {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
- const socials = [
+  const socials = [
     {
       Icon: Facebook,
       link: "https://www.facebook.com/share/171jthvLEE/",
@@ -46,13 +46,13 @@ export function Footer() {
             >
               <div className=" flex items-center justify-center">
                 <span>
-                        <Image
-                        src={'/logo.png'}
-                        alt='logo'
-                        width={80}
-                        height={70}
-                        className='rounded-sm'
-                        />
+                  <Image
+                    src={'/logo.png'}
+                    alt='logo'
+                    width={80}
+                    height={70}
+                    className='rounded-sm'
+                  />
                 </span>
               </div>
               <div>
@@ -102,7 +102,7 @@ export function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3 text-white/70 hover:text-white transition-colors duration-300">
                 <MapPin className="w-5 h-5 text-[#10B981] flex-shrink-0 mt-0.5" />
-                <span>Block-B,49/A<br />Shahjalal Upashahar, Sylhet</span>
+                <span>49/A, Block-B, Main Road,<br />Shahjalal Uposhahar,Sylhet</span>
               </li>
               <li className="flex items-start gap-3 text-white/70 hover:text-white transition-colors duration-300">
                 <Phone className="w-5 h-5 text-[#10B981] flex-shrink-0 mt-0.5" />
@@ -110,32 +110,32 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-3 text-white/70 hover:text-white transition-colors duration-300">
                 <Mail className="w-5 h-5 text-[#10B981] flex-shrink-0 mt-0.5" />
-                <span>Info@humancareorg.com</span>
+                <span>info@humancareorg.com</span>
               </li>
             </ul>
           </div>
-                <div>
-      <h4 className="text-lg mb-6 flex items-center gap-2">
-        <div className="w-1 h-6 bg-[#10B981] rounded-full"></div>
-        Follow Us
-      </h4>
+          <div>
+            <h4 className="text-lg mb-6 flex items-center gap-2">
+              <div className="w-1 h-6 bg-[#10B981] rounded-full"></div>
+              Follow Us
+            </h4>
 
-      <div className="flex gap-3">
-        {socials.map(({ Icon, link }, idx) => (
-          <motion.button
-            key={idx}
-            onClick={() => handleClick(link)}
-            className="w-10 h-10  bg-white/10 hover:bg-[#10B981] rounded-lg flex items-center justify-center transition-colors duration-300 cursor-pointer"
-            whileHover={{ scale: 1.1, y: -3 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Icon className="w-5 h-5" />
-          </motion.button>
-        ))}
-      </div>
-    </div>
+            <div className="flex gap-3">
+              {socials.map(({ Icon, link }, idx) => (
+                <motion.button
+                  key={idx}
+                  onClick={() => handleClick(link)}
+                  className="w-10 h-10  bg-white/10 hover:bg-[#10B981] rounded-lg flex items-center justify-center transition-colors duration-300 cursor-pointer"
+                  whileHover={{ scale: 1.1, y: -3 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Icon className="w-5 h-5" />
+                </motion.button>
+              ))}
+            </div>
+          </div>
         </div>
-        <motion.div
+        {/* <motion.div
           className="bg-gradient-to-r from-[#10B981] to-[#059669] rounded-2xl p-8 mb-12 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -146,14 +146,14 @@ export function Footer() {
           <p className="text-white/90 mb-6 max-w-2xl mx-auto">
             Your contribution directly supports our programs and changes lives. Every donation counts.
           </p>
-        </motion.div>
+        </motion.div> */}
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/60">
             <div className="flex items-center gap-2">
-              <span>© 2026 Human Care Global.</span>
+              <span>© 2026 Human Care.</span>
               <span className="hidden md:inline">All rights reserved.</span>
             </div>
-            
+
             <div className="flex gap-6">
               <button className="hover:text-[#10B981] transition-colors duration-300">
                 Privacy Policy

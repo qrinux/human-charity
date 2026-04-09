@@ -5,16 +5,16 @@ import Link from 'next/link';
 import { ImagePosition } from '@/components/Hooks/ImagePosition';
 import { useTeam } from '@/components/Hooks/useTeam';
 export function AllTeam() {
-  const {team,loading}=useTeam()
+  const { team, loading } = useTeam()
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-96 gap-4">
-              <Loader2 className="animate-spin text-emerald-500" size={40} />
-            </div>
+        <Loader2 className="animate-spin text-emerald-500" size={40} />
+      </div>
     );
   }
   return (
-    <div className="min-h-screen bg-white"> 
+    <div className="min-h-screen bg-white">
       <div className="pt-32 pb-24">
         <div className="container mx-auto px-6">
           <Link href="/">
@@ -63,18 +63,18 @@ export function AllTeam() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
+
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {member.email && (
-  <motion.a
-    href={`mailto:${member.email}`}
-    className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-[#0F172A] hover:bg-[#10B981] hover:text-white transition-colors duration-300"
-    whileHover={{ scale: 1.1 }}
-    whileTap={{ scale: 0.9 }}
-  >
-    <Mail className="w-5 h-5" />
-  </motion.a>
-)}                   
+                      <motion.a
+                        href={`mailto:${member.email}`}
+                        className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-[#0F172A] hover:bg-[#10B981] hover:text-white transition-colors duration-300"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <Mail className="w-5 h-5" />
+                      </motion.a>
+                    )}
                   </div>
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
@@ -82,32 +82,32 @@ export function AllTeam() {
                     {member.name}
                   </h3>
                   <p className="text-[#10B981] text-sm mb-3">{member.role}</p>
-                  
+
                   <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
                     {member.bio}
                   </p>
-  
+
                   <div className="flex flex-col gap-2 mb-4">
-                   {member.expertise.split(', ').slice(0, 2).map((skill: string, idx: number) => (
-  <span
-    key={idx}
-    className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs"
-  >
-    {skill}
-  </span>
-))}
+                    {member.expertise.split(', ').slice(0, 2).map((skill: string, idx: number) => (
+                      <span
+                        key={idx}
+                        className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs"
+                      >
+                        {skill}
+                      </span>
+                    ))}
                   </div>
                   <div className="mt-auto">
-                  <Link href={`/team/${member.slug}`}>
-                   <motion.button 
-                    className="w-full text-center py-2 text-[#10B981] hover:text-white bg-transparent hover:bg-[#10B981] border border-[#10B981] rounded-lg transition-all duration-300 text-sm cursor-pointer"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}>
-                    Read Full Bio
-                    <span>→</span>
-                    </motion.button>
-                   </Link>
-                   </div>
+                    <Link href={`/team/${member.slug}`}>
+                      <motion.button
+                        className="w-full text-center py-2 text-[#10B981] hover:text-white bg-transparent hover:bg-[#10B981] border border-[#10B981] rounded-lg transition-all duration-300 text-sm cursor-pointer"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}>
+                        Read Full Bio
+                        <span>→</span>
+                      </motion.button>
+                    </Link>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -122,19 +122,19 @@ export function AllTeam() {
             <UsersIcon className="w-12 h-12 mx-auto mb-4 text-[#10B981]" />
             <h3 className="text-3xl mb-4">Join Our Team</h3>
             <p className="text-white/70 mb-8 max-w-xl mx-auto text-lg">
-              We're always looking for passionate individuals who want to make a difference. 
-              Explore career opportunities and volunteer positions with Human Care Global.
+              We're always looking for passionate individuals who want to make a difference.
+              Explore career opportunities and volunteer positions with Human Care.
             </p>
             <div className="flex justify-center">
               <Link href="/#contact">
-              <motion.button
-                className="bg-[#F59E0B] hover:bg-[#D97706] px-8 py-4 rounded-full font-semibold transition-colors duration-300 cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Become a Volunteer
-              </motion.button>
-              </Link>           
+                <motion.button
+                  className="bg-[#F59E0B] hover:bg-[#D97706] px-8 py-4 rounded-full font-semibold transition-colors duration-300 cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Become a Volunteer
+                </motion.button>
+              </Link>
             </div>
           </motion.div>
         </div>
