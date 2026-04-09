@@ -50,18 +50,17 @@ export function NavBar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
   isScrolled || !isHomePage
-    ? "bg-[#0F172A]/80 backdrop-blur-xl shadow-lg"
+    ? "bg-gradient-to-r from-[#0F172A] via-[#064E3B] to-[#1E293B] animate-gradient-x shadow-lg"
     : "bg-transparent"
  }`}
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="cursor-pointer">
-            <div className="flex items-center gap-3">
-              <Image src={'/logo.png'} alt='logo' width={60} height={50} className='rounded-sm' />
+            <div className="flex items-center gap-1">
+              <Image src={'/logo.png'} alt='logo' width={80} height={70} className='rounded-sm' />
               <div>
-                <h1 className="text-white text-xl font-bold leading-tight">Human Care</h1>
-                <p className="text-[#10B981] text-xs font-medium">Building Better Tomorrow</p>
+                <h1 className="text-white text-2xl font-bold leading-tight">Human Care</h1>
               </div>
             </div>
           </Link>

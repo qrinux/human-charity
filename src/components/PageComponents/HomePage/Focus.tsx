@@ -10,6 +10,12 @@ const pillars = [
     color: '#10B981',
   },
   {
+    icon: Users,
+    title: "Women's Empowerment",
+    description: 'Human Care dismantles the structural barriers that hold women back. We provide vocational training, education access, and safe spaces addressing gender-based violence, mental health, and menstrual wellbeing — creating economically independent women who lead families, businesses, and communities with dignity.',
+    color: '#10B981',
+  },
+  {
     icon: GraduationCap,
     title: 'Education & Digital Access',
     description: 'Education unlocks everything else. We support schools, train teachers, and deliver digital tools to children in marginalised communities. By combining literacy programmes with technology access, we prepare children for a world that demands both critical thinking and digital fluency.',
@@ -21,12 +27,7 @@ const pillars = [
     description: 'Good health is the foundation of everything we build. From awareness campaigns to on-ground medical support, Human Care ensures no one is left behind due to geography, income, or lack of information. A community that is healthy is a community that can truly thrive.',
     color: '#10B981',
   },
-  {
-    icon: Users,
-    title: "Women's Empowerment",
-    description: 'Human Care dismantles the structural barriers that hold women back. We provide vocational training, education access, and safe spaces addressing gender-based violence, mental health, and menstrual wellbeing — creating economically independent women who lead families, businesses, and communities with dignity.',
-    color: '#10B981',
-  },
+  
   {
     icon: Globe,
     title: "Climate Action",
@@ -64,7 +65,7 @@ export function Focus() {
             Our Focus Areas
           </motion.div>
           <h2 className="text-4xl lg:text-5xl text-[#0F172A] mb-4">
-            Four Pillars of Change
+            Six Pillars of Change
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Transforming lives through comprehensive programs designed to address the most critical needs of our communities

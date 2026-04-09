@@ -36,7 +36,7 @@ export function Team() {
             Our Team
           </motion.div>
           <h2 className="text-4xl lg:text-5xl text-[#0F172A] mb-4">
-            Meet with our contruting member
+            Meet with our contributing member
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Dedicated professionals united by a common goal: creating positive change in Bangladesh

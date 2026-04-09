@@ -34,8 +34,6 @@ export default function AdminGalleryPage() {
   const [editingAlbum, setEditingAlbum] = useState<Album | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /* ---------------- GROUPING LOGIC ---------------- */
-  // We group by title + category to treat them as a single "Album" entity
   const groupedAlbums: Album[] = Object.values(
     items.reduce((acc: Record<string, Album>, item: any) => {
       const key = `${item.category}-${item.title}`;
@@ -62,17 +60,14 @@ export default function AdminGalleryPage() {
     },
     {}
   );
-
-  /* ---------------- HANDLERS ---------------- */
   const handleEdit = (album: Album) => {
-    // Constructing a shape the form expects: id of the first item + all images
     const albumData = {
       id: album.items[0]?.id, 
       title: album.title,
       category: album.category,
       description: album.description,
       date: album.date,
-      images: album.items, // Pass the full array of images here!
+      images: album.items, 
     };
     setEditingAlbum(albumData as any);
     setShowForm(true);
@@ -142,7 +137,7 @@ export default function AdminGalleryPage() {
         </div>
           <button
             onClick={() => { setEditingAlbum(null); setShowForm(true); }}
-            className="group flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-900/20 active:scale-95"
+            className="group flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-900/20 active:scale-95 cursor-pointer"
           >
             <Plus size={20} className="group-hover:rotate-90 transition-transform" /> 
             Create New Album
@@ -157,13 +152,20 @@ export default function AdminGalleryPage() {
             initial={{ opacity: 0, scale: 0.98 }} 
             animate={{ opacity: 1, scale: 1 }} 
             exit={{ opacity: 0, scale: 0.98 }}
-          >
+          > 
             <GalleryForm
-              initialData={editingAlbum}
-              isSubmitting={isSubmitting}
-              onClose={() => { setShowForm(false); setEditingAlbum(null); }}
-              onSubmit={handleFormSubmit}
-            />
+  initialData={
+    editingAlbum
+      ? { ...editingAlbum, allItems: items }
+      : { allItems: items }
+  }
+  isSubmitting={isSubmitting}
+  onClose={() => {
+    setShowForm(false);
+    setEditingAlbum(null);
+  }}
+  onSubmit={handleFormSubmit}
+/>
           </motion.div>
         ) : (
           <motion.div key="albums" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">

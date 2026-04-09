@@ -11,7 +11,6 @@ import {
   Tag,
   Calendar,
   AlignLeft,
-  ChevronDown,
 } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -30,8 +29,6 @@ interface GalleryFormProps {
   isSubmitting: boolean;
 }
 
-const CATEGORIES = ["education", "healthcare", "water", "emergency", "community"];
-
 export default function GalleryForm({
   initialData,
   onSubmit,
@@ -46,7 +43,7 @@ export default function GalleryForm({
     defaultValues: {
       id: initialData?.id?.toString() || "",
       title: initialData?.title || "",
-      category: initialData?.category || "education",
+      category: initialData?.category || "",
       description: initialData?.description || "",
       date: initialData?.date
         ? new Date(initialData.date).toISOString().split("T")[0]
@@ -56,10 +53,24 @@ export default function GalleryForm({
 
   const [existingImages, setExistingImages] = useState<any[]>([]);
   const [newFiles, setNewFiles] = useState<File[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     if (initialData?.images) {
       setExistingImages(initialData.images);
+    }
+  }, [initialData]);
+
+  useEffect(() => {
+    if (initialData?.allItems) {
+      const unique: string[] = [
+  ...new Set(
+    (initialData.allItems as any[])
+      .map((item) => item.category as string)
+      .filter((cat): cat is string => Boolean(cat))
+  ),
+];
+      setCategories(unique);
     }
   }, [initialData]);
 
@@ -136,7 +147,7 @@ export default function GalleryForm({
 
             <input
               {...register("title", { required: "Title is required" })}
-              placeholder="e.g. Food Distribution Sylhet"
+              placeholder="Food Distribution Sylhet"
               className={`w-full bg-[#0f172a] border ${
                 errors.title ? "border-rose-500" : "border-slate-700"
               } rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/50`}
@@ -149,28 +160,32 @@ export default function GalleryForm({
             )}
           </div>
 
+          {/* ✅ UPDATED CATEGORY FIELD */}
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase text-slate-500 flex items-center gap-2">
               <Tag size={14} className="text-emerald-500" /> Album Category
             </label>
 
-            <div className="relative">
-              <select
-                {...register("category")}
-                className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 pr-10 text-white outline-none appearance-none cursor-pointer capitalize"
-              >
-                {CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
+            <input
+              list="category-options"
+              {...register("category", { required: "Category is required" })}
+              placeholder="Type or select category"
+              className={`w-full bg-[#0f172a] border ${
+                errors.category ? "border-rose-500" : "border-slate-700"
+              } rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/50`}
+            />
 
-              <ChevronDown
-                size={18}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
-              />
-            </div>
+            <datalist id="category-options">
+              {categories.map((cat, i) => (
+                <option key={i} value={cat} />
+              ))}
+            </datalist>
+
+            {errors.category && (
+              <p className="text-rose-500 text-[10px] font-bold">
+                {errors.category.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -179,10 +194,10 @@ export default function GalleryForm({
             </label>
 
             <input
-              type="date"
-              {...register("date", { required: true })}
-              className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/50"
-            />
+  type="date"
+  {...register("date", { required: true })}
+  className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-white outline-none focus:ring-2  focus:ring-emerald-500/50 [color-scheme:dark] cursor-pointer"
+/>
           </div>
         </div>
 

@@ -41,7 +41,7 @@ export function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           <div>
             <motion.div
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center  mb-6"
               whileHover={{ scale: 1.05 }}
             >
               <div className=" flex items-center justify-center">
@@ -49,15 +49,14 @@ export function Footer() {
                         <Image
                         src={'/logo.png'}
                         alt='logo'
-                        width={60}
-                        height={50}
+                        width={80}
+                        height={70}
                         className='rounded-sm'
                         />
                 </span>
               </div>
               <div>
-                <h3 className="text-white text-lg font-bold leading-tight">Human Care Global</h3>
-                <p className="text-[#10B981] text-xs">Building Better Tomorrow</p>
+                <h3 className="text-white text-xl font-bold leading-tight">Human Care</h3>
               </div>
             </motion.div>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
@@ -154,10 +153,7 @@ export function Footer() {
               <span>© 2026 Human Care Global.</span>
               <span className="hidden md:inline">All rights reserved.</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span>🇧🇩</span>
-              <span>Registered NGO in Bangladesh</span>
-            </div>
+            
             <div className="flex gap-6">
               <button className="hover:text-[#10B981] transition-colors duration-300">
                 Privacy Policy

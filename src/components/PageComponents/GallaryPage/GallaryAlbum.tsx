@@ -16,15 +16,19 @@ export default function GalleryPage() {
   const { items, loading } = useGallery();
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  const galleryCategories = [
-    { id: "all", name: "All Projects" },
-    { id: "education", name: "Education" },
-    { id: "healthcare", name: "Healthcare" },
-    { id: "water", name: "Clean Water" },
-    { id: "emergency", name: "Emergency Relief" },
-    { id: "community", name: "Community" },
-  ];
+  const galleryCategories = useMemo(() => {
+  const unique = Array.from(
+    new Set(items.map((item: any) => item.category).filter(Boolean))
+  );
 
+  return [
+    { id: "all", name: "All Projects" },
+    ...unique.map((cat) => ({
+      id: cat,
+      name: cat.charAt(0).toUpperCase() + cat.slice(1),
+    })),
+  ];
+}, [items]);
   const groupedAlbums = useMemo(() => {
     const groups = items.reduce((acc: Record<string, Album>, img: any) => {
       const key = `${img.category}-${img.title}`;
