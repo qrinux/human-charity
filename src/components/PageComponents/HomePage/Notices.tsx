@@ -33,7 +33,7 @@ export function Notices() {
           <h2 className="text-4xl lg:text-5xl text-[#0F172A] mb-4">News & Notices</h2>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {loading ? (
             <div className="text-center py-10 text-gray-500">Loading updates...</div>
           ) : latestNotices.length === 0 ? (
@@ -53,10 +53,10 @@ export function Notices() {
                   <div className="absolute left-[11px] top-8 bottom-0 w-0.5 bg-gradient-to-b from-[#10B981] to-gray-200"></div>
                 )}
                 
-                <div className={`absolute left-0 top-2 w-6 h-6 rounded-full border-4 shadow-lg z-10 ${
+                {/* <div className={`absolute left-0 top-2 w-6 h-6 rounded-full border-4 shadow-lg z-10 ${
                   update.type === 'urgent' ? 'bg-[#F59E0B] border-[#F59E0B]/20' : 
                   update.type === 'success' ? 'bg-[#10B981] border-[#10B981]/20' : 'bg-[#0F172A] border-[#0F172A]/20'
-                }`}></div>
+                }`}></div> */}
 
                 <motion.div 
                   className={`bg-white rounded-xl p-6 shadow-lg border-l-4 ml-4 group hover:-translate-y-1 transition-all ${
