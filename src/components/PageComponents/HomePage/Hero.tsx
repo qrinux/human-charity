@@ -18,7 +18,7 @@ export function Hero() {
 
   if (loading || !hero) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#0F172A]">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <Loader2 className="animate-spin text-emerald-500" size={50} />
       </div>
     );
