@@ -10,7 +10,7 @@ export function Team() {
   const {team,loading}=useTeam()
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-white">
         <Loader2 className="animate-spin text-emerald-500" size={50} />
       </div>
     );
@@ -44,8 +44,8 @@ export function Team() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-5 gap-8 mb-16">
-          {team.filter((m) => m.memberType === "member").slice(0,4).map((member, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-4  lg:grid-cols-6 gap-5 mb-16">
+          {team.filter((m) => m.memberType === "member").slice(0,6).map((member, index) => (
               <UseTeamCard key={member.name} member={member} index={index} />
           ))}
         </div>
