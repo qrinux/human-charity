@@ -60,14 +60,15 @@ export default function AdminGalleryPage() {
     },
     {}
   );
+
   const handleEdit = (album: Album) => {
     const albumData = {
-      id: album.items[0]?.id, 
+      id: album.items[0]?.id,
       title: album.title,
       category: album.category,
       description: album.description,
       date: album.date,
-      images: album.items, 
+      images: album.items,
     };
     setEditingAlbum(albumData as any);
     setShowForm(true);
@@ -83,7 +84,7 @@ export default function AdminGalleryPage() {
       cancelButtonColor: "#334155",
       confirmButtonText: "Yes, delete everything",
       background: "#1e293b",
-      color: "#fff"
+      color: "#fff",
     });
 
     if (!result.isConfirmed) return;
@@ -127,128 +128,148 @@ export default function AdminGalleryPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-10">
-      <div className="flex flex-col sm:flex-row justify-between items-end border-b border-slate-800 pb-6">
+
+      <div className="flex flex-col sm:flex-row justify-between items-end border-b border-slate-300 pb-6">
         <div>
-          <h1 className="md:text-4xl text-2xl font-extrabold text-white tracking-tight flex items-center gap-3">
-            <LayoutGrid className="text-emerald-500" />
+          <h1 className="md:text-4xl text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+            <LayoutGrid className="text-emerald-600" />
             Gallery Manager
           </h1>
-          <p className="text-slate-400 mt-2">Organize, edit, and manage your visual stories.</p>
+          <p className="text-slate-600 mt-2">
+            Organize, edit, and manage your visual stories.
+          </p>
         </div>
-          <button
-            onClick={() => { setEditingAlbum(null); setShowForm(true); }}
-            className="group flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-900/20 active:scale-95 cursor-pointer"
-          >
-            <Plus size={20} className="group-hover:rotate-90 transition-transform" /> 
-            Create New Album
-          </button>
-      
+
+        <button
+          onClick={() => {
+            setEditingAlbum(null);
+            setShowForm(true);
+          }}
+          className="group flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg active:scale-95 cursor-pointer"
+        >
+          <Plus size={20} className="group-hover:rotate-90 transition-transform" />
+          Create New Album
+        </button>
       </div>
 
       <AnimatePresence mode="wait">
         {showForm ? (
-          <motion.div 
-            key="form" 
-            initial={{ opacity: 0, scale: 0.98 }} 
-            animate={{ opacity: 1, scale: 1 }} 
+          <motion.div
+            key="form"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
-          > 
+          >
             <GalleryForm
-  initialData={
-    editingAlbum
-      ? { ...editingAlbum, allItems: items }
-      : { allItems: items }
-  }
-  isSubmitting={isSubmitting}
-  onClose={() => {
-    setShowForm(false);
-    setEditingAlbum(null);
-  }}
-  onSubmit={handleFormSubmit}
-/>
+              initialData={
+                editingAlbum
+                  ? { ...editingAlbum, allItems: items }
+                  : { allItems: items }
+              }
+              isSubmitting={isSubmitting}
+              onClose={() => {
+                setShowForm(false);
+                setEditingAlbum(null);
+              }}
+              onSubmit={handleFormSubmit}
+            />
           </motion.div>
         ) : (
           <motion.div key="albums" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
+
             {Object.entries(categoryGroups).map(([category, albums]) => (
               <section key={category} className="space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="h-px flex-1 bg-slate-800"></div>
-                  <h2 className="flex items-center gap-2 text-slate-400 font-bold text-sm uppercase tracking-widest bg-slate-900 px-4 py-1 rounded-full border border-slate-800">
-                    <Tag className="text-emerald-500" size={14} />
+
+                <div className="flex items-center justify-center gap-3">
+            
+                  <h2 className="flex items-center  gap-2 text-slate-600 font-bold text-sm uppercase tracking-widest bg-white px-4 py-1 rounded-full border border-slate-200">
+                    <Tag className="text-emerald-600" size={14} />
                     {category}
                   </h2>
-                  <div className="h-px flex-1 bg-slate-800"></div>
+                
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
                   {albums.map((album, index) => (
-                    <div key={index} className="group relative bg-[#1e293b] border border-slate-800 rounded-3xl overflow-hidden hover:border-emerald-500/50 transition-all duration-300 shadow-xl">
-                    
+                    <div
+                      key={index}
+                      className="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden hover:border-emerald-400 transition-all duration-300 shadow-md"
+                    >
+
                       <div className="relative h-48 overflow-hidden">
-                        <img 
-                          src={album.cover} 
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                          alt={album.title} 
+                        <img
+                          src={album.cover}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          alt={album.title}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent opacity-60" />
-                        
-                    
-                        <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-2">
+
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent opacity-60" />
+
+                        <div className="absolute bottom-3 left-3 bg-black/60 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-2">
                           <Images size={14} className="text-emerald-400" />
                           {album.items.length} Photos
                         </div>
 
-                
                         <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+
                           <button
                             onClick={() => handleEdit(album)}
-                            className="p-2.5 bg-white/10 hover:bg-emerald-500 backdrop-blur-md text-white rounded-xl transition-colors"
-                            title="Edit Album"
+                            className="p-2.5 bg-black/40 hover:bg-emerald-500 text-white rounded-xl cursor-pointer"
                           >
                             <Pencil size={16} />
                           </button>
+
                           <button
                             onClick={() => handleDeleteAlbum(album)}
-                            className="p-2.5 bg-white/10 hover:bg-rose-500 backdrop-blur-md text-white rounded-xl transition-colors"
-                            title="Delete Album"
+                            className="p-2.5 bg-black/40 hover:bg-rose-500 text-white rounded-xl cursor-pointer"
                           >
                             <Trash2 size={16} />
                           </button>
+
                         </div>
                       </div>
 
-            
                       <div className="p-5">
-                        <h3 className="text-white font-bold truncate text-lg mb-1">{album.title}</h3>
-                        <p className="text-slate-500 text-xs line-clamp-1">{album.description || "No description provided."}</p>
-                        
-                        <Link 
+                        <h3 className="text-slate-900 font-bold truncate text-lg mb-1">
+                          {album.title}
+                        </h3>
+
+                        <p className="text-slate-600 text-xs line-clamp-1">
+                          {album.description || "No description provided."}
+                        </p>
+
+                        <Link
                           href={`/admin/dashboard/gallery/${album.category}/${encodeURIComponent(album.title)}`}
-                          className="mt-4 flex items-center justify-center w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold rounded-xl transition-colors"
+                          className="mt-4 flex items-center justify-center w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition-colors cursor-pointer"
                         >
                           View Gallery Items
                         </Link>
                       </div>
+
                     </div>
                   ))}
+
                 </div>
               </section>
             ))}
 
             {groupedAlbums.length === 0 && (
-              <div className="py-32 flex flex-col items-center justify-center border-2 border-dashed border-slate-800 rounded-3xl">
-                <div className="bg-slate-800/50 p-6 rounded-full mb-4">
-                  <ImageIcon className="text-slate-600" size={48} />
+              <div className="py-32 flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-3xl">
+                <div className="bg-slate-100 p-6 rounded-full mb-4">
+                  <ImageIcon className="text-slate-500" size={48} />
                 </div>
-                <h3 className="text-white font-bold text-xl">No albums found</h3>
+                <h3 className="text-slate-900 font-bold text-xl">No albums found</h3>
                 <p className="text-slate-500 max-w-xs text-center mt-2">
-                  Start by creating your first gallery album to showcase your work.
+                  Start by creating your first gallery album.
                 </p>
               </div>
             )}
+
           </motion.div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }

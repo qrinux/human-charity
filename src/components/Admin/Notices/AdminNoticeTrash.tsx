@@ -1,16 +1,32 @@
- "use client";
+"use client";
+
 import { useState } from "react";
-import { Trash2, Loader2, Megaphone, RotateCcw, Calendar, AlertCircle, ArrowLeft, ShieldAlert } from "lucide-react";
+import {
+  Trash2,
+  Loader2,
+  Megaphone,
+  RotateCcw,
+  Calendar,
+  ArrowLeft,
+  ShieldAlert,
+} from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
-
-import { useNotices } from "@/components/Hooks/useNotices";
-import { restoreNotice, deleteNoticePermanent } from "@/app/ServerActions/notice";
 import Link from "next/link";
 
+import { useNotices } from "@/components/Hooks/useNotices";
+import {
+  restoreNotice,
+  deleteNoticePermanent,
+} from "@/app/ServerActions/notice";
+
 export default function AdminNoticeTrash() {
-  const { notices: trashedNotices, loading, refresh } = useNotices(undefined, true);
+  const { notices: trashedNotices, loading, refresh } = useNotices(
+    undefined,
+    true
+  );
+
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [deletingAll, setDeletingAll] = useState(false);
 
@@ -19,12 +35,10 @@ export default function AdminNoticeTrash() {
     try {
       const res = await restoreNotice(id);
       if (res.success) {
-        toast.success("Notice restored successfully");
+        toast.success("Notice restored");
         refresh();
-      } else {
-        toast.error("Restore failed");
-      }
-    } catch (err) {
+      } else toast.error("Restore failed");
+    } catch {
       toast.error("Error restoring notice");
     } finally {
       setProcessingId(null);
@@ -33,15 +47,12 @@ export default function AdminNoticeTrash() {
 
   const handlePermanentDelete = async (id: string) => {
     const result = await Swal.fire({
-      title: "Permanent Delete?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
+      title: "Delete permanently?",
+      text: "This action cannot be undone.",
       showCancelButton: true,
       confirmButtonColor: "#e11d48",
       cancelButtonColor: "#64748b",
-      confirmButtonText: "Yes, delete it",
-      background: "#1e293b",
-      color: "#fff",
+      confirmButtonText: "Delete",
     });
 
     if (!result.isConfirmed) return;
@@ -50,12 +61,10 @@ export default function AdminNoticeTrash() {
     try {
       const res = await deleteNoticePermanent(id);
       if (res.success) {
-        toast.success("Notice deleted forever");
+        toast.success("Notice deleted");
         refresh();
-      } else {
-        toast.error("Delete failed");
-      }
-    } catch (err) {
+      } else toast.error("Delete failed");
+    } catch {
       toast.error("Error deleting notice");
     } finally {
       setProcessingId(null);
@@ -66,124 +75,135 @@ export default function AdminNoticeTrash() {
     if (!trashedNotices.length) return toast("Trash is empty");
 
     const result = await Swal.fire({
-      title: "Purge All Notices?",
-      text: `Permanently delete all ${trashedNotices.length} notices?`,
-      icon: "error",
+      title: "Delete all notices?",
+      text: `Permanently delete ${trashedNotices.length} notices`,
       showCancelButton: true,
       confirmButtonColor: "#e11d48",
-      confirmButtonText: "Yes, Delete All",
-      background: "#1e293b",
-      color: "#fff",
+      confirmButtonText: "Delete all",
     });
 
     if (!result.isConfirmed) return;
 
     try {
       setDeletingAll(true);
-      // Concurrent deletion for speed
-      await Promise.all(trashedNotices.map((n) => deleteNoticePermanent(n.id)));
-      toast.success("All notices purged");
+      await Promise.all(
+        trashedNotices.map((n) => deleteNoticePermanent(n.id))
+      );
+      toast.success("Trash cleared");
       refresh();
-    } catch (error) {
+    } catch {
       toast.error("Failed to clear trash");
     } finally {
       setDeletingAll(false);
     }
   };
 
-  if (loading) return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-      <Loader2 className="animate-spin text-emerald-500" size={40} />
-      
-    </div>
-  );
-
-  if (!trashedNotices.length) return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 px-4 text-center">
-      <div className="bg-slate-800/50 p-6 rounded-full">
-        <Megaphone className="text-slate-600" size={48} />
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="animate-spin text-emerald-500" size={40} />
       </div>
-      <p className="text-slate-400 font-medium">No trashed notices found.</p>
-    </div>
-  );
+    );
+
+  if (!trashedNotices.length)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+        <Megaphone className="text-slate-300 mb-3" size={40} />
+        <p className="text-slate-500">No trashed notices</p>
+      </div>
+    );
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto px-4 py-6 md:py-10">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#1e293b] p-5 md:p-6 rounded-2xl border border-slate-800 gap-4 shadow-lg">
+    <div className="space-y-6 max-w-7xl mx-auto px-4 py-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-6 rounded-2xl border border-slate-200 shadow-sm gap-4">
         <div className="flex items-center gap-3">
-  <Link
-    href="/admin/dashboard/notices" 
-    className="group p-3 bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white rounded-2xl transition-all"
-  >
-    <ArrowLeft
-      size={20} 
-      className="group-hover:-translate-x-1 transition-transform" 
-    />
-  </Link>
+          <Link
+            href="/admin/dashboard/notices"
+            className="p-3 bg-slate-100 hover:bg-emerald-500 hover:text-white rounded-xl transition cursor-pointer"
+          >
+            <ArrowLeft size={18} />
+          </Link>
 
-  <div>
-    <h1 className="text-xl md:text-2xl font-bold text-red-500">Notice Trash </h1>
-  <p className="text-xs text-slate-400"> {trashedNotices.length} notice found </p>
-  </div>
-</div>
-<button
+          <div>
+            <h1 className="text-xl font-bold text-rose-500">
+              Notice Trash
+            </h1>
+            <p className="text-sm text-slate-500">
+              {trashedNotices.length} items
+            </p>
+          </div>
+        </div>
+
+        <button
           onClick={handleDeleteAll}
           disabled={deletingAll}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-500 text-white px-5 py-2.5 rounded-xl transition-all disabled:opacity-50 font-medium text-sm"
+          className="flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white px-5 py-2.5 rounded-xl transition cursor-pointer disabled:opacity-50"
         >
           {deletingAll ? (
-            <Loader2 className="animate-spin" size={18} />
+            <Loader2 className="animate-spin" size={16} />
           ) : (
-            <ShieldAlert size={18} />
+            <ShieldAlert size={16} />
           )}
-          {deletingAll ? "Purging..." : "Empty Trash"}
+          {deletingAll ? "Deleting..." : "Empty Trash"}
         </button>
       </div>
-      <AnimatePresence mode="wait">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-          
-          {/* DESKTOP TABLE VIEW */}
-          <div className="hidden md:block overflow-hidden bg-[#1e293b] rounded-2xl border border-slate-800 shadow-xl">
+
+      <AnimatePresence>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          {/* Desktop */}
+          <div className="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <table className="w-full text-left">
-              <thead className="bg-slate-800/50 text-slate-400 text-xs uppercase tracking-wider">
+              <thead className="bg-slate-100 text-slate-500 text-xs uppercase">
                 <tr>
-                  <th className="px-8 py-5">Notice Info</th>
-                  <th className="px-8 py-5">Date</th>
-                  <th className="px-8 py-5 text-right">Actions</th>
+                  <th className="px-8 py-4">Notice</th>
+                  <th className="px-8 py-4">Date</th>
+                  <th className="px-8 py-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
-                {trashedNotices.map(notice => (
-                  <tr key={notice.id} className="group hover:bg-slate-800/30 transition-all">
-                    <td className="px-8 py-5 flex items-center gap-4">
+
+              <tbody className="divide-y divide-slate-200">
+                {trashedNotices.map((notice) => (
+                  <tr key={notice.id} className="hover:bg-slate-50">
+                    <td className="px-8 py-4 flex items-center gap-4">
                       {notice.image && (
-                        <img src={notice.image} className="w-12 h-12 rounded-lg object-cover border border-slate-700 shrink-0" alt="" />
+                        <img
+                          src={notice.image}
+                          className="w-12 h-12 rounded-lg object-cover"
+                        />
                       )}
-                      <div className="flex flex-col min-w-0">
-                        <span className="font-bold text-slate-200 truncate max-w-md">{notice.slug}</span>
-                        <span className="text-[10px] font-semibold uppercase text-slate-500 tracking-wider">{notice.type}</span>
+                      <div>
+                        <p className="font-semibold text-slate-800">
+                          {notice.slug}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          {notice.type}
+                        </p>
                       </div>
                     </td>
-                    <td className="px-8 py-5 text-slate-400 text-sm">
-                      {new Date(notice.date).toLocaleDateString(undefined, { dateStyle: 'medium' })}
+
+                    <td className="px-8 py-4 text-slate-500 text-sm">
+                      {new Date(notice.date).toLocaleDateString()}
                     </td>
-                    <td className="px-8 py-5 text-right">
-                      <div className="flex justify-end gap-2">
+
+                    <td className="px-8 py-4 text-right space-x-6">
+          
                         <button
-                          onClick={() => handleRestore(notice.id)}
-                          disabled={processingId === notice.id}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-emerald-400 hover:bg-emerald-400/10 rounded-lg transition-all text-sm font-medium"
-                        >
-                          <RotateCcw size={14} /> Restore
-                        </button>
-                        <button
-                          onClick={() => handlePermanentDelete(notice.id)}
-                          disabled={processingId === notice.id}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-rose-400 hover:bg-rose-400/10 rounded-lg transition-all text-sm font-medium"
-                        >
-                          <Trash2 size={14} /> Delete
-                        </button>
-                      </div>
+                             onClick={() => handleRestore(notice.id)}
+                            disabled={processingId === notice.id}
+                            className="cursor-pointer text-emerald-600 py-2 rounded-xl text-sm font-medium"
+                                         >
+                                           <RotateCcw size={14} className="inline mr-1" />
+                                           Restore
+                                         </button>
+                      <button
+                                          onClick={() => handlePermanentDelete(notice.id)}
+                                          disabled={processingId === notice.id}
+                                          className="cursor-pointer  text-rose-600 py-2 rounded-xl text-sm font-medium"
+                                        >
+                                          <Trash2 size={14} className="inline mr-1" />
+                                          Delete
+                                        </button>
                     </td>
                   </tr>
                 ))}
@@ -191,44 +211,56 @@ export default function AdminNoticeTrash() {
             </table>
           </div>
 
-          {/* MOBILE CARD VIEW */}
-          <div className="grid grid-cols-1 gap-4 md:hidden">
-            {trashedNotices.map(notice => (
-              <div key={notice.id} className="bg-[#1e293b] p-5 rounded-2xl border border-slate-800 space-y-4 shadow-lg">
-                <div className="flex items-start gap-4">
+          {/* Mobile */}
+          <div className="md:hidden flex flex-col gap-4">
+            {trashedNotices.map((notice) => (
+              <div
+                key={notice.id}
+                className="bg-white border border-slate-200 p-4 rounded-xl shadow-sm"
+              >
+                <div className="flex gap-3">
                   {notice.image && (
-                    <img src={notice.image} className="w-16 h-16 rounded-xl object-cover border border-slate-700 shrink-0" alt="" />
+                    <img
+                      src={notice.image}
+                      className="w-14 h-14 rounded-lg object-cover"
+                    />
                   )}
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[10px] font-bold uppercase text-emerald-500 tracking-widest mb-1">{notice.type}</div>
-                    <h3 className="font-bold text-slate-100 text-base leading-snug truncate mb-2">{notice.slug}</h3>
-                    <div className="flex items-center gap-1.5 text-slate-500 text-xs">
+
+                  <div className="flex-1">
+                    <p className="font-semibold text-slate-800">
+                      {notice.slug}
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      {notice.type}
+                    </p>
+
+                    <div className="flex items-center gap-1 text-xs text-slate-400 mt-1">
                       <Calendar size={12} />
                       {new Date(notice.date).toLocaleDateString()}
                     </div>
                   </div>
                 </div>
-                
-                <div className="pt-2 flex gap-3">
+
+                <div className="flex gap-2 mt-3">
                   <button
                     onClick={() => handleRestore(notice.id)}
-                    disabled={processingId === notice.id}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm font-bold active:scale-95 transition-all disabled:opacity-50"
+                    className="flex-1 bg-emerald-100 text-emerald-600 py-2 rounded-lg cursor-pointer"
                   >
-                    <RotateCcw size={16} /> Restore
+                    Restore
                   </button>
+
                   <button
-                    onClick={() => handlePermanentDelete(notice.id)}
-                    disabled={processingId === notice.id}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-rose-500/10 text-rose-400 text-sm font-bold active:scale-95 transition-all disabled:opacity-50"
+                    onClick={() =>
+                      handlePermanentDelete(notice.id)
+                    }
+                    className="flex-1 bg-rose-100 text-rose-500 py-2 rounded-lg cursor-pointer"
                   >
-                    <Trash2 size={16} /> Delete
+                    Delete
                   </button>
                 </div>
               </div>
             ))}
           </div>
-
         </motion.div>
       </AnimatePresence>
     </div>

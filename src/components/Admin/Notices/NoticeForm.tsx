@@ -98,164 +98,131 @@ export default function NoticeForm({
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-[#1e293b] p-8 rounded-2xl border border-slate-800 shadow-2xl max-w-4xl mx-auto"
+      className="bg-white p-8 rounded-2xl border border-slate-200 shadow-xl max-w-4xl mx-auto"
     >
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-8 border-b border-slate-700 pb-5">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <FileText className="text-emerald-500" />
+      <div className="flex justify-between items-center mb-8 border-b border-slate-100 pb-5">
+        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <FileText className="text-emerald-600" />
           {initialData ? "Update Notice" : "Create Notice"}
         </h2>
 
         <button
           onClick={onClose}
-          className="text-white p-2 hover:bg-red-500/20 bg-red-500 rounded-full transition-all cursor-pointer"
+          className="text-white p-2 hover:bg-red-600 bg-red-500 rounded-full transition-all cursor-pointer shadow-sm"
         >
           <X size={22} />
         </button>
       </div>
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase text-slate-500">
-              Slug
-            </label>
+  {/* TITLE */}
+  <div className="space-y-2">
+    <label className="text-xs font-bold uppercase text-slate-500 ml-1">
+      Title
+    </label>
+    <input
+      {...register("title", { required: true })}
+      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
+    />
+  </div>
 
-            <input
-              {...register("slug", { required: true })}
-              className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-emerald-400 font-mono text-sm outline-none"
+  {/* DATE */}
+  <div className="space-y-2">
+    <label className="text-xs font-bold uppercase text-slate-500 ml-1">
+      Date
+    </label>
+    <input
+      type="date"
+      {...register("date", { required: true })}
+      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-800 outline-none cursor-pointer focus:border-emerald-500 transition-all"
+    />
+  </div>
+
+  {/* TYPE */}
+  <div className="space-y-2">
+    <label className="text-xs font-bold uppercase text-slate-500 ml-1">
+      Notice Type
+    </label>
+    <div className="relative">
+      <select
+        {...register("type")}
+        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 pr-10 text-slate-800 outline-none appearance-none cursor-pointer focus:border-emerald-500 transition-all"
+      >
+        <option value="notice">Latest Notice</option>
+        <option value="urgent">Urgent Announcement</option>
+        <option value="success">Success Story</option>
+      </select>
+      <ChevronDown
+        size={18}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+      />
+    </div>
+  </div>
+
+  {/* MARK AS FEATURED - FIXED SIZE & ALIGNMENT */}
+  <div className="space-y-2 flex flex-col justify-end">
+    {/* Empty label or "Status" label to keep alignment perfect with other inputs */}
+    <label className="text-xs font-bold uppercase text-slate-500 ml-1">
+      Visibility
+    </label>
+    <div className="flex items-center gap-3 bg-slate-50 p-3 h-[50px] rounded-xl border border-slate-200 hover:border-emerald-500 transition-colors cursor-pointer">
+      <input
+        id="latest-checkbox"
+        type="checkbox"
+        {...register("latest")}
+        className="w-5 h-5 accent-emerald-600 cursor-pointer"
+      />
+      <label htmlFor="latest-checkbox" className="text-sm font-medium text-slate-600 cursor-pointer select-none">
+        Mark as Featured
+      </label>
+    </div>
+  </div>
+
+</div>
+
+        {/* TEXT AREAS */}
+        {[
+          { id: "description", label: "Description", rows: 2 },
+          { id: "content", label: "Content", rows: 5 },
+        ].map((field) => (
+          <div key={field.id} className="space-y-2">
+            <label className="text-xs font-bold uppercase text-slate-500 ml-1">
+              {field.label}
+            </label>
+            <textarea
+              rows={field.rows}
+              {...register(field.id as any)}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-800 outline-none focus:border-emerald-500 transition-all"
             />
           </div>
-
-          
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase text-slate-500">
-              Title
-            </label>
-
-            <input
-              {...register("title", { required: true })}
-              className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-white outline-none"
-            />
-          </div>
-
-          {/* DATE */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase text-slate-500">
-              Date
-            </label>
-
-            <input
-              type="date"
-              {...register("date", { required: true })}
-              className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-white outline-none"
-            />
-          </div>
-
-          {/* TYPE */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase text-slate-500">
-              Notice Type
-            </label>
-
-            <div className="relative">
-              <select
-                {...register("type")}
-                className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 pr-10 text-white outline-none appearance-none"
-              >
-                <option value="notice">Latest Notice</option>
-                <option value="urgent">Urgent Announcement</option>
-                <option value="success">Success Story</option>
-              </select>
-
-              <ChevronDown
-                size={18}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"
-              />
-            </div>
-          </div>
-
-        </div>
-
-        {/* EXCERPT */}
+        ))}
+        {/* IMAGE UPLOAD */}
         <div className="space-y-2">
-          <label className="text-xs font-bold uppercase text-slate-500">
-            Excerpt
-          </label>
-
-          <textarea
-            rows={2}
-            {...register("excerpt")}
-            className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-white outline-none"
-          />
-        </div>
-
-        {/* DESCRIPTION */}
-        <div className="space-y-2">
-          <label className="text-xs font-bold uppercase text-slate-500">
-            Description
-          </label>
-
-          <textarea
-            rows={2}
-            {...register("description")}
-            className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-white outline-none"
-          />
-        </div>
-
-        {/* CONTENT */}
-        <div className="space-y-2">
-          <label className="text-xs font-bold uppercase text-slate-500">
-            Content
-          </label>
-
-          <textarea
-            rows={5}
-            {...register("content")}
-            className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-white outline-none"
-          />
-        </div>
-        <div className="flex items-center gap-3 bg-[#0f172a] p-4 rounded-xl border border-slate-700">
-          <input
-            type="checkbox"
-            {...register("latest")}
-            className="w-5 h-5 accent-emerald-500"
-          />
-          <span className="text-sm text-slate-400">
-            Mark as Featured
-          </span>
-        </div>
-
-        {/* IMAGE */}
-        <div className="space-y-2">
-          <label className="text-xs font-bold uppercase text-slate-500">
+          <label className="text-xs font-bold uppercase text-slate-500 ml-1">
             Cover Image
           </label>
-
           {previewImage ? (
-            <div className="relative h-64 rounded-xl overflow-hidden border border-slate-700">
+            <div className="relative h-64 rounded-xl overflow-hidden border border-slate-200 shadow-inner">
               <img
                 src={previewImage}
                 className="w-full h-full object-cover"
                 alt="Preview"
               />
-
               <button
                 type="button"
                 onClick={handleRemoveImage}
-                className="absolute top-3 right-3 bg-red-500 p-2 rounded-full text-white"
+                className="absolute top-3 right-3 bg-red-500 hover:bg-red-600 p-2 rounded-full text-white shadow-lg transition-colors cursor-pointer"
               >
                 <Trash2 size={18} />
               </button>
             </div>
           ) : (
-            <label className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-emerald-500 transition bg-[#0f172a]">
-              <Upload className="text-slate-500 mb-2" />
-              <span className="text-slate-400">Upload Image</span>
-
+            <label className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-200 rounded-xl cursor-pointer hover:border-emerald-400 hover:bg-emerald-50/30 transition-all bg-slate-50 group">
+              <Upload className="text-slate-400 mb-2 group-hover:text-emerald-500 transition-colors" />
+              <span className="text-slate-500 font-medium group-hover:text-emerald-600">Upload Image</span>
               <input
                 type="file"
                 accept="image/*"
@@ -266,11 +233,11 @@ export default function NoticeForm({
           )}
         </div>
 
-        {/* SUBMIT */}
+        {/* SUBMIT BUTTON */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl flex justify-center items-center transition"
+          className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl flex justify-center items-center transition-all cursor-pointer shadow-md hover:shadow-lg active:scale-[0.99]"
         >
           {isSubmitting ? (
             <>
@@ -283,7 +250,6 @@ export default function NoticeForm({
             "Publish Notice"
           )}
         </button>
-
       </form>
     </motion.div>
   );

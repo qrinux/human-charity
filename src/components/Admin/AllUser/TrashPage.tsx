@@ -42,7 +42,6 @@ export default function AdminUserTrashPage() {
     fetchTrash();
   }, []);
 
-  
   const handleRestore = async (id: string) => {
     setProcessingId(id);
     try {
@@ -56,18 +55,17 @@ export default function AdminUserTrashPage() {
     }
   };
 
-  
   const handlePermanentDelete = async (id: string) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "This action cannot be undone!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#e11d48",
+      confirmButtonColor: "#ef4444",
       cancelButtonColor: "#64748b",
       confirmButtonText: "Yes, delete permanently",
-      background: "#1e293b",
-      color: "#fff",
+      background: "#ffffff",
+      color: "#111827",
     });
 
     if (result.isConfirmed) {
@@ -84,7 +82,6 @@ export default function AdminUserTrashPage() {
     }
   };
 
-  
   const handleDeleteAll = async () => {
     if (!users.length) return toast("Trash is empty");
 
@@ -93,10 +90,10 @@ export default function AdminUserTrashPage() {
       text: `Delete ${users.length} users permanently.`,
       icon: "error",
       showCancelButton: true,
-      confirmButtonColor: "#e11d48",
+      confirmButtonColor: "#ef4444",
       confirmButtonText: "Yes, Purge All",
-      background: "#1e293b",
-      color: "#fff",
+      background: "#ffffff",
+      color: "#111827",
     });
 
     if (result.isConfirmed) {
@@ -113,25 +110,24 @@ export default function AdminUserTrashPage() {
     }
   };
 
-  
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 bg-white text-gray-900">
         <Loader2 className="animate-spin text-emerald-500" size={40} />
-        
       </div>
     );
   }
+
   if (users.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 text-center">
-        <div className="bg-slate-800/50 p-6 rounded-full">
-          <Users className="text-slate-600" size={48} />
+      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 text-center  text-gray-900">
+        <div className="bg-gray-100 p-6 rounded-full">
+          <Users className="text-gray-400" size={48} />
         </div>
-        <h3 className="text-white font-medium text-lg">
+        <h3 className="font-medium text-lg text-gray-800">
           Trash is empty
         </h3>
-        <p className="text-slate-500 text-sm">
+        <p className="text-gray-500 text-sm">
           No deleted users found
         </p>
       </div>
@@ -139,28 +135,35 @@ export default function AdminUserTrashPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto px-4 py-6 md:py-10">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#1e293b] p-5 md:p-6 rounded-2xl border border-slate-800 gap-4 shadow-lg">
-        <div className="flex items-center gap-3">
-  <Link
-    href="/admin/dashboard/users" 
-    className="group p-3 bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white rounded-2xl transition-all"
-  >
-    <ArrowLeft
-      size={20} 
-      className="group-hover:-translate-x-1 transition-transform" 
-    />
-  </Link>
+    <div className="space-y-6 max-w-7xl mx-auto px-4 py-6 md:py-10  text-gray-900">
 
-  <div>
-    <h1 className="text-xl md:text-2xl font-bold text-red-500"> User Trash </h1>
-  <p className="text-xs text-slate-400"> {users.length} users found </p>
-  </div>
-</div>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-5 md:p-6 rounded-2xl border border-gray-200 gap-4 shadow-lg text-gray-900">
+
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/dashboard/users"
+            className="group p-3 bg-gray-100 hover:bg-emerald-500 text-gray-600 hover:text-white rounded-2xl transition-all cursor-pointer"
+          >
+            <ArrowLeft
+              size={20}
+              className="group-hover:-translate-x-1 transition-transform"
+            />
+          </Link>
+
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold text-red-500">
+              User Trash
+            </h1>
+            <p className="text-xs text-gray-500">
+              {users.length} users found
+            </p>
+          </div>
+        </div>
+
         <button
           onClick={handleDeleteAll}
           disabled={deletingAll}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-500 text-white px-5 py-2.5 rounded-xl transition-all disabled:opacity-50 font-medium text-sm"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-xl transition-all disabled:opacity-50 font-medium text-sm cursor-pointer"
         >
           {deletingAll ? (
             <Loader2 className="animate-spin" size={18} />
@@ -173,11 +176,13 @@ export default function AdminUserTrashPage() {
 
       <AnimatePresence mode="wait">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          
+
           {/* DESKTOP */}
-          <div className="hidden md:block overflow-hidden bg-[#1e293b] rounded-2xl border border-slate-800 shadow-xl">
+          <div className="hidden md:block overflow-hidden bg-white rounded-2xl border border-gray-200 shadow-xl">
+
             <table className="w-full text-left">
-              <thead className="bg-slate-800/50 text-slate-400 text-xs uppercase">
+
+              <thead className="bg-gray-100 text-gray-600 text-xs uppercase">
                 <tr>
                   <th className="px-8 py-5">User</th>
                   <th className="px-8 py-5">Email</th>
@@ -185,29 +190,32 @@ export default function AdminUserTrashPage() {
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-gray-200">
+
                 {users.map((user) => (
-                  <tr key={user.id} className="hover:bg-slate-800/30">
+                  <tr key={user.id} className="hover:bg-gray-50 text-gray-900">
+
                     <td className="px-8 py-5 flex items-center gap-4">
-                      <div className="h-11 w-11 rounded-lg overflow-hidden border border-slate-700">
+                      <div className="h-11 w-11 rounded-lg overflow-hidden border border-gray-200">
                         <img src={user.imageUrl} className="w-full h-full object-cover" />
                       </div>
 
-                      <span className="text-slate-200 font-bold">
+                      <span className="text-gray-900 font-bold">
                         {user.name}
                       </span>
                     </td>
 
-                    <td className="px-8 py-5 text-slate-400">
+                    <td className="px-8 py-5 text-gray-600">
                       {user.email}
                     </td>
 
                     <td className="px-8 py-5 text-right">
                       <div className="flex justify-end gap-2">
+
                         <button
                           onClick={() => handleRestore(user.id)}
                           disabled={processingId === user.id}
-                          className="flex items-center gap-1 px-3 py-1 text-sm text-emerald-400 hover:bg-emerald-400/10 rounded-lg"
+                          className="flex items-center gap-1 px-3 py-1 text-sm text-emerald-600 hover:bg-emerald-100 rounded-lg cursor-pointer"
                         >
                           <RotateCcw size={14} /> Restore
                         </button>
@@ -215,60 +223,74 @@ export default function AdminUserTrashPage() {
                         <button
                           onClick={() => handlePermanentDelete(user.id)}
                           disabled={processingId === user.id}
-                          className="flex items-center gap-1 px-3 py-1 text-sm text-rose-400 hover:bg-rose-400/10 rounded-lg"
+                          className="flex items-center gap-1 px-3 py-1 text-sm text-red-600 hover:bg-red-100 rounded-lg cursor-pointer"
                         >
                           <Trash2 size={14} /> Delete
                         </button>
+
                       </div>
                     </td>
+
                   </tr>
                 ))}
+
               </tbody>
             </table>
           </div>
 
           {/* MOBILE */}
           <div className="grid grid-cols-1 gap-4 md:hidden">
+
             {users.map((user) => (
               <div
                 key={user.id}
-                className="bg-[#1e293b] p-5 rounded-2xl border border-slate-800"
+                className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm"
               >
+
                 <div className="flex items-center gap-4">
-                  <div className="h-14 w-14 rounded-xl overflow-hidden border border-slate-700">
+
+                  <div className="h-14 w-14 rounded-xl overflow-hidden border border-gray-200">
                     <img src={user.imageUrl} className="w-full h-full object-cover" />
                   </div>
 
                   <div className="flex-1">
-                    <h3 className="text-slate-200 font-bold">
+
+                    <h3 className="text-gray-900 font-bold">
                       {user.name}
                     </h3>
 
-                    <p className="text-slate-400 text-xs flex items-center gap-1 mt-1">
+                    <p className="text-gray-500 text-xs flex items-center gap-1 mt-1">
                       <Mail size={12} />
                       {user.email}
                     </p>
+
                   </div>
+
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mt-4">
+
                   <button
                     onClick={() => handleRestore(user.id)}
-                    className="flex items-center justify-center gap-2 py-2 bg-emerald-500/10 text-emerald-400 rounded-xl"
+                    className="flex items-center justify-center gap-2 py-2 bg-emerald-100 text-emerald-600 rounded-xl cursor-pointer"
                   >
                     <RotateCcw size={16} /> Restore
                   </button>
 
                   <button
                     onClick={() => handlePermanentDelete(user.id)}
-                    className="flex items-center justify-center gap-2 py-2 bg-rose-500/10 text-rose-400 rounded-xl"
+                    className="flex items-center justify-center gap-2 py-2 bg-red-100 text-red-600 rounded-xl cursor-pointer"
                   >
-                    <Trash2 size={16} />  delete
+                    <Trash2 size={16} /> delete
                   </button>
+
                 </div>
+
               </div>
             ))}
+
           </div>
+
         </motion.div>
       </AnimatePresence>
     </div>

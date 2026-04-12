@@ -38,7 +38,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen bg-gradient-to-b from-[#f0fdf4] to-[#ffffff] pt-32 pb-20 overflow-hidden"
+      className="relative min-h-screen bg-gradient-to-b from-[#f0fdf4] to-[#ffffff] pt-32 pb-8 overflow-hidden"
     >
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
