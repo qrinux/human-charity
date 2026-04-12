@@ -53,7 +53,7 @@ export function UseTeamCard({ member, index = 0 }: TeamCardProps) {
     {member.name}
   </h3>
 
-  <p className="text-[#10B981] text-xs md:text-sm mb-2">
+  <p className="text-slate-500 text-xs md:text-sm mb-2">
     {member.role}
   </p>
 
