@@ -58,7 +58,7 @@ export function Footer() {
                 height={70}
                 className='rounded-sm'
               />
-              <h3 className="text-gray-900 text-xl font-bold ml-2">
+              <h3 className="text-green-900 text-xl font-bold ml-2">
                 Human Care
               </h3>
             </motion.div>

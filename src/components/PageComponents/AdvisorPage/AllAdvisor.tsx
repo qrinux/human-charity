@@ -47,7 +47,7 @@ export function AllAdvisor() {
               Dedicated professionals working together to create lasting change across Bangladesh
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6  gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6  gap-5">
             {team.filter((m) => m.memberType === "advisor").map((member, index) => (
              <UseTeamCard key={member.name} member={member} index={index} />
             ))}

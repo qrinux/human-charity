@@ -44,7 +44,7 @@ export function Team() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4  lg:grid-cols-6 gap-5 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4  lg:grid-cols-6 gap-5 mb-16">
           {team.filter((m) => m.memberType === "member").slice(0,6).map((member, index) => (
               <UseTeamCard key={member.name} member={member} index={index} />
           ))}

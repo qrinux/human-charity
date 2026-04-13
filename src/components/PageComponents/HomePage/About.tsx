@@ -481,7 +481,7 @@ export function About() {
             </div>
 
             {/* Mission & Values */}
-            <div className="bg-green-950 rounded-2xl p-8 text-white mb-8">
+            <div className="bg-[#10B981]/10 text-[#0F172A] rounded-2xl p-8 mb-8">
               <h4 className="text-2xl mb-6">Our Values</h4>
               <div className="space-y-4">
                 {[
@@ -501,7 +501,7 @@ export function About() {
                     transition={{ delay: idx * 0.1 }}
                   >
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-white/90">{value}</span>
+                    <span className="text-[#0F172A]">{value}</span>
                   </motion.div>
                 ))}
               </div>
