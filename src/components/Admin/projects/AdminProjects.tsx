@@ -76,164 +76,175 @@ export default function AdminProjectsPage() {
     );
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center flex-wrap gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">
-            Project Management
-          </h1>
-          <p className="text-slate-400 text-sm mt-1">
-            Create, update, or remove initiatives.
-          </p>
-        </div>
-
-        <div className="flex gap-2">
-          {/* Trash Bin Button */}
-          <button
-            onClick={() => router.push("/admin/dashboard/projects/trash")}
-            className="flex items-center gap-2  bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-xl font-bold transition-all shadow-lg shadow-rose-500/20 cursor-pointer"
-          >
-            <Trash2 size={18} /> Trash
-          </button>
-
-            <button
-              onClick={() => {
-                setEditingProject(null);
-                setShowForm(true);
-              }}
-              className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20"
-            >
-              <Plus size={20} /> New Project
-            </button>
-        
-        </div>
+  <div className="space-y-6">
+    
+    {/* Header */}
+    <div className="flex justify-between items-center flex-wrap gap-4">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-800 tracking-tight">
+          Project Management
+        </h1>
+        <p className="text-slate-500 text-sm mt-1">
+          Create, update, or remove initiatives.
+        </p>
       </div>
 
-      {/* Form */}
-      {showForm ? (
-        <ProjectForm
-          initialData={editingProject}
-          isSubmitting={isSubmitting}
-          onClose={() => setShowForm(false)}
-          onSubmit={handleFormSubmit}
-        />
-      ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="bg-[#1e293b] rounded-2xl border border-slate-800 overflow-hidden shadow-xl"
+      <div className="flex gap-2">
+        <button
+          onClick={() => router.push("/admin/dashboard/projects/trash")}
+          className="flex items-center cursor-pointer gap-2 bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-xl font-semibold shadow-sm"
         >
-          {/* Desktop Table */}
-          <div className="hidden md:block">
-            <table className="w-full text-left border-separate border-spacing-0">
-              <thead className="bg-slate-800/50 text-slate-400 text-[10px] uppercase font-bold tracking-[0.15em] border-b border-slate-800">
-                <tr>
-                  <th className="px-8 py-5">Initiative</th>
-                  <th className="px-8 py-5">Location</th>
-                  <th className="px-8 py-5">Completion</th>
-                  <th className="px-8 py-5 text-right">Manage</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800">
-                {projects.map((project) => (
-                  <tr
-                    key={project.id}
-                    className="group hover:bg-slate-800/30 transition-all"
-                  >
-                    <td className="px-8 py-5 flex items-center gap-4">
-                      <div className="h-10 w-16 rounded-lg bg-slate-900 overflow-hidden relative border border-slate-700 shadow-inner">
-                        <img
-                          src={project.image}
-                          alt=""
-                          className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-                      <span className="font-bold text-slate-200">
-                        {project.title}
-                      </span>
-                    </td>
-                    <td className="px-8 py-5 text-slate-400 text-sm gap-2">
-                      {project.location}
-                    </td>
-                    <td className="px-8 py-5">
-                      <ProgressBar progress={project.progress} showText className="w-32" />
-                    </td>
-                    <td className="px-8 py-5 text-right space-x-2">
-                      <button
-                        onClick={() => handleEdit(project)}
-                        className="p-2.5 text-cyan-400 cursor-pointer hover:bg-cyan-400/10 rounded-xl transition-all"
-                        title="Edit Project"
-                      >
-                        <Pencil size={18} />
-                      </button>
-                      <button
-                        onClick={() => confirmDelete(project.id)}
-                        className="p-2.5 text-rose-400 cursor-pointer hover:bg-rose-400/10 rounded-xl transition-all"
-                        title="Move to Trash"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Trash2 size={18} /> Trash
+        </button>
 
-          {/* Mobile Cards */}
-          <div className="md:hidden flex flex-col gap-4 p-4">
-            {projects.map((project) => (
-              <div
-                key={project.id}
-                className="bg-slate-800 rounded-xl p-4 flex flex-col gap-3 shadow-lg"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="h-16 w-20 rounded-lg bg-slate-900 overflow-hidden border border-slate-700">
-                    <img
-                      src={project.image}
-                      alt=""
-                      className="object-cover w-full h-full"
+        <button
+          onClick={() => {
+            setEditingProject(null);
+            setShowForm(true);
+          }}
+          className="flex items-center cursor-pointer gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-semibold shadow-sm"
+        >
+          <Plus size={20} /> New Project
+        </button>
+      </div>
+    </div>
+
+    {/* Form */}
+    {showForm ? (
+      <ProjectForm
+        initialData={editingProject}
+        isSubmitting={isSubmitting}
+        onClose={() => setShowForm(false)}
+        onSubmit={handleFormSubmit}
+      />
+    ) : (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm"
+      >
+
+        <div className="hidden md:block">
+          <table className="w-full text-left border-separate border-spacing-0">
+        
+            <thead className="bg-slate-50 text-slate-500 text-[12px] uppercase font-semibold tracking-wider border-b border-slate-200">
+              <tr>
+                <th className="px-8 py-4">Initiative</th>
+                <th className="px-8 py-4">Location</th>
+                <th className="px-8 py-4">Completion</th>
+                <th className="px-8 py-4 text-right">Manage</th>
+              </tr>
+            </thead>
+
+            {/* Body */}
+            <tbody className="divide-y divide-slate-200">
+              {projects.map((project) => (
+                <tr
+                  key={project.id}
+                  className="hover:bg-slate-50 transition"
+                >
+                  <td className="px-8 py-5 flex items-center gap-4">
+                    <div className="h-10 w-16 rounded-lg overflow-hidden border border-slate-200">
+                      <img
+                        src={project.image}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                    <span className="font-semibold text-slate-800">
+                      {project.title.split(' ').slice(0, 3).join(' ')}
+  {project.title.split(' ').length > 3 ? '...' : ''}
+                    </span>
+                  </td>
+
+                  <td className="px-8 py-5 text-slate-500 text-sm">
+                    {project.location}
+                  </td>
+
+                  <td className="px-8 py-5">
+                    <ProgressBar
+                      progress={project.progress}
+                      showText
+                      className="w-32"
                     />
-                  </div>
-                  <div className="flex-1">
-                    <h2 className="font-bold text-slate-200">{project.title}</h2>
-                    <div className="flex items-center gap-1 text-slate-400 text-sm mt-1">
-                      <MapPin size={14} className="text-emerald-500" />
-                      {project.location}
-                    </div>
-                    <div className="mt-2">
-                      <ProgressBar progress={project.progress} showText className="w-full" />
-                    </div>
-                  </div>
+                  </td>
+
+                  <td className="px-8 py-5 text-right space-x-2">
+                    <button
+                      onClick={() => handleEdit(project)}
+                      className="p-2 text-blue-500 cursor-pointer hover:bg-blue-50 rounded-lg"
+                    >
+                      <Pencil size={18} />
+                    </button>
+
+                    <button
+                      onClick={() => confirmDelete(project.id)}
+                      className="p-2 text-rose-500 cursor-pointer hover:bg-rose-50 rounded-lg"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="md:hidden flex flex-col gap-4 p-4">
+          {projects.map((project) => (
+            <div
+              key={project.id}
+              className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col gap-3 shadow-sm"
+            >
+              <div className="flex items-center gap-4">
+                <div className="h-16 w-20 rounded-lg overflow-hidden border border-slate-200">
+                  <img src={project.image} className="object-cover w-full h-full" />
                 </div>
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => handleEdit(project)}
-                    className="p-2 text-cyan-400 hover:bg-cyan-400/10 rounded-lg transition-all"
-                  >
-                    <Pencil size={18} />
-                  </button>
-                  <button
-                    onClick={() => confirmDelete(project.id)}
-                    className="p-2 text-rose-400 hover:bg-rose-400/10 rounded-lg transition-all"
-                  >
-                    <Trash2 size={18} />
-                  </button>
+
+                <div className="flex-1">
+                  <h2 className="font-semibold text-slate-800">
+  {project.title.split(' ').slice(0, 3).join(' ')}
+  {project.title.split(' ').length > 3 ? '...' : ''}
+</h2>
+
+                  <div className="flex items-center gap-1 text-slate-500 text-sm mt-1">
+                    <MapPin size={14} className="text-emerald-500" />
+                    {project.location}
+                  </div>
+
+                  <div className="mt-2">
+                    <ProgressBar progress={project.progress} showText />
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
 
-          {projects.length === 0 && !loading && (
-            <div className="p-24 text-center">
-              <div className="text-slate-600 mb-2 text-4xl">📭</div>
-              <p className="text-slate-500 text-sm">
-                Your impact history is currently empty.
-              </p>
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => handleEdit(project)}
+                  className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg"
+                >
+                  <Pencil size={18} />
+                </button>
+
+                <button
+                  onClick={() => confirmDelete(project.id)}
+                  className="p-2 text-rose-500 hover:bg-rose-50 rounded-lg"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
             </div>
-          )}
-        </motion.div>
-      )}
-    </div>
-  );
+          ))}
+        </div>
+
+        {projects.length === 0 && !loading && (
+          <div className="p-24 text-center">
+            <div className="text-slate-400 mb-2 text-4xl">📭</div>
+            <p className="text-slate-500 text-sm">
+              Your impact history is currently empty.
+            </p>
+          </div>
+        )}
+      </motion.div>
+    )}
+  </div>
+);
 }

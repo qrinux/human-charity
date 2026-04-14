@@ -39,7 +39,6 @@ export default function AdminUserPage() {
     fetchUsers();
   }, []);
 
-  
   const handleRoleChange = async (userId: string, role: string) => {
     setProcessingId(userId);
     try {
@@ -53,7 +52,6 @@ export default function AdminUserPage() {
     }
   };
 
-  
   const handleDelete = async (user: any) => {
     const result = await Swal.fire({
       title: "Move to Trash?",
@@ -62,8 +60,8 @@ export default function AdminUserPage() {
       confirmButtonColor: "#e11d48",
       cancelButtonColor: "#64748b",
       confirmButtonText: "Yes, move",
-      background: "#1e293b",
-      color: "#fff",
+      background: "#ffffff",
+      color: "#111827",
     });
 
     if (result.isConfirmed) {
@@ -82,26 +80,27 @@ export default function AdminUserPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-96 gap-4">
+      <div className="flex flex-col items-center justify-center h-96 gap-4 text-gray-900">
         <Loader2 className="animate-spin text-emerald-500" size={40} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto px-4 py-8">
-      
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-[#1e293b] p-6 rounded-2xl border border-slate-800 gap-4">
+    <div className="space-y-6 max-w-7xl mx-auto px-4 py-8  text-gray-900">
+
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl border border-slate-200 gap-4 text-gray-900">
+
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-emerald-500/10 rounded-xl">
-            <Users className="text-emerald-500" size={28} />
+          <div className="p-3 bg-emerald-100 rounded-xl">
+            <Users className="text-emerald-600" size={28} />
           </div>
 
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">
+            <h1 className="text-2xl font-bold text-gray-900">
               User Management
             </h1>
-            <p className="text-slate-400 text-sm">
+            <p className="text-gray-600 text-sm">
               Manage platform users & permissions
             </p>
           </div>
@@ -110,7 +109,7 @@ export default function AdminUserPage() {
         <div className="flex gap-3 mt-4 md:mt-0">
           <Link
             href="/admin/dashboard/users/trash"
-            className="flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl font-semibold transition-all"
+            className="flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl font-semibold transition-all cursor-pointer"
           >
             <Trash2 size={18} />
             Trash
@@ -120,12 +119,13 @@ export default function AdminUserPage() {
 
       <AnimatePresence mode="wait">
         <motion.div key="user-table" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          
-        
-          <div className="hidden md:block bg-[#1e293b] rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+
+          <div className="hidden md:block bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
+
             <div className="overflow-x-auto">
               <table className="w-full text-left">
-                <thead className="bg-slate-800/50 text-slate-400 text-xs uppercase tracking-wider">
+
+                <thead className="bg-gray-100 text-gray-600 text-xs uppercase tracking-wider">
                   <tr>
                     <th className="px-8 py-5">User</th>
                     <th className="px-8 py-5">Email</th>
@@ -134,46 +134,38 @@ export default function AdminUserPage() {
                   </tr>
                 </thead>
 
-                <tbody className="divide-y divide-slate-800">
+                <tbody className="divide-y divide-slate-200">
+
                   {users.map((user) => (
-                    <tr
-                      key={user.id}
-                      className="group hover:bg-slate-800/30 transition-all"
-                    >
-                      
+                    <tr key={user.id} className="group hover:bg-gray-50 transition-all text-gray-900">
+
                       <td className="px-8 py-5 flex items-center gap-4">
-                        <div className="h-12 w-12 rounded-lg overflow-hidden border border-slate-700">
+                        <div className="h-12 w-12 rounded-lg overflow-hidden border border-slate-200">
                           <img
                             src={user.imageUrl}
-                            alt=""
                             className="object-cover w-full h-full"
                           />
                         </div>
 
-                        <div className="flex flex-col">
-                          <span className="font-bold text-slate-200">
-                            {user.name}
-                          </span>
-                        </div>
+                        <span className="font-bold text-gray-900">
+                          {user.name}
+                        </span>
                       </td>
 
-                      
-                      <td className="px-8 py-5 text-slate-400">
+                      <td className="px-8 py-5 text-gray-600">
                         {user.email}
                       </td>
 
-                      
                       <td className="px-8 py-5 text-center">
                         <div className="flex justify-center items-center gap-2">
-                           <span
-                    className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-widest ${
-                      user.role === "admin"
-                        ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                        : "bg-blue-500/10 text-blue-400 border border-blue-500/20"
-                    }`}
-                  >
-                    {user.role.toUpperCase()}
-                  </span>
+
+                          <span className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-widest ${
+                            user.role === "admin"
+                              ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                              : "bg-blue-100 text-blue-700 border border-blue-200"
+                          }`}>
+                            {user.role.toUpperCase()}
+                          </span>
 
                           <select
                             value={user.role}
@@ -181,20 +173,20 @@ export default function AdminUserPage() {
                             onChange={(e) =>
                               handleRoleChange(user.id, e.target.value)
                             }
-                            className="bg-slate-900 border border-slate-700 text-sm rounded-lg px-2 py-1 text-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none"
+                            className="bg-white border border-slate-300 text-sm rounded-lg px-2 py-1 text-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none cursor-pointer"
                           >
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                           </select>
+
                         </div>
                       </td>
 
-                      {/* ACTIONS */}
                       <td className="px-8 py-5 text-right">
                         <button
                           onClick={() => handleDelete(user)}
                           disabled={processingId === user.id}
-                          className="p-2 text-rose-400 hover:bg-rose-400/10 rounded-lg transition-all disabled:opacity-50 cursor-pointer"
+                          className="p-2 text-rose-500 hover:bg-rose-100 rounded-lg transition-all disabled:opacity-50 cursor-pointer"
                         >
                           {processingId === user.id ? (
                             <Loader2 className="animate-spin" size={16} />
@@ -203,45 +195,47 @@ export default function AdminUserPage() {
                           )}
                         </button>
                       </td>
+
                     </tr>
                   ))}
+
                 </tbody>
               </table>
             </div>
 
-            {/* EMPTY */}
             {users.length === 0 && (
-              <div className="p-12 text-center">
-                <Users className="text-slate-600 mx-auto mb-4" size={40} />
-                <p className="text-slate-400 text-sm">
-                  No users found in the system.
-                </p>
+              <div className="p-12 text-center text-gray-500">
+                <Users className="mx-auto mb-4 text-gray-300" size={40} />
+                <p>No users found in the system.</p>
               </div>
             )}
           </div>
 
-          {/* MOBILE */}
+          {/* MOBILE (unchanged structure, only colors fixed) */}
           <div className="flex flex-col gap-4 md:hidden">
+
             {users.map((user) => (
               <div
                 key={user.id}
-                className="bg-[#1e293b] border border-slate-800 rounded-2xl p-4 shadow"
+                className="bg-white border border-slate-200 rounded-2xl p-4 shadow"
               >
+
                 <div className="flex items-center gap-4">
-                  <div className="h-16 w-16 rounded-lg overflow-hidden border border-slate-700">
+
+                  <div className="h-16 w-16 rounded-lg overflow-hidden border border-slate-200">
                     <img
                       src={user.imageUrl}
-                      alt=""
                       className="object-cover w-full h-full"
                     />
                   </div>
 
                   <div className="flex-1">
-                    <div className="font-bold text-white">
+
+                    <div className="font-bold text-gray-900">
                       {user.name}
                     </div>
 
-                    <div className="text-slate-400 text-xs flex items-center gap-1 mt-1">
+                    <div className="text-gray-600 text-xs flex items-center gap-1 mt-1">
                       <Mail size={12} />
                       {user.email}
                     </div>
@@ -253,27 +247,32 @@ export default function AdminUserPage() {
                         onChange={(e) =>
                           handleRoleChange(user.id, e.target.value)
                         }
-                        className="bg-slate-900 border border-slate-700 text-xs rounded-lg px-2 py-1 text-slate-300"
+                        className="bg-white border border-slate-300 text-xs rounded-lg px-2 py-1 text-gray-700 cursor-pointer"
                       >
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                       </select>
                     </div>
+
                   </div>
+
                 </div>
 
                 <div className="flex justify-end mt-3">
                   <button
                     onClick={() => handleDelete(user)}
                     disabled={processingId === user.id}
-                    className="p-2 text-rose-400 hover:bg-rose-400/10 rounded-lg transition-all"
+                    className="p-2 text-rose-500 hover:bg-rose-100 rounded-lg cursor-pointer"
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
+
               </div>
             ))}
+
           </div>
+
         </motion.div>
       </AnimatePresence>
     </div>

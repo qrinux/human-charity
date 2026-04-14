@@ -18,7 +18,7 @@ export function Hero() {
 
   if (loading || !hero) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#0F172A]">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#f0fdf4] to-[#ffffff]">
         <Loader2 className="animate-spin text-emerald-500" size={50} />
       </div>
     );
@@ -38,7 +38,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] pt-32 pb-20 overflow-hidden"
+      className="relative min-h-fit bg-gradient-to-b from-[#f0fdf4] to-[#ffffff] pt-28 md:pt-32 overflow-hidden"
     >
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -53,18 +53,18 @@ export function Hero() {
               <span className="text-[#10B981] text-sm">{badgeText}</span>
             </motion.div>
 
-            <h1 className="text-5xl lg:text-6xl text-white mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6 text-green-950">
               {headline}
             </h1>
 
-            <p className="text-xl text-white/70 mb-8 leading-relaxed max-w-xl">
+            <p className="text-slate-600 text-lg mb-8 max-w-lg">
               {description}
             </p>
 
             <div className="flex flex-wrap gap-4">
               <Link
                 href={donateLink}
-                className="bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-4 rounded-full font-semibold flex items-center gap-2"
+                className="bg-[#F59E0B] hover:bg-[#D97706] text-white px-8 py-4 rounded-full font-semibold flex items-center gap-2 w-full md:w-auto justify-center transition-colors duration-300"
               >
                 Donate Now
                 <Heart className="w-5 h-5" fill="white" />
@@ -72,7 +72,7 @@ export function Hero() {
 
               <button
                 onClick={() => scrollToSection("projects")}
-                className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-full font-semibold flex items-center gap-2 cursor-pointer"
+                className="bg-white hover:bg-green-50 border border-green-200 text-green-700  px-8 py-4 rounded-full font-semibold flex items-center gap-2 cursor-pointer w-full md:w-auto justify-center transition-colors duration-300"
               >
                 Our Work
                 <ArrowRight className="w-5 h-5" />
@@ -80,18 +80,18 @@ export function Hero() {
             </div>
 
             {/* STATS */}
-            <div className="grid grid-cols-3 gap-6 mt-12 pt-12 border-t border-white/10">
+            <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/10">
               <div>
-                <div className="text-3xl text-[#10B981] mb-1">{livesImpacted}</div>
-                <div className="text-white/60 text-sm">Lives Impacted</div>
+                <div className="text-3xl font-bold text-green-600">{livesImpacted}</div>
+                <div className="text-slate-500 text-sm">Lives Impacted</div>
               </div>
               <div>
-                <div className="text-3xl text-[#10B981] mb-1">{projectsCount}</div>
-                <div className="text-white/60 text-sm">Projects</div>
+                <div className="text-3xl font-bold text-green-600">{projectsCount}</div>
+                <div className="text-slate-500 text-sm">Projects</div>
               </div>
               <div>
-                <div className="text-3xl text-[#10B981] mb-1">{yearsActive}</div>
-                <div className="text-white/60 text-sm">Years Active</div>
+                <div className="text-3xl font-bold text-green-600">{yearsActive}</div>
+                <div className="text-slate-500 text-sm">Years Active</div>
               </div>
             </div>
           </motion.div>
@@ -108,13 +108,12 @@ export function Hero() {
                 <div
                   key={i}
                   onClick={() => setSelectedImage(img)}
-                  className={`rounded-2xl overflow-hidden cursor-pointer ${
-                    i === 0
-                      ? "col-span-4 row-span-4"
-                      : i === 1 || i === 2
+                  className={`rounded-2xl overflow-hidden cursor-pointer ${i === 0
+                    ? "col-span-4 row-span-4"
+                    : i === 1 || i === 2
                       ? "col-span-2 row-span-3"
                       : "col-span-2 row-span-2"
-                  }`}
+                    }`}
                 >
                   <ImagePosition
                     src={img}
@@ -129,34 +128,34 @@ export function Hero() {
       </div>
 
       {/* FULL IMAGE MODAL */}
-     {selectedImage && (
-  <div
-    className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50"
-    onClick={() => setSelectedImage(null)}
-  >
-    <motion.div
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="relative max-w-[90%] max-h-[90%]"
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Close Button (INSIDE IMAGE TOP RIGHT) */}
-      <button
-        onClick={() => setSelectedImage(null)}
-        className="absolute top-3 right-3 z-10 bg-red-600 hover:bg-red-600/80 text-white p-2 rounded-full backdrop-blur-md transition cursor-pointer"
-      >
-        <X size={20} />
-      </button>
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50"
+          onClick={() => setSelectedImage(null)}
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="relative max-w-[90%] max-h-[90%]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button (INSIDE IMAGE TOP RIGHT) */}
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-3 right-3 z-10 bg-red-600 hover:bg-red-600/80 text-white p-2 rounded-full backdrop-blur-md transition cursor-pointer"
+            >
+              <X size={20} />
+            </button>
 
-      <img
-        src={selectedImage}
-        alt="Selected"
-        className="rounded-2xl shadow-2xl max-w-full max-h-[90vh] object-contain"
-      />
-    </motion.div>
-  </div>
-)}
+            <img
+              src={selectedImage}
+              alt="Selected"
+              className="rounded-2xl shadow-2xl max-w-full max-h-[90vh] object-contain"
+            />
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 }

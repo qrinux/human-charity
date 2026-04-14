@@ -64,11 +64,13 @@ export function TeamDetails() {
                 animate={{ opacity: 1, x: 0 }}
               >
                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-[#10B981]/20 mb-6">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-80 object-cover"
-                  />
+                  <div className="w-full aspect-[4/5]">
+  <img
+    src={member.image}
+    alt={member.name}
+    className="w-full h-full object-cover"
+  />
+</div>
                   <div className="p-6">
                     <h1 className="text-2xl text-[#0F172A] mb-2">{member.name}</h1>
                     <p className="text-[#10B981] mb-6">{member.role}</p>

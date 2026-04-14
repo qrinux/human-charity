@@ -12,7 +12,7 @@ export function Projects() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <Loader2 className="animate-spin text-emerald-500" size={50} />
       </div>
     );

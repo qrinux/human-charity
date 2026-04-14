@@ -1,17 +1,32 @@
 "use client";
 
 import React, { useState } from "react";
-import { Trash2, Loader2, RotateCcw, MapPin, AlertTriangle, ArrowLeft, ShieldAlert } from "lucide-react";
+import {
+  Trash2,
+  Loader2,
+  RotateCcw,
+  MapPin,
+  ArrowLeft,
+  ShieldAlert,
+} from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 
 import { useProjects } from "@/components/Hooks/useProjects";
-import { restoreProject, deleteProjectPermanent } from "@/app/ServerActions/project";
+import {
+  restoreProject,
+  deleteProjectPermanent,
+} from "@/app/ServerActions/project";
 import Link from "next/link";
 
 export default function AdminProjectTrash() {
-  const { projects: trashedProjects, loading, refresh } = useProjects(undefined, true);
+  const {
+    projects: trashedProjects,
+    loading,
+    refresh,
+  } = useProjects(undefined, true);
+
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [deletingAll, setDeletingAll] = useState(false);
 
@@ -22,10 +37,8 @@ export default function AdminProjectTrash() {
       if (res.success) {
         toast.success("Project restored");
         refresh();
-      } else {
-        toast.error("Restore failed");
-      }
-    } catch (err) {
+      } else toast.error("Restore failed");
+    } catch {
       toast.error("An error occurred");
     } finally {
       setProcessingId(null);
@@ -36,13 +49,10 @@ export default function AdminProjectTrash() {
     const result = await Swal.fire({
       title: "Confirm Permanent Deletion",
       text: "This project will be gone forever!",
-      icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#e11d48",
       cancelButtonColor: "#64748b",
       confirmButtonText: "Yes, delete it",
-      background: "#1e293b",
-      color: "#fff",
     });
 
     if (!result.isConfirmed) return;
@@ -51,12 +61,10 @@ export default function AdminProjectTrash() {
     try {
       const res = await deleteProjectPermanent(id);
       if (res.success) {
-        toast.success("Project purged");
+        toast.success("Project deleted permanently");
         refresh();
-      } else {
-        toast.error("Delete failed");
-      }
-    } catch (err) {
+      } else toast.error("Delete failed");
+    } catch {
       toast.error("An error occurred");
     } finally {
       setProcessingId(null);
@@ -64,72 +72,78 @@ export default function AdminProjectTrash() {
   };
 
   const handleDeleteAll = async () => {
-    if (!trashedProjects.length) return toast("Trash is already empty");
+    if (!trashedProjects.length) return toast("Trash is empty");
 
     const result = await Swal.fire({
       title: "Purge all projects?",
-      text: `You are about to permanently delete ${trashedProjects.length} projects!`,
+      text: `Delete ${trashedProjects.length} projects permanently`,
       icon: "error",
       showCancelButton: true,
       confirmButtonColor: "#e11d48",
-      confirmButtonText: "Yes, clear everything",
-      background: "#1e293b",
-      color: "#fff",
+      confirmButtonText: "Yes, clear all",
     });
 
     if (!result.isConfirmed) return;
 
     try {
       setDeletingAll(true);
-      // Faster concurrent deletion
-      await Promise.all(trashedProjects.map((p) => deleteProjectPermanent(p.id)));
-      toast.success("Trash cleared successfully");
+      await Promise.all(
+        trashedProjects.map((p) => deleteProjectPermanent(p.id))
+      );
+      toast.success("Trash cleared");
       refresh();
-    } catch (error) {
-      toast.error("Failed to delete all projects");
+    } catch {
+      toast.error("Failed to delete all");
     } finally {
       setDeletingAll(false);
     }
   };
 
-  if (loading) return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-      <Loader2 className="animate-spin text-emerald-500" size={40} />
-    </div>
-  );
-
-  if (!trashedProjects.length) return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 px-4 text-center">
-      <div className="bg-slate-800/50 p-6 rounded-full">
-        <Trash2 className="text-slate-600" size={48} />
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="animate-spin text-emerald-500" size={40} />
       </div>
-      <p className="text-slate-400 font-medium">Your project trash is empty.</p>
-    </div>
-  );
+    );
+
+  if (!trashedProjects.length)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 text-center">
+        <div className="bg-slate-100 p-6 rounded-full">
+          <Trash2 className="text-slate-400" size={48} />
+        </div>
+        <p className="text-slate-500">Trash is empty</p>
+      </div>
+    );
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 py-6 md:py-10">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#1e293b] p-5 md:p-6 rounded-2xl border border-slate-800 gap-4 shadow-lg">
-        <div className="flex items-center gap-3">
-  <Link
-    href="/admin/dashboard/projects" 
-    className="group p-3 bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white rounded-2xl transition-all"
-  >
-    <ArrowLeft
-      size={20} 
-      className="group-hover:-translate-x-1 transition-transform" 
-    />
-  </Link>
 
-  <div>
-    <h1 className="text-xl md:text-2xl font-bold text-red-500">Projects Trash </h1>
-  <p className="text-xs text-slate-400"> {trashedProjects.length} Project found </p>
-  </div>
-</div>
-<button
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 rounded-2xl border border-slate-200 shadow-sm gap-4">
+        
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/dashboard/projects"
+            className="p-3 bg-slate-100 hover:bg-emerald-500 text-slate-600 hover:text-white rounded-xl transition"
+          >
+            <ArrowLeft size={20} />
+          </Link>
+
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold text-rose-600">
+              Projects Trash
+            </h1>
+            <p className="text-xs text-slate-500">
+              {trashedProjects.length} Projects
+            </p>
+          </div>
+        </div>
+
+        <button
           onClick={handleDeleteAll}
           disabled={deletingAll}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-500 text-white px-5 py-2.5 rounded-xl transition-all disabled:opacity-50 font-medium text-sm"
+          className="flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm disabled:opacity-50 cursor-pointer"
         >
           {deletingAll ? (
             <Loader2 className="animate-spin" size={18} />
@@ -140,94 +154,87 @@ export default function AdminProjectTrash() {
         </button>
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-          
-          {/* DESKTOP TABLE (md and up) */}
-          <div className="hidden md:block overflow-hidden bg-[#1e293b] rounded-2xl border border-slate-800 shadow-xl">
-            <table className="w-full text-left">
-              <thead className="bg-slate-800/50 text-slate-400 text-xs uppercase tracking-wider">
+      {/* Table */}
+      <AnimatePresence>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+
+          <div className="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <table className="w-full">
+              <thead className="bg-slate-50 text-slate-500 text-xs uppercase">
                 <tr>
-                  <th className="px-8 py-5">Project Information</th>
-                  <th className="px-8 py-5">Location</th>
-                  <th className="px-8 py-5 text-right">Actions</th>
+                  <th className="px-8 py-4 text-left">Project</th>
+                  <th className="px-8 py-4 text-left">Location</th>
+                  <th className="px-8 py-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
-                {trashedProjects.map(project => (
-                  <tr key={project.id} className="group hover:bg-slate-800/30 transition-all">
-                    <td className="px-8 py-5">
-                      <div className="flex items-center gap-4">
-                        {project.image ? (
-                          <img src={project.image} className="w-12 h-12 rounded-lg object-cover border border-slate-700 shrink-0" alt="" />
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0">
-                            <MapPin className="text-slate-600" size={20} />
-                          </div>
-                        )}
-                        <span className="font-bold text-slate-200 truncate max-w-xs">{project.title}</span>
-                      </div>
+
+              <tbody className="divide-y divide-slate-200">
+                {trashedProjects.map((p) => (
+                  <tr key={p.id} className="hover:bg-slate-50">
+                    
+                    <td className="px-8 py-5 flex items-center gap-4">
+                      <img
+                        src={p.image}
+                        className="w-12 h-12 rounded-lg object-cover border border-slate-200"
+                      />
+                      <span className="font-semibold text-slate-800">
+                        {p.title.split(' ').slice(0, 3).join(' ')}
+  {p.title.split(' ').length > 3 ? '...' : ''}
+                      </span>
                     </td>
-                    <td className="px-8 py-5 text-slate-400 text-sm">{project.location}</td>
-                    <td className="px-8 py-5 text-right">
-                      <div className="flex justify-end gap-2">
-                        <button
-                          onClick={() => handleRestore(project.id)}
-                          disabled={processingId === project.id}
-                          className="flex items-center gap-1 px-3 py-1.5 text-emerald-400 hover:bg-emerald-400/10 rounded-lg transition-all text-sm font-semibold disabled:opacity-50"
-                        >
-                          <RotateCcw size={14} /> Restore
-                        </button>
-                        <button
-                          onClick={() => handlePermanentDelete(project.id)}
-                          disabled={processingId === project.id}
-                          className="flex items-center gap-1 px-3 py-1.5 text-rose-400 hover:bg-rose-400/10 rounded-lg transition-all text-sm font-semibold disabled:opacity-50"
-                        >
-                          <Trash2 size={14} /> Delete
-                        </button>
-                      </div>
+
+                    <td className="px-8 py-5 text-slate-500">
+                      {p.location}
                     </td>
+
+                    <td className="px-8 py-5 text-right space-x-6">
+                      <button
+                                                   onClick={() => handleRestore(p.id)}
+                                                  disabled={processingId === p.id}
+                                                  className="cursor-pointer text-emerald-600 py-2 rounded-xl text-sm font-medium"
+                                                               >
+                                                                 <RotateCcw size={14} className="inline mr-1" />
+                                                                 Restore
+                                                               </button>
+                                            <button
+                                                                onClick={() => handlePermanentDelete(p.id)}
+                                                                disabled={processingId === p.id}
+                                                                className="cursor-pointer  text-rose-600 py-2 rounded-xl text-sm font-medium"
+                                                              >
+                                                                <Trash2 size={14} className="inline mr-1" />
+                                                                Delete
+                                                              </button>
+                    </td>
+
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          {/* MOBILE CARDS (below md) */}
-          <div className="grid grid-cols-1 gap-4 md:hidden">
-            {trashedProjects.map(project => (
-              <div key={project.id} className="bg-[#1e293b] p-5 rounded-2xl border border-slate-800 space-y-4 shadow-md">
-                <div className="flex items-start gap-4">
-                  <div className="h-16 w-16 rounded-xl overflow-hidden border border-slate-700 shrink-0 bg-slate-800">
-                    {project.image ? (
-                      <img src={project.image} alt="" className="object-cover w-full h-full" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center"><MapPin className="text-slate-600" /></div>
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-bold text-slate-100 text-lg leading-tight mb-1 truncate">{project.title}</h3>
-                    <div className="flex items-center gap-1 text-slate-400 text-sm">
-                      <MapPin size={12} />
-                      <span className="truncate">{project.location}</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="pt-2 flex gap-3">
+          {/* Mobile */}
+          <div className="grid gap-4 md:hidden">
+            {trashedProjects.map((p) => (
+              <div
+                key={p.id}
+                className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"
+              >
+                <h3 className="font-semibold text-slate-800">{p.title}</h3>
+                <p className="text-sm text-slate-500">{p.location}</p>
+
+                <div className="flex gap-2 mt-3">
                   <button
-                    onClick={() => handleRestore(project.id)}
-                    disabled={processingId === project.id}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm font-bold active:scale-95 transition-all"
+                    onClick={() => handleRestore(p.id)}
+                    className="flex-1 bg-emerald-50 text-emerald-600 py-2 rounded-lg"
                   >
-                    <RotateCcw size={16} /> Restore
+                    Restore
                   </button>
+
                   <button
-                    onClick={() => handlePermanentDelete(project.id)}
-                    disabled={processingId === project.id}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-rose-500/10 text-rose-400 text-sm font-bold active:scale-95 transition-all"
+                    onClick={() => handlePermanentDelete(p.id)}
+                    className="flex-1 bg-rose-50 text-rose-600 py-2 rounded-lg"
                   >
-                    <Trash2 size={16} /> Delete
+                    Delete
                   </button>
                 </div>
               </div>

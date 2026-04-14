@@ -1,14 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
-import { Trash2, Users, Loader2, RotateCcw, ShieldAlert, ArrowLeft } from "lucide-react";
+import {
+  Trash2,
+  Users,
+  Loader2,
+  RotateCcw,
+  ShieldAlert,
+  ArrowLeft,
+} from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 import { useTeam } from "@/components/Hooks/useTeam";
-import { restoreTeamMember, deleteTeamPermanent } from "@/app/ServerActions/team";
-import Link from "next/link";
+import {
+  restoreTeamMember,
+  deleteTeamPermanent,
+} from "@/app/ServerActions/team";
 
 export default function AdminTeamTrash() {
   const { team, loading, refresh } = useTeam(undefined, true);
@@ -27,8 +37,6 @@ export default function AdminTeamTrash() {
       } else {
         toast.error(res.error || "Restore failed");
       }
-    } catch (err) {
-      toast.error("Unexpected error occurred");
     } finally {
       setProcessingId(null);
     }
@@ -43,8 +51,8 @@ export default function AdminTeamTrash() {
       confirmButtonColor: "#e11d48",
       cancelButtonColor: "#64748b",
       confirmButtonText: "Yes, delete permanently",
-      background: "#1e293b",
-      color: "#fff",
+      background: "#ffffff",
+      color: "#111827",
     });
 
     if (result.isConfirmed) {
@@ -52,13 +60,11 @@ export default function AdminTeamTrash() {
       try {
         const res = await deleteTeamPermanent(id);
         if (res.success) {
-          toast.success("Member removed from database");
+          toast.success("Member deleted permanently");
           refresh();
         } else {
           toast.error(res.error || "Delete failed");
         }
-      } catch (err) {
-        toast.error("Unexpected error occurred");
       } finally {
         setProcessingId(null);
       }
@@ -66,137 +72,158 @@ export default function AdminTeamTrash() {
   };
 
   const handleDeleteAll = async () => {
-    if (!deletedMembers.length) return toast("Trash is already empty");
+    if (!deletedMembers.length) return toast("Trash is empty");
 
     const result = await Swal.fire({
-      title: "Purge Trash?",
-      text: `You are about to permanently delete ${deletedMembers.length} members.`,
-      icon: "error",
+      title: "Empty Trash?",
+      text: `Permanently delete ${deletedMembers.length} members?`,
+      icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#e11d48",
-      confirmButtonText: "Yes, Purge All",
-      background: "#1e293b",
-      color: "#fff",
+      confirmButtonText: "Yes, delete all",
+      background: "#ffffff",
+      color: "#111827",
     });
 
     if (result.isConfirmed) {
       try {
         setDeletingAll(true);
-        await Promise.all(deletedMembers.map((m) => deleteTeamPermanent(m.id)));
-        toast.success("Trash purged successfully");
+        await Promise.all(
+          deletedMembers.map((m) => deleteTeamPermanent(m.id))
+        );
+        toast.success("Trash cleared");
         refresh();
-      } catch (err) {
-        toast.error("Failed to clear trash");
       } finally {
         setDeletingAll(false);
       }
     }
   };
 
-  if (loading) return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-      <Loader2 className="animate-spin text-emerald-500" size={40} />
-      
-    </div>
-  );
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+        <Loader2 className="animate-spin text-emerald-500" size={40} />
+      </div>
+    );
+  }
 
-  if (deletedMembers.length === 0) return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 px-4 text-center">
-      <div className="bg-slate-800/50 p-6 rounded-full">
-        <Users className="text-slate-600" size={48} />
+  if (deletedMembers.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 px-4 text-center">
+        <div className="bg-gray-100 p-6 rounded-full">
+          <Users className="text-gray-400" size={48} />
+        </div>
+        <div>
+          <h3 className="text-gray-800 font-medium text-lg">Trash is empty</h3>
+          <p className="text-gray-500 text-sm max-w-xs">
+            No deleted team members found.
+          </p>
+        </div>
       </div>
-      <div>
-        <h3 className="text-white font-medium text-lg">Trash is empty</h3>
-        <p className="text-slate-500 text-sm max-w-xs">There are no deleted team members to display or restore.</p>
-      </div>
-    </div>
-  );
+    );
+  }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto px-4 py-6 md:py-10">
-       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#1e293b] p-5 md:p-6 rounded-2xl border border-slate-800 gap-4 shadow-lg">
+    <div className="space-y-6 max-w-7xl mx-auto px-4 py-6 md:py-10 min-h-screen">
+      {/* HEADER */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-5 md:p-6 rounded-2xl border border-gray-200 shadow-sm gap-4">
         <div className="flex items-center gap-3">
-  <Link
-    href="/admin/dashboard/team" 
-    className="group p-3 bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white rounded-2xl transition-all"
-  >
-    <ArrowLeft
-      size={20} 
-      className="group-hover:-translate-x-1 transition-transform" 
-    />
-  </Link>
+          <Link
+            href="/admin/dashboard/team"
+            className="group p-3 bg-gray-100 hover:bg-emerald-500 text-gray-600 hover:text-white rounded-2xl transition-all cursor-pointer"
+          >
+            <ArrowLeft
+              size={20}
+              className="group-hover:-translate-x-1 transition-transform"
+            />
+          </Link>
 
-  <div>
-    <h1 className="text-xl md:text-2xl font-bold text-red-500">Team Trash </h1>
-  <p className="text-xs text-slate-400"> {deletedMembers.length} member found </p>
-  </div>
-</div>
-<button
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold text-red-500">
+              Team Trash
+            </h1>
+            <p className="text-xs text-gray-500">
+              {deletedMembers.length} member found
+            </p>
+          </div>
+        </div>
+
+        <button
           onClick={handleDeleteAll}
           disabled={deletingAll}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-500 text-white px-5 py-2.5 rounded-xl transition-all disabled:opacity-50 font-medium text-sm"
+          className="cursor-pointer flex items-center justify-center gap-2 bg-rose-500 hover:bg-rose-600 text-white px-5 py-2.5 rounded-xl transition-all disabled:opacity-50 font-medium text-sm"
         >
           {deletingAll ? (
             <Loader2 className="animate-spin" size={18} />
           ) : (
             <ShieldAlert size={18} />
           )}
-          {deletingAll ? "Purging..." : "Empty Trash"}
+          {deletingAll ? "Deleting..." : "Empty Trash"}
         </button>
       </div>
 
+      {/* CONTENT */}
       <AnimatePresence mode="wait">
-        <motion.div 
-          key="trash-content" 
-          initial={{ opacity: 0, y: 10 }} 
-          animate={{ opacity: 1, y: 0 }} 
+        <motion.div
+          key="trash"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
         >
-          
-          <div className="hidden md:block overflow-hidden bg-[#1e293b] rounded-2xl border border-slate-800 shadow-xl">
+          {/* TABLE (DESKTOP) */}
+          <div className="hidden md:block overflow-hidden bg-white rounded-2xl border border-gray-200 shadow-sm">
             <table className="w-full text-left">
-              <thead className="bg-slate-800/50 text-slate-400 text-xs uppercase tracking-wider">
+              <thead className="bg-gray-50 text-gray-500 text-xs uppercase">
                 <tr>
                   <th className="px-8 py-5">Member</th>
-                  <th className="px-8 py-5">Role & Expertise</th>
+                  <th className="px-8 py-5">Role</th>
                   <th className="px-8 py-5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
-                {deletedMembers.map(member => (
-                  <tr key={member.id} className="group hover:bg-slate-800/30 transition-all">
+
+              <tbody>
+                {deletedMembers.map((member) => (
+                  <tr
+                    key={member.id}
+                    className="border-t border-gray-200 hover:bg-gray-50 transition"
+                  >
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-4">
-                        <div className="h-11 w-11 rounded-lg overflow-hidden border border-slate-700 shrink-0">
-                          <img src={member.image || "/placeholder-user.png"} alt="" className="object-cover w-full h-full" />
-                        </div>
-                        <div className="flex flex-col min-w-0">
-                          <span className="font-bold text-slate-200 truncate">{member.name}</span>
-                          <span className="text-[11px] text-slate-500 truncate">{member.email || "No email"}</span>
+                        <img
+                          src={member.image || "/placeholder-user.png"}
+                          className="h-11 w-11 rounded-lg border border-gray-200 object-cover"
+                        />
+                        <div>
+                          <div className="font-semibold text-gray-800">
+                            {member.name}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {member.email || "No email"}
+                          </div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-8 py-5">
-                      <div className="text-slate-300 font-medium">{member.role}</div>
-                      <div className="text-xs text-slate-500 mt-0.5">{member.expertise}</div>
+
+                    <td className="px-8 py-5 text-gray-600">
+                      {member.role}
                     </td>
-                    <td className="px-8 py-5 text-right">
-                      <div className="flex justify-end gap-2">
-                        <button
-                          onClick={() => handleRestore(member.id)}
-                          disabled={processingId === member.id}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-emerald-400 hover:bg-emerald-400/10 rounded-lg transition-all disabled:opacity-50"
-                        >
-                          <RotateCcw size={14} /> Restore
-                        </button>
-                        <button
-                          onClick={() => handlePermanentDelete(member.id)}
-                          disabled={processingId === member.id}
-                          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-rose-400 hover:bg-rose-400/10 rounded-lg transition-all disabled:opacity-50"
-                        >
-                          <Trash2 size={14} /> Delete
-                        </button>
-                      </div>
+
+                    <td className="px-8 py-5 text-right space-x-2">
+                      <button
+                        onClick={() => handleRestore(member.id)}
+                        disabled={processingId === member.id}
+                        className="cursor-pointer inline-flex items-center gap-1 px-3 py-1.5 text-sm text-emerald-600 hover:bg-emerald-50 rounded-lg transition disabled:opacity-50"
+                      >
+                        <RotateCcw size={14} /> Restore
+                      </button>
+
+                      <button
+                        onClick={() => handlePermanentDelete(member.id)}
+                        disabled={processingId === member.id}
+                        className="cursor-pointer inline-flex items-center gap-1 px-3 py-1.5 text-sm text-rose-600 hover:bg-rose-50 rounded-lg transition disabled:opacity-50"
+                      >
+                        <Trash2 size={14} /> Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -204,36 +231,47 @@ export default function AdminTeamTrash() {
             </table>
           </div>
 
+          {/* MOBILE CARDS */}
           <div className="grid grid-cols-1 gap-4 md:hidden">
-            {deletedMembers.map(member => (
-              <div key={member.id} className="bg-[#1e293b] p-5 rounded-2xl border border-slate-800 space-y-4">
+            {deletedMembers.map((member) => (
+              <div
+                key={member.id}
+                className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4"
+              >
                 <div className="flex items-center gap-4">
-                  <div className="h-14 w-14 rounded-xl overflow-hidden border border-slate-700 shrink-0">
-                    <img src={member.image || "/placeholder-user.png"} alt="" className="object-cover w-full h-full" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="font-bold text-slate-200 truncate">{member.name}</h3>
-                    <p className="text-xs text-slate-500 truncate">{member.email}</p>
-                    <div className="mt-1 inline-block px-2 py-0.5 rounded bg-slate-800 text-[10px] text-slate-400 font-medium">
+                  <img
+                    src={member.image || "/placeholder-user.png"}
+                    className="h-14 w-14 rounded-xl border border-gray-200 object-cover"
+                  />
+
+                  <div>
+                    <h3 className="font-semibold text-gray-800">
+                      {member.name}
+                    </h3>
+                    <p className="text-xs text-gray-500">{member.email}</p>
+                    <span className="inline-block mt-1 px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
                       {member.role}
-                    </div>
+                    </span>
                   </div>
                 </div>
-                
-                <div className="pt-4 border-t border-slate-800 grid grid-cols-2 gap-3">
+
+                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-gray-200">
                   <button
                     onClick={() => handleRestore(member.id)}
                     disabled={processingId === member.id}
-                    className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm font-semibold active:scale-95 transition-transform"
+                    className="cursor-pointer bg-emerald-50 text-emerald-600 py-2 rounded-xl text-sm font-medium"
                   >
-                    <RotateCcw size={16} /> Restore
+                    <RotateCcw size={14} className="inline mr-1" />
+                    Restore
                   </button>
+
                   <button
                     onClick={() => handlePermanentDelete(member.id)}
                     disabled={processingId === member.id}
-                    className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-rose-500/10 text-rose-400 text-sm font-semibold active:scale-95 transition-transform"
+                    className="cursor-pointer bg-rose-50 text-rose-600 py-2 rounded-xl text-sm font-medium"
                   >
-                    <Trash2 size={16} /> Delete
+                    <Trash2 size={14} className="inline mr-1" />
+                    Delete
                   </button>
                 </div>
               </div>

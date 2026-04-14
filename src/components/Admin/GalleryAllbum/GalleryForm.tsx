@@ -64,12 +64,12 @@ export default function GalleryForm({
   useEffect(() => {
     if (initialData?.allItems) {
       const unique: string[] = [
-  ...new Set(
-    (initialData.allItems as any[])
-      .map((item) => item.category as string)
-      .filter((cat): cat is string => Boolean(cat))
-  ),
-];
+        ...new Set(
+          (initialData.allItems as any[])
+            .map((item) => item.category as string)
+            .filter((cat): cat is string => Boolean(cat))
+        ),
+      ];
       setCategories(unique);
     }
   }, [initialData]);
@@ -119,11 +119,11 @@ export default function GalleryForm({
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-[#1e293b] p-5 md:p-8 rounded-2xl border border-slate-800 shadow-2xl max-w-4xl mx-auto"
+      className="bg-white p-5 md:p-8 rounded-2xl border border-slate-200 shadow-xl max-w-4xl mx-auto"
     >
-      <div className="flex justify-between items-center mb-8 border-b border-slate-700 pb-5">
-        <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
-          <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500">
+      <div className="flex justify-between items-center mb-8 border-b border-slate-200 pb-5">
+        <h2 className="text-lg md:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
             <ImageIcon size={20} />
           </div>
           {initialData ? "Edit Gallery Album" : "Add Gallery Album"}
@@ -138,19 +138,21 @@ export default function GalleryForm({
       </div>
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
           <div className="md:col-span-2 space-y-2">
             <label className="text-xs font-bold uppercase text-slate-500 flex items-center gap-2">
-              <ImageIcon size={14} className="text-emerald-500" />
+              <ImageIcon size={14} className="text-emerald-600" />
               Album Title
             </label>
 
             <input
               {...register("title", { required: "Title is required" })}
               placeholder="Food Distribution Sylhet"
-              className={`w-full bg-[#0f172a] border ${
-                errors.title ? "border-rose-500" : "border-slate-700"
-              } rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/50`}
+              className={`w-full bg-white border ${
+                errors.title ? "border-rose-500" : "border-slate-300"
+              } rounded-xl p-3 text-slate-900 outline-none focus:ring-2 focus:ring-emerald-500/50`}
             />
 
             {errors.title && (
@@ -160,19 +162,18 @@ export default function GalleryForm({
             )}
           </div>
 
-          {/* ✅ UPDATED CATEGORY FIELD */}
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase text-slate-500 flex items-center gap-2">
-              <Tag size={14} className="text-emerald-500" /> Album Category
+              <Tag size={14} className="text-emerald-600" /> Album Category
             </label>
 
             <input
               list="category-options"
               {...register("category", { required: "Category is required" })}
               placeholder="Type or select category"
-              className={`w-full bg-[#0f172a] border ${
-                errors.category ? "border-rose-500" : "border-slate-700"
-              } rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/50`}
+              className={`w-full bg-white border ${
+                errors.category ? "border-rose-500" : "border-slate-300"
+              } rounded-xl p-3 text-slate-900 outline-none focus:ring-2 focus:ring-emerald-500/50`}
             />
 
             <datalist id="category-options">
@@ -194,30 +195,25 @@ export default function GalleryForm({
             </label>
 
             <input
-  type="date"
-  {...register("date", { required: true })}
-  className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-white outline-none focus:ring-2  focus:ring-emerald-500/50 [color-scheme:dark] cursor-pointer"
-/>
+              type="date"
+              {...register("date", { required: true })}
+              className="w-full bg-white border border-slate-300 rounded-xl p-3 text-slate-900 outline-none focus:ring-2 focus:ring-emerald-500/50 cursor-pointer"
+            />
           </div>
+
         </div>
 
+        {/* Images */}
         {existingImages.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
             {existingImages.map((img) => (
-              <div
-                key={img.id}
-                className="relative group h-28 md:h-32 rounded-lg overflow-hidden"
-              >
-                <img
-                  src={img.url}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
+              <div key={img.id} className="relative group h-28 md:h-32 rounded-lg overflow-hidden">
+                <img src={img.url} className="w-full h-full object-cover" />
 
                 <button
                   type="button"
                   onClick={() => removeExistingImage(img.id)}
-                  className="absolute top-2 right-2 bg-rose-500 text-white p-1.5 rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition"
+                  className="absolute top-2 right-2 bg-rose-500 text-white p-1.5 rounded-full cursor-pointer"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -229,20 +225,13 @@ export default function GalleryForm({
         {newFiles.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
             {newFiles.map((file, index) => (
-              <div
-                key={index}
-                className="relative group h-28 md:h-32 rounded-lg overflow-hidden"
-              >
-                <img
-                  src={URL.createObjectURL(file)}
-                  className="w-full h-full object-cover"
-                  alt=""
-                />
+              <div key={index} className="relative group h-28 md:h-32 rounded-lg overflow-hidden">
+                <img src={URL.createObjectURL(file)} className="w-full h-full object-cover" />
 
                 <button
                   type="button"
                   onClick={() => removeNewFile(index)}
-                  className="absolute top-2 right-2 bg-rose-500 text-white p-1.5 rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition"
+                  className="absolute top-2 right-2 bg-rose-500 text-white p-1.5 rounded-full cursor-pointer"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -251,28 +240,22 @@ export default function GalleryForm({
           </div>
         )}
 
-        <label className="flex flex-col items-center justify-center h-32 md:h-40 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-emerald-500 transition bg-[#0f172a]">
+        <label className="flex flex-col items-center justify-center h-32 md:h-40 border-2 border-dashed border-slate-300 rounded-xl cursor-pointer hover:border-emerald-500 transition bg-white">
           <Upload className="text-slate-500 mb-2" />
-          <span className="text-slate-400 font-medium">Upload Photos</span>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleFileChange}
-            className="hidden"
-          />
+          <span className="text-slate-600 font-medium">Upload Photos</span>
+          <input type="file" multiple accept="image/*" onChange={handleFileChange} className="hidden" />
         </label>
 
         <div className="space-y-2">
           <label className="text-xs font-bold uppercase text-slate-500 flex items-center gap-2">
-            <AlignLeft size={14} className="text-emerald-500" /> Caption
+            <AlignLeft size={14} className="text-emerald-600" /> Caption
           </label>
 
           <textarea
             rows={3}
             {...register("description")}
             placeholder="Describe this event..."
-            className="w-full bg-[#0f172a] border border-slate-700 rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/50"
+            className="w-full bg-white border border-slate-300 rounded-xl p-3 text-slate-900 outline-none focus:ring-2 focus:ring-emerald-500/50"
           />
         </div>
 
@@ -292,6 +275,7 @@ export default function GalleryForm({
             "Publish Gallery Album"
           )}
         </button>
+
       </form>
     </motion.div>
   );
