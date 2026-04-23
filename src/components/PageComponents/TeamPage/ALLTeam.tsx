@@ -38,7 +38,7 @@ export function AllTeam() {
               animate={{ opacity: 1, scale: 1 }}
             >
               <UsersIcon className="w-4 h-4" />
-              Our Team
+              Leadership Team
             </motion.div>
             <h1 className="text-5xl text-[#0F172A] mb-4">
               Meet Our Team

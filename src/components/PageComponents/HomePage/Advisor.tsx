@@ -34,7 +34,7 @@ export function Advisor() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            Our Advisor
+            Our Mentors & Advisors
           </motion.div>
           <h2 className="text-4xl lg:text-5xl text-[#0F172A] mb-4">
             Meet the People Behind Our Mission

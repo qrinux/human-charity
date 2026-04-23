@@ -34,10 +34,10 @@ export function Team() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            Our Team
+             Leadership Team
           </motion.div>
           <h2 className="text-4xl lg:text-5xl text-[#0F172A] mb-4">
-            Meet with our contributing member
+            Meet the People Behind Our Mission
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Dedicated professionals united by a common goal: creating positive change in Bangladesh

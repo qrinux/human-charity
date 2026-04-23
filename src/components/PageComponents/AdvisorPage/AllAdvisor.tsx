@@ -38,10 +38,10 @@ export function AllAdvisor() {
               animate={{ opacity: 1, scale: 1 }}
             >
               <UsersIcon className="w-4 h-4" />
-              Our Advisor
+              Our Mentors & Advisors
             </motion.div>
             <h1 className="text-5xl text-[#0F172A] mb-4">
-              Meet with all our advisor
+              Meet With All Our Advisors
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Dedicated professionals working together to create lasting change across Bangladesh

@@ -65,7 +65,7 @@ export function Focus() {
             Our Focus Areas
           </motion.div>
           <h2 className="text-4xl lg:text-5xl text-[#0F172A] mb-4">
-            Six Pillars of Change
+            Framework For Meaningful Change
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Transforming lives through comprehensive programs designed to address the most critical needs of our communities
