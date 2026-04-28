@@ -63,14 +63,14 @@ export default function GalleryForm({
 
   useEffect(() => {
     if (initialData?.allItems) {
-      const unique: string[] = [
-        ...new Set(
-          (initialData.allItems as any[])
-            .map((item) => item.category as string)
-            .filter((cat): cat is string => Boolean(cat))
-        ),
-      ];
-      setCategories(unique);
+      // Deduplicate by category name (original Bengali is fine here — it's for display)
+      const seen = new Map<string, string>();
+      (initialData.allItems as any[]).forEach((item) => {
+        if (item.category && !seen.has(item.categorySlug)) {
+          seen.set(item.categorySlug, item.category);
+        }
+      });
+      setCategories(Array.from(seen.values()));
     }
   }, [initialData]);
 
@@ -104,6 +104,8 @@ export default function GalleryForm({
     data.append("description", values.description);
     data.append("date", values.date);
 
+    // Slug is generated server-side automatically — no need to pass it from the form
+
     newFiles.forEach((file) => data.append("images", file));
 
     const removedIds = initialData?.images
@@ -126,9 +128,8 @@ export default function GalleryForm({
           <div className="p-2 bg-emerald-100 rounded-lg text-emerald-600">
             <ImageIcon size={20} />
           </div>
-          {initialData ? "Edit Gallery Album" : "Add Gallery Album"}
+          {initialData?.title ? "Edit Gallery Album" : "Add Gallery Album"}
         </h2>
-
         <button
           onClick={onClose}
           className="text-white p-2 hover:bg-red-500/20 bg-red-500 rounded-full transition-all cursor-pointer"
@@ -146,19 +147,15 @@ export default function GalleryForm({
               <ImageIcon size={14} className="text-emerald-600" />
               Album Title
             </label>
-
             <input
               {...register("title", { required: "Title is required" })}
-              placeholder="Food Distribution Sylhet"
+              placeholder="খাদ্য বিতরণ সিলেট ২০২৪"
               className={`w-full bg-white border ${
                 errors.title ? "border-rose-500" : "border-slate-300"
               } rounded-xl p-3 text-slate-900 outline-none focus:ring-2 focus:ring-emerald-500/50`}
             />
-
             {errors.title && (
-              <p className="text-rose-500 text-[10px] font-bold">
-                {errors.title.message}
-              </p>
+              <p className="text-rose-500 text-[10px] font-bold">{errors.title.message}</p>
             )}
           </div>
 
@@ -166,26 +163,21 @@ export default function GalleryForm({
             <label className="text-xs font-bold uppercase text-slate-500 flex items-center gap-2">
               <Tag size={14} className="text-emerald-600" /> Album Category
             </label>
-
             <input
               list="category-options"
               {...register("category", { required: "Category is required" })}
-              placeholder="Type or select category"
+              placeholder="খাদ্য বিতরণ"
               className={`w-full bg-white border ${
                 errors.category ? "border-rose-500" : "border-slate-300"
               } rounded-xl p-3 text-slate-900 outline-none focus:ring-2 focus:ring-emerald-500/50`}
             />
-
             <datalist id="category-options">
               {categories.map((cat, i) => (
                 <option key={i} value={cat} />
               ))}
             </datalist>
-
             {errors.category && (
-              <p className="text-rose-500 text-[10px] font-bold">
-                {errors.category.message}
-              </p>
+              <p className="text-rose-500 text-[10px] font-bold">{errors.category.message}</p>
             )}
           </div>
 
@@ -193,7 +185,6 @@ export default function GalleryForm({
             <label className="text-xs font-bold uppercase text-slate-500 flex items-center gap-2">
               <Calendar size={14} /> Event Date
             </label>
-
             <input
               type="date"
               {...register("date", { required: true })}
@@ -203,13 +194,11 @@ export default function GalleryForm({
 
         </div>
 
-        {/* Images */}
         {existingImages.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
             {existingImages.map((img) => (
               <div key={img.id} className="relative group h-28 md:h-32 rounded-lg overflow-hidden">
-                <img src={img.url} className="w-full h-full object-cover" />
-
+                <img src={img.url} className="w-full h-full object-cover" alt="" />
                 <button
                   type="button"
                   onClick={() => removeExistingImage(img.id)}
@@ -226,8 +215,7 @@ export default function GalleryForm({
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
             {newFiles.map((file, index) => (
               <div key={index} className="relative group h-28 md:h-32 rounded-lg overflow-hidden">
-                <img src={URL.createObjectURL(file)} className="w-full h-full object-cover" />
-
+                <img src={URL.createObjectURL(file)} className="w-full h-full object-cover" alt="" />
                 <button
                   type="button"
                   onClick={() => removeNewFile(index)}
@@ -250,7 +238,6 @@ export default function GalleryForm({
           <label className="text-xs font-bold uppercase text-slate-500 flex items-center gap-2">
             <AlignLeft size={14} className="text-emerald-600" /> Caption
           </label>
-
           <textarea
             rows={3}
             {...register("description")}
@@ -265,11 +252,8 @@ export default function GalleryForm({
           className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white font-bold py-4 rounded-xl flex justify-center items-center transition cursor-pointer"
         >
           {isSubmitting ? (
-            <>
-              <Loader2 className="animate-spin mr-2" />
-              Uploading...
-            </>
-          ) : initialData ? (
+            <><Loader2 className="animate-spin mr-2" />Uploading...</>
+          ) : initialData?.title ? (
             "Update Gallery Album"
           ) : (
             "Publish Gallery Album"

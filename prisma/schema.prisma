@@ -80,14 +80,19 @@ model Team {
   updatedAt    DateTime @updatedAt
 }
 model GalleryItem {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  category    String
-  url         String   @unique 
-  date        DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  title        String
+  slug         String
+  description  String?
+  category     String
+  categorySlug String
+  url          String   @unique
+  date         DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([slug])
+  @@index([categorySlug])
 }
 model ContactMessage {
   id        String   @id @default(uuid())

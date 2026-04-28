@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { imagekit } from "@/lib/imagekit";
+import { generateSlug } from "@/lib/slugify";
 
 /* -------------------------------- */
 /* UPSERT GALLERY ITEM (MULTI IMAGE) */
@@ -16,8 +17,12 @@ export const upsertGalleryItem = async (formData: FormData) => {
     const description = (formData.get("description") as string) || "";
     const dateInput = (formData.get("date") as string) || "";
     const files = formData.getAll("images") as File[];
-    
-    // Get IDs of images to remove (for the 'Edit' functionality)
+
+    // Generate URL-safe slugs from title and category (handles Bengali, Arabic, etc.)
+    const slug = generateSlug(title);
+    const categorySlug = generateSlug(category);
+
+    // Get IDs of images to remove
     const removedImageIds = formData.getAll("removedImages[]") as string[];
 
     // 1. Handle Deletions first if updating
@@ -29,23 +34,23 @@ export const upsertGalleryItem = async (formData: FormData) => {
       });
     }
 
-    // 2. Prepare Parallel Uploads to ImageKit
-    // Using Promise.all is much faster for mobile connections
+    // 2. Parallel Uploads to ImageKit
     const uploadPromises = files
       .filter((file) => file.size > 0)
       .map(async (file) => {
         const buffer = Buffer.from(await file.arrayBuffer());
-        
+
         const uploadResponse = await imagekit.upload({
           file: buffer,
           fileName: `gallery_${Date.now()}_${file.name.replace(/\s+/g, "_")}`,
           folder: "gallery",
         });
 
-        // Return the data object for Prisma
         return {
           title,
+          slug,
           category,
+          categorySlug,
           description,
           url: uploadResponse.url,
           date: new Date(dateInput),
@@ -54,22 +59,15 @@ export const upsertGalleryItem = async (formData: FormData) => {
 
     const newImageData = await Promise.all(uploadPromises);
 
-    // 3. Database Operation
+    // 3. If updating: update metadata of all images in this album
     if (id) {
-      // UPDATE existing records metadata
-      // Since your schema stores title/desc in every row, we update all items in this "album"
-      // Note: This logic assumes all images with the same title/date are part of one group
       await db.galleryItem.updateMany({
-        where: { 
-          // You might need a more specific 'albumId' in your schema later, 
-          // but for now we use the title/date context or specific ID
-          title: title 
-        },
-        data: { title, category, description, date: new Date(dateInput) },
+        where: { title },
+        data: { title, slug, category, categorySlug, description, date: new Date(dateInput) },
       });
     }
 
-    // 4. Create the new image entries
+    // 4. Create new image entries
     if (newImageData.length > 0) {
       await db.galleryItem.createMany({
         data: newImageData,
@@ -90,7 +88,7 @@ export const upsertGalleryItem = async (formData: FormData) => {
 };
 
 /* -------------------------------- */
-/* DELETE SINGLE IMAGE */
+/* DELETE SINGLE IMAGE               */
 /* -------------------------------- */
 
 export const deleteGalleryItem = async (id: number) => {
@@ -109,7 +107,7 @@ export const deleteGalleryItem = async (id: number) => {
 };
 
 /* -------------------------------- */
-/* GET ALL ITEMS */
+/* GET ALL ITEMS                     */
 /* -------------------------------- */
 
 export const getGalleryItems = async () => {
@@ -121,7 +119,6 @@ export const getGalleryItems = async () => {
     return { success: true, data: items };
   } catch (error) {
     console.error("Gallery Fetch Error:", error);
-
     return { success: false, error: "Failed to fetch gallery" };
   }
 };
