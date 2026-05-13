@@ -175,7 +175,7 @@
 //               <div className="space-y-4">
 //                 {[
 //                   'Youth Empowerment',
-//                   'Gender Equity',
+//                   'Women Empowerment',
 //                   'Education',
 //                   'Community Health',
 //                   'Climate Action',
@@ -486,7 +486,7 @@ export function About() {
               <div className="space-y-4">
                 {[
                   'Youth Empowerment',
-                  'Gender Equity',
+                  'Women Empowerment',
                   'Education',
                   'Community Health',
                   'Climate Action',

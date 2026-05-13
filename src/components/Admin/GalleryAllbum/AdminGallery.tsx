@@ -1,5 +1,5 @@
 "use client";
- 
+
 import React, { useState } from "react";
 import {
   Plus,
@@ -18,8 +18,9 @@ import { deleteGalleryItem, upsertGalleryItem } from "@/app/ServerActions/galler
 import GalleryForm from "./GalleryForm";
 import Swal from "sweetalert2";
 import Link from "next/link";
- 
+
 type Album = {
+  id: number;
   title: string;
   category: string;
   slug: string;
@@ -29,19 +30,20 @@ type Album = {
   date?: string;
   items: any[];
 };
- 
+
 export default function AdminGalleryPage() {
   const { items, loading, refresh } = useGallery();
   const [showForm, setShowForm] = useState(false);
   const [editingAlbum, setEditingAlbum] = useState<Album | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
- 
+
   // ✅ FIXED: group by slug-based key so Bengali titles work correctly
   const groupedAlbums: Album[] = Object.values(
     items.reduce((acc: Record<string, Album>, item: any) => {
       const key = `${item.categorySlug}-${item.slug}`;
       if (!acc[key]) {
         acc[key] = {
+          id: item.id,
           title: item.title,
           category: item.category,
           slug: item.slug,
@@ -56,7 +58,7 @@ export default function AdminGalleryPage() {
       return acc;
     }, {})
   );
- 
+
   // ✅ FIXED: group by original category name for display, keyed by categorySlug
   const categoryGroups: Record<string, Album[]> = groupedAlbums.reduce(
     (acc: Record<string, Album[]>, album: Album) => {
@@ -68,7 +70,7 @@ export default function AdminGalleryPage() {
     },
     {}
   );
- 
+
   const handleEdit = (album: Album) => {
     setEditingAlbum({
       ...album,
@@ -77,7 +79,7 @@ export default function AdminGalleryPage() {
     } as any);
     setShowForm(true);
   };
- 
+
   const handleDeleteAlbum = async (album: Album) => {
     const result = await Swal.fire({
       title: "Delete entire album?",
@@ -87,9 +89,9 @@ export default function AdminGalleryPage() {
       cancelButtonColor: "#334155",
       confirmButtonText: "Yes, delete everything",
     });
- 
+
     if (!result.isConfirmed) return;
- 
+
     try {
       for (const img of album.items) {
         await deleteGalleryItem(img.id);
@@ -100,7 +102,7 @@ export default function AdminGalleryPage() {
       toast.error("Failed to delete some images");
     }
   };
- 
+
   const handleFormSubmit = async (formData: FormData) => {
     setIsSubmitting(true);
     try {
@@ -119,17 +121,17 @@ export default function AdminGalleryPage() {
       setIsSubmitting(false);
     }
   };
- 
+
   if (loading && items.length === 0)
     return (
       <div className="flex flex-col justify-center items-center h-96 gap-4">
         <Loader2 className="animate-spin text-emerald-500" size={48} />
       </div>
     );
- 
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-10">
- 
+
       <div className="flex flex-col sm:flex-row justify-between items-end border-b border-slate-300 pb-6">
         <div>
           <h1 className="md:text-4xl text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
@@ -140,7 +142,7 @@ export default function AdminGalleryPage() {
             Organize, edit, and manage your visual stories.
           </p>
         </div>
- 
+
         <button
           onClick={() => {
             setEditingAlbum(null);
@@ -152,7 +154,7 @@ export default function AdminGalleryPage() {
           Create New Album
         </button>
       </div>
- 
+
       <AnimatePresence mode="wait">
         {showForm ? (
           <motion.div
@@ -184,14 +186,14 @@ export default function AdminGalleryPage() {
           >
             {Object.entries(categoryGroups).map(([category, albums]) => (
               <section key={category} className="space-y-6">
- 
+
                 <div className="flex items-center justify-center gap-3">
                   <h2 className="flex items-center gap-2 text-slate-600 font-bold text-sm uppercase tracking-widest bg-white px-4 py-1 rounded-full border border-slate-200">
                     <Tag className="text-emerald-600" size={14} />
                     {category} {/* ✅ Shows original Bengali name */}
                   </h2>
                 </div>
- 
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {albums.map((album, index) => (
                     <div
@@ -224,7 +226,7 @@ export default function AdminGalleryPage() {
                           </button>
                         </div>
                       </div>
- 
+
                       <div className="p-5">
                         <h3 className="text-slate-900 font-bold truncate text-lg mb-1">
                           {album.title} {/* ✅ Shows original Bengali title */}
@@ -245,7 +247,7 @@ export default function AdminGalleryPage() {
                 </div>
               </section>
             ))}
- 
+
             {groupedAlbums.length === 0 && (
               <div className="py-32 flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-3xl">
                 <div className="bg-slate-100 p-6 rounded-full mb-4">
@@ -263,4 +265,3 @@ export default function AdminGalleryPage() {
     </div>
   );
 }
- 
