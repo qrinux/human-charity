@@ -75,6 +75,7 @@ export default function AlbumPage() {
             <h1 className="text-3xl font-extrabold text-slate-900 mt-1">
               {albumTitle}
             </h1>
+            <p className="text-sm text-gray-500 mt-2 text-justify">{albumImages[0]?.description}</p>
           </div>
         )}
 
@@ -98,11 +99,11 @@ export default function AlbumPage() {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                   <h3 className="font-semibold text-lg text-white">{img.title}</h3>
-                  <p className="text-sm text-white opacity-80">{img.description}</p>
+                  <p className="text-sm text-white opacity-80 line-clamp-3">{img.description}</p>
                   <div className="flex items-center gap-2 text-xs text-white opacity-70 mt-2">
                     <Calendar size={12} /> {new Date(img.date).toLocaleDateString()}
                   </div>
-                </div>           
+                </div>
               </motion.div>
             ))}
           </Masonry>
@@ -159,9 +160,9 @@ export default function AlbumPage() {
                 <h3 className="text-2xl font-bold">
                   {albumImages[lightboxIndex].title}
                 </h3>
-                <p className="text-sm text-white/70 mt-2">
+                {/* <p className="text-sm text-white/70 mt-2">
                   {albumImages[lightboxIndex].description}
-                </p>
+                </p> */}
                 <div className="flex items-center justify-center gap-2 text-sm text-white/50 mt-2">
                   <Calendar size={14} />
                   <span>{new Date(albumImages[lightboxIndex].date).toLocaleDateString()}</span>

@@ -5,6 +5,10 @@ import { revalidatePath } from "next/cache";
 import { imagekit } from "@/lib/imagekit";
 import { generateSlug } from "@/lib/slugify";
 
+const MAX_GALLERY_IMAGES = 12;
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+const MAX_IMAGE_SIZE_LABEL = "5MB";
+
 /* -------------------------------- */
 /* UPSERT GALLERY ITEM (MULTI IMAGE) */
 /* -------------------------------- */
@@ -24,6 +28,49 @@ export const upsertGalleryItem = async (formData: FormData) => {
 
     // Get IDs of images to remove
     const removedImageIds = formData.getAll("removedImages[]") as string[];
+    const uploadedFiles = files.filter((file) => file.size > 0);
+
+    if (uploadedFiles.some((file) => file.size > MAX_IMAGE_SIZE_BYTES)) {
+      return {
+        success: false,
+        error: `Each image must be ${MAX_IMAGE_SIZE_LABEL} or smaller.`,
+      };
+    }
+
+    let remainingImageCount = 0;
+
+    if (id) {
+      const existingItem = await db.galleryItem.findUnique({
+        where: { id: Number(id) },
+        select: { slug: true, categorySlug: true },
+      });
+
+      if (!existingItem) {
+        return { success: false, error: "Gallery album not found." };
+      }
+
+      const existingImageCount = await db.galleryItem.count({
+        where: {
+          slug: existingItem.slug,
+          categorySlug: existingItem.categorySlug,
+        },
+      });
+
+      remainingImageCount = Math.max(0, existingImageCount - removedImageIds.length);
+    }
+
+    const totalImageCount = remainingImageCount + uploadedFiles.length;
+
+    if (totalImageCount === 0) {
+      return { success: false, error: "Please upload at least one image." };
+    }
+
+    if (totalImageCount > MAX_GALLERY_IMAGES) {
+      return {
+        success: false,
+        error: `You can upload up to ${MAX_GALLERY_IMAGES} images per album.`,
+      };
+    }
 
     // 1. Handle Deletions first if updating
     if (removedImageIds.length > 0) {
@@ -35,8 +82,7 @@ export const upsertGalleryItem = async (formData: FormData) => {
     }
 
     // 2. Parallel Uploads to ImageKit
-    const uploadPromises = files
-      .filter((file) => file.size > 0)
+    const uploadPromises = uploadedFiles
       .map(async (file) => {
         const buffer = Buffer.from(await file.arrayBuffer());
 
@@ -61,8 +107,20 @@ export const upsertGalleryItem = async (formData: FormData) => {
 
     // 3. If updating: update metadata of all images in this album
     if (id) {
+      const existingItem = await db.galleryItem.findUnique({
+        where: { id: Number(id) },
+        select: { slug: true, categorySlug: true },
+      });
+
+      if (!existingItem) {
+        return { success: false, error: "Gallery album not found." };
+      }
+
       await db.galleryItem.updateMany({
-        where: { title },
+        where: {
+          slug: existingItem.slug,
+          categorySlug: existingItem.categorySlug,
+        },
         data: { title, slug, category, categorySlug, description, date: new Date(dateInput) },
       });
     }
@@ -78,11 +136,11 @@ export const upsertGalleryItem = async (formData: FormData) => {
     revalidatePath("/gallery");
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Gallery Save Error:", error);
     return {
       success: false,
-      error: error.message || "Failed to save gallery",
+      error: error instanceof Error ? error.message : "Failed to save gallery",
     };
   }
 };
@@ -101,7 +159,7 @@ export const deleteGalleryItem = async (id: number) => {
     revalidatePath("/gallery");
 
     return { success: true };
-  } catch (error) {
+  } catch {
     return { success: false, error: "Delete failed" };
   }
 };
