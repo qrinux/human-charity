@@ -112,7 +112,7 @@ export default function AdminUserTrashPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 bg-white text-gray-900">
+      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 bg-white ">
         <Loader2 className="animate-spin text-emerald-500" size={40} />
       </div>
     );

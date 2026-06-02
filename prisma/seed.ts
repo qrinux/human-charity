@@ -2,6 +2,17 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
 import "dotenv/config";
 import { PrismaClient } from "@generated";;
+import anyAscii from "any-ascii";
+
+function generateSlug(text: string): string {
+  return anyAscii(text)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 
 const connectionString = `${process.env.DATABASE_URL}`;
@@ -218,7 +229,7 @@ const galleryItems = [
     title: 'New School in Rajshahi',
     category: 'education',
     url: 'https://images.unsplash.com/photo-1764645362980-08d8704fd102?q=80&w=1080',
-    date: new Date('2026-02-15'), 
+    date: new Date('2026-02-15'),
     description: 'Students in our newly built classroom facility',
   },
   {
@@ -250,13 +261,17 @@ const galleryItems = [
     description: 'Vocational training workshop',
   }
 ];
- for (const item of galleryItems) {
-    await prisma.galleryItem.upsert({
-      where: { url: item.url },
-      update: item,
-      create: item,
-    });
-  }
+
+for (const item of galleryItems) {
+  const slug = generateSlug(item.title);
+  const categorySlug = generateSlug(item.category);
+
+  await prisma.galleryItem.upsert({
+    where: { url: item.url },
+    update: { ...item, slug, categorySlug },
+    create: { ...item, slug, categorySlug },
+  });
+}
 console.log("✅ Database seeded successfully!");
 }
 main()

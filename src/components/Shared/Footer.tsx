@@ -43,12 +43,12 @@ export function Footer() {
 
       <div className="container mx-auto px-6 relative z-10">
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 ">
 
           {/* LOGO */}
           <div>
             <motion.div
-              className="flex items-center mb-6"
+              className="flex items-center mb-6 mt-[-24px]"
               whileHover={{ scale: 1.05 }}
             >
               <Image
@@ -58,7 +58,7 @@ export function Footer() {
                 height={70}
                 className='rounded-sm'
               />
-              <h3 className="text-gray-900 text-xl font-bold ml-2">
+              <h3 className="text-green-900 text-xl font-bold ml-2">
                 Human Care
               </h3>
             </motion.div>

@@ -48,7 +48,7 @@ export function AllProjects() {
         <div className="container mx-auto px-6">
           <Link href={"/"}>
             <motion.button
-              className="flex items-center gap-2 text-gray-600 hover:text-[#10B981] mb-8 transition-colors duration-300"
+              className="flex items-center gap-2 cursor-pointer text-gray-600 hover:text-[#10B981] mb-8 transition-colors duration-300"
               whileHover={{ x: -5 }}
             >
               <ArrowLeft className="w-5 h-5" />
@@ -88,15 +88,6 @@ export function AllProjects() {
                     alt={project.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-[#10B981]" />
-                    <span className="text-sm text-[#0F172A]">
-                      {project.location}
-                    </span>
-                  </div>
                 </div>
 
                 {/* CONTENT */}

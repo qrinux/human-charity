@@ -38,7 +38,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-fit bg-gradient-to-b from-[#f0fdf4] to-[#ffffff] pt-30 overflow-hidden"
+      className="relative min-h-fit bg-gradient-to-b from-[#f0fdf4] to-[#ffffff] pt-28 md:pt-32 overflow-hidden"
     >
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">

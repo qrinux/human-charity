@@ -12,7 +12,7 @@ export function Projects() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <Loader2 className="animate-spin text-emerald-500" size={50} />
       </div>
     );
@@ -51,16 +51,7 @@ export function Projects() {
                   src={project.image}
                   alt={project.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[#10B981]" />
-                  <span className="text-sm text-[#0F172A]">
-                    {project.location}
-                  </span>
-                </div>
+                />  
               </div>
 
               {/* CONTENT */}

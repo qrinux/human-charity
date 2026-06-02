@@ -282,7 +282,6 @@ export const TeamForm = ({
 
         {/* OTHER INPUTS (same rule applied) */}
         {[
-          ["expertise", "Expertise"],
           ["email", "Professional Email"],
           ["linkedin", "LinkedIn"],
           ["facebook", "Facebook"],

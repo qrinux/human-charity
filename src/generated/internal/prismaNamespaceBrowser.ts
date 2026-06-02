@@ -161,8 +161,10 @@ export type TeamScalarFieldEnum = (typeof TeamScalarFieldEnum)[keyof typeof Team
 export const GalleryItemScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  slug: 'slug',
   description: 'description',
   category: 'category',
+  categorySlug: 'categorySlug',
   url: 'url',
   date: 'date',
   createdAt: 'createdAt',

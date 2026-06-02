@@ -175,7 +175,7 @@
 //               <div className="space-y-4">
 //                 {[
 //                   'Youth Empowerment',
-//                   'Gender Equity',
+//                   'Women Empowerment',
 //                   'Education',
 //                   'Community Health',
 //                   'Climate Action',
@@ -417,7 +417,7 @@ const metrics = [
 
 export function About() {
   return (
-    <section id="about" className="bg-white relative overflow-hidden pt-10">
+    <section id="about" className="bg-white relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-5">
         <div className="absolute top-20 left-20 w-64 h-64 border-2 border-[#10B981] rounded-full"></div>
@@ -481,12 +481,12 @@ export function About() {
             </div>
 
             {/* Mission & Values */}
-            <div className="bg-[#f0fdf4] rounded-2xl p-8 text-[#0F172A] mb-8">
+            <div className="bg-[#10B981]/10 text-[#0F172A] rounded-2xl p-8 mb-8">
               <h4 className="text-2xl mb-6">Our Values</h4>
               <div className="space-y-4">
                 {[
                   'Youth Empowerment',
-                  'Gender Equity',
+                  'Women Empowerment',
                   'Education',
                   'Community Health',
                   'Climate Action',
@@ -501,7 +501,7 @@ export function About() {
                     transition={{ delay: idx * 0.1 }}
                   >
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-black">{value}</span>
+                    <span className="text-[#0F172A]">{value}</span>
                   </motion.div>
                 ))}
               </div>

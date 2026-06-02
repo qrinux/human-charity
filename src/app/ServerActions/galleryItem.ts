@@ -2,7 +2,9 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { imagekit } from "@/lib/imagekit";
+import { generateSlug } from "@/lib/slugify";
+
+const MAX_GALLERY_IMAGES = 12;
 
 /* -------------------------------- */
 /* UPSERT GALLERY ITEM (MULTI IMAGE) */
@@ -15,10 +17,52 @@ export const upsertGalleryItem = async (formData: FormData) => {
     const category = (formData.get("category") as string) || "";
     const description = (formData.get("description") as string) || "";
     const dateInput = (formData.get("date") as string) || "";
-    const files = formData.getAll("images") as File[];
     
-    // Get IDs of images to remove (for the 'Edit' functionality)
+    // Retrieve the string array of URLs passed from the client side
+    const imageUrlsRaw = formData.get("imageUrls") as string;
+    const uploadedUrls: string[] = imageUrlsRaw ? JSON.parse(imageUrlsRaw) : [];
+
+    // Generate URL-safe slugs from title and category (handles Bengali, Arabic, etc.)
+    const slug = generateSlug(title);
+    const categorySlug = generateSlug(category);
+
+    // Get IDs of images to remove
     const removedImageIds = formData.getAll("removedImages[]") as string[];
+
+    let remainingImageCount = 0;
+
+    if (id) {
+      const existingItem = await db.galleryItem.findUnique({
+        where: { id: Number(id) },
+        select: { slug: true, categorySlug: true },
+      });
+
+      if (!existingItem) {
+        return { success: false, error: "Gallery album not found." };
+      }
+
+      const existingImageCount = await db.galleryItem.count({
+        where: {
+          slug: existingItem.slug,
+          categorySlug: existingItem.categorySlug,
+        },
+      });
+
+      remainingImageCount = Math.max(0, existingImageCount - removedImageIds.length);
+    }
+
+    const totalImageCount = remainingImageCount + uploadedUrls.length;
+
+    if (totalImageCount === 0) {
+      return { success: false, error: "Please upload at least one image." };
+    }
+
+    if (totalImageCount > MAX_GALLERY_IMAGES) {
+      return {
+        success: false,
+        error: `You can upload up to ${MAX_GALLERY_IMAGES} images per album.`,
+      };
+    }
 
     // 1. Handle Deletions first if updating
     if (removedImageIds.length > 0) {
@@ -29,47 +73,38 @@ export const upsertGalleryItem = async (formData: FormData) => {
       });
     }
 
-    // 2. Prepare Parallel Uploads to ImageKit
-    // Using Promise.all is much faster for mobile connections
-    const uploadPromises = files
-      .filter((file) => file.size > 0)
-      .map(async (file) => {
-        const buffer = Buffer.from(await file.arrayBuffer());
-        
-        const uploadResponse = await imagekit.upload({
-          file: buffer,
-          fileName: `gallery_${Date.now()}_${file.name.replace(/\s+/g, "_")}`,
-          folder: "gallery",
-        });
+    // 2. Prepare client-uploaded image URLs for Prisma mapping
+    const newImageData = uploadedUrls.map((url: string) => ({
+      title,
+      slug,
+      category,
+      categorySlug,
+      description,
+      url,
+      date: new Date(dateInput),
+    }));
 
-        // Return the data object for Prisma
-        return {
-          title,
-          category,
-          description,
-          url: uploadResponse.url,
-          date: new Date(dateInput),
-        };
+    // 3. If updating: update metadata of all remaining images in this album
+    if (id) {
+      const existingItem = await db.galleryItem.findUnique({
+        where: { id: Number(id) },
+        select: { slug: true, categorySlug: true },
       });
 
-    const newImageData = await Promise.all(uploadPromises);
+      if (!existingItem) {
+        return { success: false, error: "Gallery album not found." };
+      }
 
-    // 3. Database Operation
-    if (id) {
-      // UPDATE existing records metadata
-      // Since your schema stores title/desc in every row, we update all items in this "album"
-      // Note: This logic assumes all images with the same title/date are part of one group
       await db.galleryItem.updateMany({
-        where: { 
-          // You might need a more specific 'albumId' in your schema later, 
-          // but for now we use the title/date context or specific ID
-          title: title 
+        where: {
+          slug: existingItem.slug,
+          categorySlug: existingItem.categorySlug,
         },
-        data: { title, category, description, date: new Date(dateInput) },
+        data: { title, slug, category, categorySlug, description, date: new Date(dateInput) },
       });
     }
 
-    // 4. Create the new image entries
+    // 4. Create new image entries
     if (newImageData.length > 0) {
       await db.galleryItem.createMany({
         data: newImageData,
@@ -80,17 +115,17 @@ export const upsertGalleryItem = async (formData: FormData) => {
     revalidatePath("/gallery");
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Gallery Save Error:", error);
     return {
       success: false,
-      error: error.message || "Failed to save gallery",
+      error: error instanceof Error ? error.message : "Failed to save gallery",
     };
   }
 };
 
 /* -------------------------------- */
-/* DELETE SINGLE IMAGE */
+/* DELETE SINGLE IMAGE               */
 /* -------------------------------- */
 
 export const deleteGalleryItem = async (id: number) => {
@@ -103,13 +138,13 @@ export const deleteGalleryItem = async (id: number) => {
     revalidatePath("/gallery");
 
     return { success: true };
-  } catch (error) {
+  } catch {
     return { success: false, error: "Delete failed" };
   }
 };
 
 /* -------------------------------- */
-/* GET ALL ITEMS */
+/* GET ALL ITEMS                     */
 /* -------------------------------- */
 
 export const getGalleryItems = async () => {
@@ -121,7 +156,6 @@ export const getGalleryItems = async () => {
     return { success: true, data: items };
   } catch (error) {
     console.error("Gallery Fetch Error:", error);
-
     return { success: false, error: "Failed to fetch gallery" };
   }
 };

@@ -92,7 +92,7 @@ export function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="bg-white rounded-2xl shadow-2xl p-8 border-2 border-[#10B981]/10">
+            <div className="bg-white rounded-2xl shadow-2xl sm:p-8 p-2 border-2 border-[#10B981]/10">
               <h3 className="text-2xl text-[#0F172A] mb-6">Send us a Message</h3>
 
               <form onSubmit={handleSubmit} className="space-y-6">
