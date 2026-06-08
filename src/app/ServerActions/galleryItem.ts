@@ -2,12 +2,9 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { imagekit } from "@/lib/imagekit";
 import { generateSlug } from "@/lib/slugify";
 
 const MAX_GALLERY_IMAGES = 12;
-const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
-const MAX_IMAGE_SIZE_LABEL = "5MB";
 
 /* -------------------------------- */
 /* UPSERT GALLERY ITEM (MULTI IMAGE) */
@@ -20,7 +17,10 @@ export const upsertGalleryItem = async (formData: FormData) => {
     const category = (formData.get("category") as string) || "";
     const description = (formData.get("description") as string) || "";
     const dateInput = (formData.get("date") as string) || "";
-    const files = formData.getAll("images") as File[];
+    
+    // Retrieve the string array of URLs passed from the client side
+    const imageUrlsRaw = formData.get("imageUrls") as string;
+    const uploadedUrls: string[] = imageUrlsRaw ? JSON.parse(imageUrlsRaw) : [];
 
     // Generate URL-safe slugs from title and category (handles Bengali, Arabic, etc.)
     const slug = generateSlug(title);
@@ -28,14 +28,6 @@ export const upsertGalleryItem = async (formData: FormData) => {
 
     // Get IDs of images to remove
     const removedImageIds = formData.getAll("removedImages[]") as string[];
-    const uploadedFiles = files.filter((file) => file.size > 0);
-
-    if (uploadedFiles.some((file) => file.size > MAX_IMAGE_SIZE_BYTES)) {
-      return {
-        success: false,
-        error: `Each image must be ${MAX_IMAGE_SIZE_LABEL} or smaller.`,
-      };
-    }
 
     let remainingImageCount = 0;
 
@@ -59,7 +51,7 @@ export const upsertGalleryItem = async (formData: FormData) => {
       remainingImageCount = Math.max(0, existingImageCount - removedImageIds.length);
     }
 
-    const totalImageCount = remainingImageCount + uploadedFiles.length;
+    const totalImageCount = remainingImageCount + uploadedUrls.length;
 
     if (totalImageCount === 0) {
       return { success: false, error: "Please upload at least one image." };
@@ -81,31 +73,18 @@ export const upsertGalleryItem = async (formData: FormData) => {
       });
     }
 
-    // 2. Parallel Uploads to ImageKit
-    const uploadPromises = uploadedFiles
-      .map(async (file) => {
-        const buffer = Buffer.from(await file.arrayBuffer());
+    // 2. Prepare client-uploaded image URLs for Prisma mapping
+    const newImageData = uploadedUrls.map((url: string) => ({
+      title,
+      slug,
+      category,
+      categorySlug,
+      description,
+      url,
+      date: new Date(dateInput),
+    }));
 
-        const uploadResponse = await imagekit.upload({
-          file: buffer,
-          fileName: `gallery_${Date.now()}_${file.name.replace(/\s+/g, "_")}`,
-          folder: "gallery",
-        });
-
-        return {
-          title,
-          slug,
-          category,
-          categorySlug,
-          description,
-          url: uploadResponse.url,
-          date: new Date(dateInput),
-        };
-      });
-
-    const newImageData = await Promise.all(uploadPromises);
-
-    // 3. If updating: update metadata of all images in this album
+    // 3. If updating: update metadata of all remaining images in this album
     if (id) {
       const existingItem = await db.galleryItem.findUnique({
         where: { id: Number(id) },

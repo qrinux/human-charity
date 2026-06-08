@@ -1,6 +1,6 @@
 "use client"
 import { motion } from 'motion/react';
-import { Heart, GraduationCap, HandHeart, Users,Globe,HouseIcon } from 'lucide-react';
+import { Heart, GraduationCap, HandHeart, Users, Globe, HouseIcon } from 'lucide-react';
 
 const pillars = [
   {
@@ -27,7 +27,7 @@ const pillars = [
     description: 'Good health is the foundation of everything we build. From awareness campaigns to on-ground medical support, Human Care ensures no one is left behind due to geography, income, or lack of information. A community that is healthy is a community that can truly thrive.',
     color: '#10B981',
   },
-  
+
   {
     icon: Globe,
     title: "Climate Action",
@@ -44,7 +44,7 @@ const pillars = [
 
 export function Focus() {
   return (
-    <section id="focus" className="py-24 bg-white relative overflow-hidden">
+    <section id="focus" className="pt-20 bg-white relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-80 bg-[#10B981]/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#F59E0B]/5 rounded-full blur-3xl"></div>
 
@@ -72,7 +72,7 @@ export function Focus() {
           </p>
         </motion.div>
 
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {pillars.map((pillar, index) => (
             <motion.div
@@ -83,7 +83,7 @@ export function Focus() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-        
+
               <motion.div
                 className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#10B981] to-[#059669] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
                 whileHover={{ rotate: 5 }}

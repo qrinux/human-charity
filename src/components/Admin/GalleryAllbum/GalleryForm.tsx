@@ -14,6 +14,7 @@ import {
   AlignLeft,
 } from "lucide-react";
 import { motion } from "motion/react";
+import { uploadToImageKit } from "@/lib/uploadToImageKit";
 
 const MAX_GALLERY_IMAGES = 12;
 const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
@@ -212,26 +213,36 @@ export default function GalleryForm({
 
     setUploadError(null);
 
-    const data = new FormData();
+    try {
+      const uploadedUrls: string[] = [];
 
-    if (initialData?.id) data.append("id", initialData.id.toString());
+      for (const upload of allowedUploads) {
+        const url = await uploadToImageKit(upload.file);
+        uploadedUrls.push(url);
+      }
 
-    data.append("title", values.title);
-    data.append("category", values.category);
-    data.append("description", values.description);
-    data.append("date", values.date);
+      const data = new FormData();
 
-    // Slug is generated server-side automatically — no need to pass it from the form
+      if (initialData?.id) data.append("id", initialData.id.toString());
 
-    allowedUploads.forEach((upload) => data.append("images", upload.file));
+      data.append("title", values.title);
+      data.append("category", values.category);
+      data.append("description", values.description);
+      data.append("date", values.date);
 
-    const removedIds = initialData?.images
-      ?.map((img) => img.id)
-      .filter((id) => !existingImages.find((img) => img.id === id));
+      data.append("imageUrls", JSON.stringify(uploadedUrls));
 
-    removedIds?.forEach((id) => data.append("removedImages[]", id.toString()));
+      const removedIds = initialData?.images
+        ?.map((img) => img.id)
+        .filter((id) => !existingImages.find((img) => img.id === id));
 
-    await onSubmit(data);
+      removedIds?.forEach((id) => data.append("removedImages[]", id.toString()));
+
+      await onSubmit(data);
+    } catch (error) {
+      setUploadError("An error occurred while uploading images. Please try again.");
+      console.error(error);
+    }
   };
 
   return (
