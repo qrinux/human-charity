@@ -38,10 +38,26 @@ export default function HeroForm({ initialData }: HeroFormProps) {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
-    setNewFiles((prev) => [...prev, ...files]);
-    const previews = files.map((f) => URL.createObjectURL(f));
+    const MAX_IMAGES = 5;
+    const currentCount = previewImages.length;
+    const remaining = MAX_IMAGES - currentCount;
+
+    if (remaining <= 0) {
+      toast.warning(`Maximum ${MAX_IMAGES} images allowed.`);
+      e.target.value = "";
+      return;
+    }
+
+    if (files.length > remaining) {
+      toast.warning(`Only ${remaining} more image${remaining > 1 ? "s" : ""} can be added. Maximum ${MAX_IMAGES} images allowed.`);
+    }
+
+    const allowed = files.slice(0, remaining);
+    setNewFiles((prev) => [...prev, ...allowed]);
+    const previews = allowed.map((f) => URL.createObjectURL(f));
     setPreviewImages((prev) => [...prev, ...previews]);
     setHasImageChanges(true);
+    e.target.value = "";
   }
 
   function handleRemoveImage(index: number) {
@@ -187,11 +203,10 @@ export default function HeroForm({ initialData }: HeroFormProps) {
       <button
         type="submit"
         disabled={(!isDirty && !hasImageChanges) || isSubmitting}
-        className={`w-full font-semibold py-4 cursor-pointer rounded-xl flex items-center justify-center gap-2 transition ${
-          (!isDirty && !hasImageChanges) || isSubmitting
-            ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-            : "bg-emerald-500 hover:bg-emerald-600 text-white shadow-md"
-        }`}
+        className={`w-full font-semibold py-4 cursor-pointer rounded-xl flex items-center justify-center gap-2 transition ${(!isDirty && !hasImageChanges) || isSubmitting
+          ? "bg-slate-200 text-slate-400 cursor-not-allowed"
+          : "bg-emerald-500 hover:bg-emerald-600 text-white shadow-md"
+          }`}
       >
         {isSubmitting && <Loader2 className="animate-spin" size={18} />}
         {isSubmitting ? "Saving..." : "Save Changes"}
