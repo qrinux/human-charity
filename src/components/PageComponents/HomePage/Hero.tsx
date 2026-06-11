@@ -84,15 +84,14 @@ export function Hero() {
                 text-3xl
                 sm:text-4xl
                 md:text-5xl
-                lg:text-[3.5rem]
-                xl:text-[4rem]
-                2xl:text-[4.5rem]
-                font-bold
+                lg:text-[3rem]
+                xl:text-[4.5rem]
+                font-semibold
                 leading-[1.1]
                 md:leading-[1.15]
                 tracking-tight
                 mb-5
-                md:mb-6
+                md:mb-6 capitalize
               "
             >
               {headline}
