@@ -5,60 +5,62 @@ import Image from "next/image";
 
 export function Notices() {
   return (
-    <section className="mb-24 relative overflow-hidden h-[500px] lg:h-[580px]">
+    <section className="mb-24 relative overflow-hidden h-[500px] lg:h-[580px] w-full left-0 right-0">
 
-      {/* Background Image */}
-      <Image
-        src="/carevalue.jpg"
-        alt="Human Care volunteers helping community members"
-        fill
-        className="object-cover object-center"
-        priority
-      />
+      {/* Full-width Viewport Background Image */}
+      <div className="absolute inset-0 w-full h-full">
+        <Image
+          src="/carevalue.jpg"
+          alt="Human Care volunteers helping community members"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/50" />
+      </div>
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/45" />
-
-      {/* Content Container */}
-      <div className="absolute inset-0 flex items-center justify-center lg:justify-end px-6 lg:px-0">
+      {/* Content Container locked to your precise layout boundary widths */}
+      <div className="relative z-10 h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-center lg:justify-end">
         <motion.div
-          initial={{ opacity: 0, x: 40 }}
+          initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="w-full max-w-[500px] text-center lg:mr-16 flex flex-col items-center"
+          className="w-full max-w-[480px] text-center lg:text-left flex flex-col items-center lg:items-start"
         >
-          <p className="text-white/70 uppercase tracking-[3px] text-xs mb-3">
+          {/* Tagline Badge */}
+          <span className="inline-flex items-center gap-2 text-[#10B981] text-xs font-semibold tracking-widest uppercase mb-4">
+            <span className="w-6 h-px bg-[#10B981]" />
             Human Care
-          </p>
+          </span>
 
-          <h2 className="text-white text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight mb-4">
-            Together, We Care. <br /> Together, We Change Lives.
+          <h2 className="text-white text-3xl sm:text-4xl font-bold leading-[1.2] mb-5 tracking-tight">
+            Together, We Care.<br />
+            Together, We Change Lives.
           </h2>
 
-          {/* Divider */}
-          <div className="w-12 h-0.5 bg-emerald-400 mx-auto mb-5" />
-
-          <p className="text-white/85 text-sm sm:text-base leading-relaxed mb-8 max-w-md">
+          <p className="text-white/80 text-sm sm:text-base font-normal leading-relaxed mb-8 max-w-md">
             Support a life. Change a future. Join us in building communities
-            with dignity and hope.
+            with dignity and hope across Bangladesh.
           </p>
 
-          {/* Fixed Responsive Button */}
-          <button className="
-            bg-emerald-500 
-            hover:bg-emerald-600 
-            text-white 
-            font-medium 
-            py-2.5 px-6 text-sm
-            sm:py-3 sm:px-8 sm:text-base
-            rounded-lg 
-            transition-colors 
-            tracking-wide 
-            w-auto
-            max-w-xs
-            mx-auto
-          ">
+          {/* Premium Button */}
+          <button 
+            className="
+              w-full sm:w-auto 
+              bg-[#10B981] 
+              hover:bg-[#059669] 
+              text-white 
+              px-8 py-3.5 
+              rounded-xl 
+              font-semibold 
+              text-sm 
+              transition-all duration-200 
+              shadow-md hover:shadow-lg
+              cursor-pointer
+            "
+          >
             Join Our Mission
           </button>
         </motion.div>

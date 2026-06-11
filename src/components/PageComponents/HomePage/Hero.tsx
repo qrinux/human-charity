@@ -69,19 +69,19 @@ export function Hero() {
             className="w-full max-w-3xl"
           >
             {/* Dynamic Badge Component tracking page hierarchy */}
-            {/* {badgeText && (
-              <span className="inline-flex items-center gap-2 text-[#10B981] text-xs font-semibold tracking-widest uppercase mb-4">
+            {badgeText && (
+              <span className="inline-flex items-center gap-2 text-[#10B981] text-sm font-semibold tracking-widest uppercase mb-4">
                 <span className="w-6 h-px bg-[#10B981]" />
                 {badgeText}
               </span>
-            )} */}
+            )} 
 
             <h1
               className="
                 text-white
                 text-4xl
                 sm:text-5xl
-                lg:text-6xl
+                lg:text-7xl
                 font-bold
                 leading-[1.15]
                 mb-6
@@ -97,6 +97,7 @@ export function Hero() {
                 text-white/80
                 text-base
                 sm:text-lg
+                lg:text-xl
                 leading-relaxed
                 max-w-xl
                 mb-10
@@ -117,7 +118,7 @@ export function Hero() {
                   px-8 py-3.5
                   rounded-xl
                   font-semibold
-                  text-sm
+                  text-lg
                   inline-flex
                   items-center
                   justify-center
@@ -141,7 +142,7 @@ export function Hero() {
                   px-8 py-3.5
                   rounded-xl
                   font-semibold
-                  text-sm
+                  text-lg
                   inline-flex
                   items-center
                   justify-center
