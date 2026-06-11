@@ -48,14 +48,10 @@ export function Focus() {
   return (
     <section
       id="focus"
-      className="mb-24 relative overflow-hidden bg-white"
+      className="mb-24 bg-white"
     >
-      {/* Background Glow */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#10B981]/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#10B981]/5 rounded-full blur-3xl" />
-
       {/* Synchronized container matching ImpactStory and Contact layout */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 pt-12">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-12">
         
         {/* Header Layout */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-20">

@@ -69,12 +69,12 @@ export function Hero() {
             className="w-full max-w-3xl"
           >
             {/* Dynamic Badge Component tracking page hierarchy */}
-            {badgeText && (
+            {/* {badgeText && (
               <span className="inline-flex items-center gap-2 text-[#10B981] text-xs font-semibold tracking-widest uppercase mb-4">
                 <span className="w-6 h-px bg-[#10B981]" />
                 {badgeText}
               </span>
-            )}
+            )} */}
 
             <h1
               className="
