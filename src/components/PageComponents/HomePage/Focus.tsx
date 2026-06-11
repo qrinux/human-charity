@@ -72,46 +72,51 @@ export function Focus() {
 
         {/* Focus Pillar Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10">
-          {pillars.map((pillar, index) => (
-            <motion.div
-              key={pillar.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.08,
-              }}
-              className="
-                group
-                flex
-                items-start
-                gap-6
-                pb-8
-                border-b
-                border-gray-200
-                hover:border-[#10B981]/50
-                transition-all
-                duration-500
-              "
-            >
-              {/* Number Layout */}
-              <div className="text-5xl font-bold text-gray-200 min-w-[70px]">
-                {String(index + 1).padStart(2, "0")}
-              </div>
+          {pillars.map((pillar, index) => {
+            // Checks if the item belongs to the last row on mobile or desktop layout states
+            const isAbsoluteLast = index === pillars.length - 1;
+            const isLastTwoRow = index >= pillars.length - 2;
 
-              {/* Pillar Meta Content */}
-              <div className="flex-1">
-                <h3 className="text-xl lg:text-2xl font-semibold text-[#0F172A] group-hover:text-[#10B981] transition-colors">
-                  {pillar.title}
-                </h3>
+            return (
+              <motion.div
+                key={pillar.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.08,
+                }}
+                className={`
+                  group
+                  flex
+                  items-start
+                  gap-6
+                  pb-8
+                  transition-all
+                  duration-500
+                  ${isAbsoluteLast ? "border-b-0" : "border-b border-gray-200"}
+                  ${isLastTwoRow ? "md:border-b-0 md:pb-0" : "hover:border-[#10B981]/50"}
+                `}
+              >
+                {/* Number Layout */}
+                <div className="text-5xl font-bold text-gray-200 min-w-[70px]">
+                  {String(index + 1).padStart(2, "0")}
+                </div>
 
-                <p className="mt-2 text-gray-500 leading-relaxed text-[14px]">
-                  {pillar.subtitle}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+                {/* Pillar Meta Content */}
+                <div className="flex-1">
+                  <h3 className="text-xl lg:text-2xl font-semibold text-[#0F172A] group-hover:text-[#10B981] transition-colors">
+                    {pillar.title}
+                  </h3>
+
+                  <p className="mt-2 text-gray-500 leading-relaxed text-[14px]">
+                    {pillar.subtitle}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
