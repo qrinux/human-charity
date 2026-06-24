@@ -16,7 +16,6 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     { name: "Overview", icon: <LayoutDashboard size={20} />, href: "/admin/dashboard" },
     { name: "Hero Section", icon: <Globe size={20} />, href: "/admin/dashboard/hero" },
     { name: "Projects", icon: <Briefcase size={20} />, href: "/admin/dashboard/projects" },
-    { name: "News & Notices", icon: <BellRing size={20} />, href: "/admin/dashboard/notices" },
     { name: "Our Team", icon: <Users size={20} />, href: "/admin/dashboard/team" },
     { name: "Gallery Album", icon: <Images size={20} />, href: "/admin/dashboard/gallery" },
     { name: "Contacts", icon: <Contact size={20} />, href: "/admin/dashboard/contacts" },

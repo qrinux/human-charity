@@ -268,7 +268,7 @@ export const TeamForm = ({
         {/* BIO */}
         <div className="md:col-span-2 space-y-2">
           <label className="text-xs font-bold uppercase text-gray-500">
-            Short Biography
+            Biography
           </label>
           <textarea
             rows={3}
@@ -303,7 +303,7 @@ export const TeamForm = ({
         ))}
 
         {/* ARRAY FIELDS */}
-        {(["education", "experience", "achievements"] as const).map(
+        {/* {(["education", "experience", "achievements"] as const).map(
           (type) => (
             <div
               key={type}
@@ -344,7 +344,7 @@ export const TeamForm = ({
               ))}
             </div>
           )
-        )}
+        )} */}
 
         {/* SUBMIT */}
         <button

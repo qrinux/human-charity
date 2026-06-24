@@ -139,7 +139,7 @@ export default function HeroForm({ initialData }: HeroFormProps) {
         <textarea {...register("description")} rows={4} className={inputStyle} />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      {/* <div className="grid md:grid-cols-2 gap-6">
         <div>
           <label className={labelStyle}>Donate Link</label>
           <input type="url" {...register("donateLink")} className={inputStyle} />
@@ -161,7 +161,7 @@ export default function HeroForm({ initialData }: HeroFormProps) {
           <label className={labelStyle}>Years Active</label>
           <input {...register("yearsActive")} className={inputStyle} />
         </div>
-      </div>
+      </div> */}
 
       {/* Upload */}
       <div>

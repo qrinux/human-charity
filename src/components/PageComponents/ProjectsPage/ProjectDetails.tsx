@@ -84,7 +84,7 @@ export function ProjectDetails() {
             <ImagePosition
               src={project.image}
               alt={project.title}
-              className="w-full h-96 object-cover"
+              className="w-full h-[450px] object-top"
             />
           </motion.div>
 

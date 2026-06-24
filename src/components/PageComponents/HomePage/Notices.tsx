@@ -4,6 +4,12 @@ import { motion } from "motion/react";
 import Image from "next/image";
 
 export function Notices() {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <section className="mb-24 relative overflow-hidden h-[500px] lg:h-[580px] w-full left-0 right-0">
 
@@ -47,6 +53,7 @@ export function Notices() {
 
           {/* Premium Button */}
           <button 
+          onClick={() => scrollToSection("contact")}
             className="
               w-full sm:w-auto 
               bg-[#10B981] 
